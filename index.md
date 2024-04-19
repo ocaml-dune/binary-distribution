@@ -7,7 +7,7 @@
 
 After downloaded in `~/Downloads` directory you could use this command to install it.
 ```
-sudo mv ~/Downloads/dune.exe /user/local/bin/dune
+sudo mv ~/Downloads/dune.exe /usr/local/bin/dune
 ```
 You can access `dune` as a command anytime. Feel free to install where you want !
 
