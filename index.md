@@ -1,10 +1,10 @@
 ## Dune distribution binaries
 
-- [linux.x86_64](linux-x86_64/dune.exe)
-- [macOS.x86_64](macos-amd64/dune.exe)
-- [macOS.arm64](macos-arm64/dune.exe)
+- [linux.x86_64](linux-x86_64/dune.exe) (v3.14)
+- [macOS.x86_64](macos-amd64/dune.exe) (v3.14)
+- [macOS.arm64](macos-arm64/dune.exe) (v3.14)
 
-After downloaded in ~/Downloads directory you could use this command to install it.
+After downloaded in `~/Downloads` directory you could use this command to install it.
 ```
 $ sudo mv ~/Downloads/dune.exe /user/local/bin/dune
 ```
