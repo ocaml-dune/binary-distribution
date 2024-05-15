@@ -1,8 +1,8 @@
 # Dune binaries distribution
 
-This is a webpage for `dune` binaries distribution. The page is writen in mardown file and translated in html for deployment.
+This is a webpage for `dune` binaries distribution for `Dune developer Preview`. The page is writen in mardown file and translated in html for deployment.
 
-## Deployment
+## Update index.html
 
 - Translate `index.md`:
   ```
@@ -22,4 +22,7 @@ This is a webpage for `dune` binaries distribution. The page is writen in mardow
   ```
   The plausible script is about tracking the binaries downloads.
 
-- The file `index.html` and `binaries` directory are ready to be hosted.
+- Push the update file `index.html` to the main branch.
+
+## Deployment
+There's a docker-compose file to help deploying the service.
