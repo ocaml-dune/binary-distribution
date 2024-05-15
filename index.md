@@ -8,6 +8,6 @@
 After downloaded and extracted, you could use the command below to install it.
 
 ```
-$ sudo mv dune /user/local/bin/dune
+$ sudo mv dune /usr/local/bin/dune
 ``` 
 Feel free to move the executable wherever you want!
