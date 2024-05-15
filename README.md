@@ -1,6 +1,6 @@
 # Dune binaries distribution
 
-This is a webpage for `dune` binaries distribution for `Dune developer Preview`. The page is writen in mardown file and translated in html for deployment.
+This is a webpage for `dune` binaries distribution of `Dune developer Preview`. The page is writen in mardown file `index.hmd` and translated in html file `index.html` for deployment. The web page is deployed on [dune.ci.dev](https://dune.ci.dev).
 
 ## Update index.html
 
@@ -22,7 +22,7 @@ This is a webpage for `dune` binaries distribution for `Dune developer Preview`.
   ```
   The plausible script is about tracking the binaries downloads.
 
-- Push the update file `index.html` to the main branch.
+- Push the update file `index.html` to the `main` branch.
 
 ## Deployment
 There's a docker-compose file to help deploying the service.
