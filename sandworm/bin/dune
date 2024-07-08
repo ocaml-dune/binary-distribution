@@ -1,0 +1,4 @@
+(executable
+ (public_name sandworm)
+ (name main)
+ (libraries sandworm))
