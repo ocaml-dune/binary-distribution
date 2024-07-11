@@ -1,6 +1,6 @@
 let s3_bucket_ref = "provider:dune-binary-distribution"
 let s3_public_url = "WAIT FOR CLOUDFLARE ACCOUNT"
-let artifacts_path =  "./artifacts"
+let artifacts_path = "./artifacts"
 let metadata_file = "./metadata.json"
 let rclone_path = "./rclone.conf"
 let html_path = "./index.html"
