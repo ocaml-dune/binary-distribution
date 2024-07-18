@@ -1,7 +1,7 @@
 module T = Tyxml.Html
 
 let bucket_url ~url path = Format.sprintf "%s/%s" url path
-let title = T.title (T.txt "Dune Dev Preview")
+let title = T.title (T.txt "Dune Binary Distribution")
 let css = T.link ~rel:[ `Stylesheet ] ~href:"main.css" ()
 
 let plausible_js =
@@ -16,11 +16,23 @@ let plausible_js =
 ;;
 
 let headers = [ css ]
-let main_title = T.h2 [ T.txt "Dune binary distribution" ]
+let main_title = T.h1 [ T.txt "Dune binary distribution" ]
+
+let motivation =
+  [ T.h2 [ T.txt "Motivation" ]
+  ; T.p
+      [ T.txt
+          "This website provides nightly releases of Dune, with the Developer Preview \
+           features activated. These versions can be considered as unstable versions of \
+           the Dune executable. Their purpose is to work without the need for Opam and \
+           as standalone executables. "
+      ]
+  ]
+;;
 
 let install =
-  [ T.p
-      [ T.txt "First, download the dune binary associated with your system requirement." ]
+  [ T.h2 [ T.txt "Installation" ]
+  ; T.p [ T.txt "First, download the Dune binary associated with your system." ]
   ; T.p
       [ T.txt
           "Then, you can install Dune by running the following command from the location \
@@ -32,6 +44,8 @@ let install =
           "Note that you can ignore this command and move the dune executable where you \
            want, as long as it is accessible from the PATH."
       ]
+  ; T.p [ T.txt "Check if the dune executable is accessible by running" ]
+  ; T.pre [ T.code [ T.txt "$ dune --help" ] ]
   ]
 ;;
 
@@ -55,7 +69,7 @@ let bundle_html ~url bundle =
 
 let content ~url t =
   let bundles = List.map (bundle_html ~url) t in
-  let body = (main_title :: install) @ bundles in
+  let body = (main_title :: motivation) @ install @ bundles in
   T.main body
 ;;
 
