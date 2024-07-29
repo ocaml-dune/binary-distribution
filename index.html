@@ -1,15 +1,48 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
- <head><title>Dune Dev Preview</title>
+ <head><title>Dune Binary Distribution</title>
   <link rel="stylesheet" href="main.css"/>
  </head>
  <body>
-  <main><h2>Dune distribution binary</h2>
+  <main><h1>Dune binary distribution</h1><h2>Motivation</h2>
    <p>
-    After downloaded and extracted, you could use the command below to
-    install it.
+    This website provides nightly releases of Dune, with the Developer
+    Preview features activated. These versions can be considered as unstable
+    versions of the Dune executable. Their purpose is to work without the
+    need for Opam and as standalone executables. 
+   </p><h2>Installation</h2>
+   <p>First, download the Dune binary associated with your system.</p>
+   <p>
+    Then, you can install Dune by running the following command from the
+    location where you downloaded the executable file:
    </p><pre><code>$ sudo mv dune /usr/local/bin/dune</code></pre>
-   <p>Feel free to move the executable wherever you want!</p>
+   <p>
+    Note that you can ignore this command and move the dune executable where
+    you want, as long as it is accessible from the PATH.
+   </p><p>Check if the dune executable is accessible by running</p>
+   <pre><code>$ dune --help</code></pre>
+   <div><h3>Preview 2024-07-29</h3>
+    <ul>
+     <li>
+      <a
+       href="https://download.dune.ci.dev/2024-07-29/aarch64-apple-darwin/dune"
+       >dune-aarch64-apple-darwin
+      </a>
+     </li>
+     <li>
+      <a
+       href="https://download.dune.ci.dev/2024-07-29/x86_64-apple-darwin/dune">
+       dune-x86_64-apple-darwin
+      </a>
+     </li>
+     <li>
+      <a
+       href="https://download.dune.ci.dev/2024-07-29/x86_64-unknown-linux-musl/dune"
+       >dune-x86_64-unknown-linux-musl
+      </a>
+     </li>
+    </ul>
+   </div>
   </main>
   <script data-domain="dune.ci.dev" defer="defer"
    src="https://plausible.ci.dev/js/script.file-downloads.js">
