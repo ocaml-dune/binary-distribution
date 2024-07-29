@@ -2,3 +2,12 @@ node_modules
 package.json
 package-lock.json
 output
+
+# Dune working directory
+_build/
+
+# Dune generated files
+*.install
+
+# Local OPAM switch
+_opam/

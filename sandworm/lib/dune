@@ -1,0 +1,5 @@
+(library
+ (name sandworm)
+ (libraries yojson ppx_deriving_yojson.runtime ptime unix fpath tyxml)
+ (preprocess
+  (pps ppx_deriving_yojson)))
