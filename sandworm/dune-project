@@ -1,0 +1,29 @@
+(lang dune 3.16)
+
+(name sandworm)
+(generate_opam_files true)
+
+(source
+ (github tarides/dune-binary-distribution))
+
+(authors "Etienne Marais <dev@maiste.fr>")
+
+(maintainers "Etienne Marais <dev@maiste.fr>")
+
+(license ISC)
+
+(package
+ (name sandworm)
+ (synopsis "Dune metadata website generator")
+ (description "The Dev Preview website generator.")
+ (depends ocaml
+          dune
+          yojson
+          ppx_deriving_yojson
+          tyxml
+          ptime
+          fpath
+          (ocaml-lsp-server :with-dev-setup)
+          (ocamlformat :with-dev-setup)))
+
+; See the complete stanza docs at https://dune.readthedocs.io/en/stable/reference/dune-project/index.html

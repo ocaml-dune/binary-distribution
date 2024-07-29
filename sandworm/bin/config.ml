@@ -1,0 +1,6 @@
+let s3_bucket_ref = "dune-binary-distribution:/dune/"
+let s3_public_url = "https://download.dune.ci.dev"
+let artifacts_path = "./artifacts"
+let metadata_file = "./metadata.json"
+let rclone_path = "./rclone.conf"
+let html_path = "./index.html"
