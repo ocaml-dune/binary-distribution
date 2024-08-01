@@ -14,9 +14,13 @@ The web page is deployed on [dune.ci.dev](https://dune.ci.dev).
 
 ## Installation & configuration
 
+### Requirement
+
+You need to have `opam` available to install and build the project.
+
 ### Install
 
-The _OCaml code_ is stored in the [./sandworm](./sandworm/) directory. To install the dependencies, just `cd` into it and us `opam`:
+The _OCaml code_ is stored in the [sandworm](./sandworm/) directory. Install the dependencies with the following commands:
 
 ```shell
 $ cd sandworm/
@@ -27,7 +31,7 @@ Please note that `--with-dev-setup` should only be used for a development purpos
 
 ### Configure
 
-The configuration is in [./sandworm/bin/config.ml](./sandworm/bin/config.ml) file. When running in the pipeline, the _Sandworm_ binary is generated before the execution. As a result, the path taken is the root of this repository. If you want to run it from the [./sandworm](./sandworm) directory, you have to update the path using `../[path]`.
+The configuration is in [sandworm/bin/config.ml](./sandworm/bin/config.ml) file. When running in the pipeline, the _sandworm_ binary is generated before its execution. As a result, the path taken is the root of this repository. If you want to run it locally, make sure the _files artifacts_ and `rclone.conf` are available in the directory where _sandworm_ binary is executed.
 
 The export relies on an SSH key to the server. If you want to run your own tests, you need to have a server available by _SSH_ with an _SSH key_. Then, you have to create a `rclone.conf` file as follows:
 
@@ -51,17 +55,15 @@ let s3_bucket_ref = "dune-binary-distribution:/path/to/your/server/dir"
 
 ## Running
 
-Now your setup is ready, supposing you are in the [./sandworm](./sandworm) directory, you can simply run the program with:
+Now your setup is ready, you can execute this list of commands to generate or update the files:
 
 ```shell
-$ dune exec -- sandworm
-```
-
-or you can build it and execute it:
-
-```shell
+$ cd sandworm
 $ dune build
-$ ./_build/install/default/bin/sandworm
+$ cd ../
+$ ls
+artifacts rclone.conf
+$ ./sandworm/_build/install/default/bin/sandworm
 ```
 
 ## Deploying
