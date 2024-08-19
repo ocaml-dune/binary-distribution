@@ -31,14 +31,25 @@ let motivation =
 ;;
 
 let install =
+  let targets =
+    List.map
+      (fun target -> T.li [ T.txt (Metadata.Target.to_string target) ])
+      Metadata.Target.defaults
+  in
   [ T.h2 [ T.txt "Installation" ]
   ; T.p [ T.txt "First, download the Dune binary associated with your system." ]
+  ; T.p [ T.txt "You can download the latest binary with" ]
+  ; T.pre
+      [ T.code [ T.txt "$ curl -o dune https://download.dune.ci.dev/latest/<arch>/dune" ]
+      ]
+  ; T.p [ T.txt "where <arch> is one of the following targets:" ]
+  ; T.ul targets
   ; T.p
       [ T.txt
           "Then, you can install Dune by running the following command from the location \
            where you downloaded the executable file:"
       ]
-  ; T.pre [ T.code [ T.txt "$ sudo mv dune /usr/local/bin/dune" ] ]
+  ; T.pre [ T.code [ T.txt "$ chmod u+x ./dune\n$ sudo mv dune /usr/local/bin/dune" ] ]
   ; T.p
       [ T.txt "Note that you can ignore this command and move the "
       ; T.code [ T.txt "dune" ]
@@ -100,26 +111,33 @@ let target_html ~url ~has_certificate path target =
   T.li [ T.p (T.a ~a:[ T.a_href url ] [ T.txt name ] :: certificate) ]
 ;;
 
-let bundle_html ~url bundle =
+let bundle_html ~url ?title bundle =
   let open Metadata.Bundle in
-  let date = get_data_string_from bundle in
-  let commit = bundle.commit in
-  let has_certificate = bundle.has_certificate in
+  let date = get_date_string_from bundle in
+  let h3_title =
+    match title with
+    | None -> Format.sprintf "%s" date
+    | Some title -> title
+  in
   let commit =
-    match commit with
+    match bundle.commit with
     | None -> T.txt ""
     | Some commit -> T.em [ T.txt @@ Format.sprintf " (commit: %s)" commit ]
   in
-  let h3_title = Format.sprintf "Preview %s " date in
   let path = Fpath.v date in
   let targets = List.map Metadata.Target.to_string bundle.targets in
-  let aux acc target = target_html ~url ~has_certificate path target :: acc in
+  let aux acc target =
+    target_html ~url ~has_certificate:bundle.has_certificate path target :: acc
+  in
   let targets = List.fold_left aux [] targets |> List.rev in
   T.div [ T.h3 [ T.txt h3_title; commit ]; T.ul targets ]
 ;;
 
 let content ~url t =
   let bundles = List.map (bundle_html ~url) t in
+  let bundles =
+    if t <> [] then bundle_html ~url ~title:"Latest" (List.hd t) :: bundles else bundles
+  in
   let body = (main_title :: motivation) @ install @ verify @ bundles in
   T.main body
 ;;

@@ -44,7 +44,7 @@ module Bundle = struct
     create ~date targets
   ;;
 
-  let get_data_string_from t =
+  let get_date_string_from t =
     let y, m, d = t.date in
     Format.sprintf "%d-%02d-%02d" y m d
   ;;
