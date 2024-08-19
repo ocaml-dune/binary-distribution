@@ -1,4 +1,4 @@
 (executable
  (public_name sandworm)
  (name main)
- (libraries sandworm))
+ (libraries sandworm cmdliner))
