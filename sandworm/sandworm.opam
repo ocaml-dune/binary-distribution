@@ -15,6 +15,7 @@ depends: [
   "tyxml"
   "ptime"
   "fpath"
+  "cmdliner"
   "ocaml-lsp-server" {with-dev-setup}
   "ocamlformat" {with-dev-setup}
   "odoc" {with-doc}
