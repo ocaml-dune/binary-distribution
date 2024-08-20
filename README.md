@@ -14,6 +14,9 @@ The web page is deployed on [dune.ci.dev](https://dune.ci.dev).
 
 > :hourglass: The pipeline is triggered every day at _01:00 UTC_.
 
+> [!CAUTION]
+> The _metadata.json_ file must not be modified manually. If you do so, expect some unexpected behaviours.
+
 
 ## Installation & configuration
 

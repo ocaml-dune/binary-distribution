@@ -48,9 +48,21 @@ module Bundle = struct
     let y, m, d = t.date in
     Format.sprintf "%d-%02d-%02d" y m d
   ;;
+
+  let compare b1 b2 =
+    let p1 = Ptime.of_date b1.date |> Option.get in
+    let p2 = Ptime.of_date b2.date |> Option.get in
+    Ptime.compare p1 p2
+  ;;
 end
 
 type t = Bundle.t list [@@deriving yojson]
+
+let insert_unique bundle = function
+  | [] -> [ bundle ]
+  | bundle_cheked :: bs as bundles ->
+    if Bundle.compare bundle bundle_cheked = 0 then bundle :: bs else bundle :: bundles
+;;
 
 let import_from_json file : t = Yojson.Safe.from_file file |> of_yojson |> Result.get_ok
 let export_to_json file t = to_yojson t |> Yojson.Safe.to_file file
