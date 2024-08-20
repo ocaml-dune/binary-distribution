@@ -30,10 +30,14 @@ module Bundle = struct
   type t =
     { date : pdate
     ; targets : Target.t list
+    ; has_certificate : (bool[@default false])
+    ; commit : (string option[@default None])
     }
   [@@deriving yojson]
 
-  let create ~date targets = { date; targets }
+  let create ~date ~commit ~has_certificate targets =
+    { date; targets; commit; has_certificate }
+  ;;
 
   let create_daily targets =
     let date = Unix.time () |> Ptime.of_float_s |> Option.get |> Ptime.to_date in

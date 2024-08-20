@@ -8,6 +8,10 @@ on:
 jobs:
   binary:
     name: Create
+    permissions:
+      id-token: write
+      attestations: write
+      contents: write
     strategy:
       fail-fast: false
       matrix:
@@ -23,23 +27,46 @@ jobs:
             installable: .#dune-static
 
     runs-on: ${{ matrix.os }}
+    outputs:
+      git-commit: ${{ steps.git-commit.outputs.hash }}
     steps:
+
       - uses: actions/checkout@v4
         with:
           repository: ocaml/dune
           ref: main # At some point we might need to change it to point to a developer preview branch
           fetch-depth: 0 # for git describe
+
       - uses: cachix/install-nix-action@v22
       - run: echo "(version $(git describe --always --dirty --abbrev=7))" >> dune-project
       - run: nix build ${{ matrix.installable }}
+
+      - name: Extract commit
+        id: git-commit
+        run: echo "hash=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Generate artifact attestation
+        id: certificate
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-path: "result/bin/dune"
+          show-summary: false
+
+      - name: Extract artifact and attestation
+        run: |
+          mkdir -p ~/build/
+          cp ${{ steps.certificate.outputs.bundle-path }} result/bin/dune ~/build/
+
       - uses: actions/upload-artifact@v4
         with:
-          path: result/bin/dune
+          path: ~/build/*
           name: ${{ matrix.name }}
 
   deploy-s3:
     runs-on: ubuntu-latest
     needs: binary
+    permissions:
+      contents: write
     steps:
 
       - name: Install rclone
@@ -60,7 +87,6 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SSH_PUBLIC_KEY: ${{ secrets.SSH_PUBLIC_KEY }}
 
-
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -75,7 +101,7 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          path: ~/artifacts
+          path: /home/runner/artifacts
 
       - name: Move artifacts to scope
         run: mv "/home/runner/artifacts" "."
@@ -85,7 +111,8 @@ jobs:
 
       - name: Export executables and generate html
         shell: bash
-        run: ./sandworm/_build/install/default/bin/sandworm
+        run: ./sandworm/_build/install/default/bin/sandworm --with-certificate --commit "${{ needs.binary.outputs.git-commit }}"
+
 
       - name: Commit changes to branch
         run: |
