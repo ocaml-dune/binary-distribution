@@ -24,7 +24,7 @@ let motivation =
       [ T.txt
           "This website provides nightly releases of Dune, with the Developer Preview \
            features activated. These versions can be considered as unstable versions of \
-           the Dune executable. Their purpose is to work without the need for Opam and \
+           the Dune executable. Their purpose is to work without the need for opam and \
            as standalone executables. "
       ]
   ]
