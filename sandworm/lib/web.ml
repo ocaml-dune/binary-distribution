@@ -54,8 +54,8 @@ let verify =
   ; T.p
       [ T.txt
           "To increase the trust in the builds, we generate a build certificate \
-           associated from GitHub Actions where the binaries are built. To verify the \
-           binary you have downloaded validate the certificate, first download it:"
+           associated with GitHub Actions where the binaries are built. To verify the \
+           binary you have downloaded validates the certificate, first download it:"
       ]
   ; T.pre
       [ T.code
