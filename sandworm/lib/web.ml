@@ -68,7 +68,11 @@ let verify =
                -o attestation.jsonl"
           ]
       ]
-  ; T.p [ T.txt "Using gh, the GitHub CLI Tool, you can verify the certificate:" ]
+  ; T.p
+      [ T.txt "Using "
+      ; T.code [ T.txt "gh" ]
+      ; T.txt ", the GitHub CLI Tool, you can verify the certificate:"
+      ]
   ; T.pre
       [ T.code
           [ T.txt
