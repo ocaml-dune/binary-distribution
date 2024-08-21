@@ -11,7 +11,7 @@ let main commit has_certificate =
   let () =
     Rclone.copy ~config_path:Config.rclone_path Config.artifacts_path s3_daily_bundle
   in
-  let bundles = daily_bundle :: bundle in
+  let bundles = Metadata.insert_unique daily_bundle bundle in
   let () = Metadata.export_to_json Config.metadata_file bundles in
   let () =
     Web.export_bundle_to_file ~url:Config.s3_public_url ~file:Config.html_path bundles
