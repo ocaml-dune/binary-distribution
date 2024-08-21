@@ -24,7 +24,7 @@ let motivation =
       [ T.txt
           "This website provides nightly releases of Dune, with the Developer Preview \
            features activated. These versions can be considered as unstable versions of \
-           the Dune executable. Their purpose is to work without the need for Opam and \
+           the Dune executable. Their purpose is to work without the need for opam and \
            as standalone executables. "
       ]
   ]
@@ -40,11 +40,15 @@ let install =
       ]
   ; T.pre [ T.code [ T.txt "$ sudo mv dune /usr/local/bin/dune" ] ]
   ; T.p
-      [ T.txt
-          "Note that you can ignore this command and move the dune executable where you \
-           want, as long as it is accessible from the PATH."
+      [ T.txt "Note that you can ignore this command and move the "
+      ; T.code [ T.txt "dune" ]
+      ; T.txt " executable where you want, as long as it is accessible from the PATH."
       ]
-  ; T.p [ T.txt "Check if the dune executable is accessible by running" ]
+  ; T.p
+      [ T.txt "Check if the "
+      ; T.code [ T.txt "dune" ]
+      ; T.txt " executable is accessible by running"
+      ]
   ; T.pre [ T.code [ T.txt "$ dune --help" ] ]
   ]
 ;;
@@ -54,8 +58,8 @@ let verify =
   ; T.p
       [ T.txt
           "To increase the trust in the builds, we generate a build certificate \
-           associated from GitHub Actions where the binaries are built. To verify the \
-           binary you have downloaded validate the certificate, first download it:"
+           associated with GitHub Actions where the binaries are built. Download the \
+           certificate to verify the binary validates it:"
       ]
   ; T.pre
       [ T.code
@@ -64,7 +68,11 @@ let verify =
                -o attestation.jsonl"
           ]
       ]
-  ; T.p [ T.txt "Using gh, the GitHub CLI Tool, you can verify the certificate:" ]
+  ; T.p
+      [ T.txt "Using "
+      ; T.code [ T.txt "gh" ]
+      ; T.txt ", the GitHub CLI Tool, you can verify the certificate:"
+      ]
   ; T.pre
       [ T.code
           [ T.txt
