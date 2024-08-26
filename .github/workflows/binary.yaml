@@ -18,18 +18,24 @@ jobs:
         include:
           - os: macos-13
             name: x86_64-apple-darwin
-            installable: .#
+            installable: .#dune-experimental
           - os: macos-14
             name: aarch64-apple-darwin
-            installable: .#
+            installable: .#dune-experimental
           - os: ubuntu-22.04
             name: x86_64-unknown-linux-musl
-            installable: .#dune-static
+            installable: .#dune-static-experimental
 
     runs-on: ${{ matrix.os }}
     outputs:
       git-commit: ${{ steps.git-commit.outputs.hash }}
     steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: "WARNING: Store patch in tmp"
+        run: mv ./dune-nix.patch /tmp
 
       - uses: actions/checkout@v4
         with:
@@ -39,6 +45,14 @@ jobs:
 
       - uses: cachix/install-nix-action@v22
       - run: echo "(version $(git describe --always --dirty --abbrev=7))" >> dune-project
+
+      - name: "WARNING: import and apply dune nix patch"
+        run: |
+          git config --global user.email "temporary@tarides.com"
+          git config --global user.name "Temporary patch"
+          mv /tmp/dune-nix.patch .
+          git am dune-nix.patch
+
       - run: nix build ${{ matrix.installable }}
 
       - name: Extract commit
