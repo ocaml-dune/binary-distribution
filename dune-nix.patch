@@ -1,0 +1,65 @@
+From 1412a86e24c7fc2590694b02e63417805e9ed371 Mon Sep 17 00:00:00 2001
+From: Etienne Marais <dev@maiste.fr>
+Date: Fri, 23 Aug 2024 16:59:35 +0200
+Subject: [PATCH] chore(nix): support build for experimental feature
+
+Signed-off-by: Etienne Marais <dev@maiste.fr>
+---
+ flake.nix | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
+
+diff --git a/flake.nix b/flake.nix
+index ffa31ef92..2bb4219f2 100644
+--- a/flake.nix
++++ b/flake.nix
+@@ -55,10 +55,38 @@
+           });
+         });
+       };
++      dune-experimental-overlay = self: super: {
++        ocamlPackages = super.ocaml-ng.ocamlPackages_4_14.overrideScope
++          (oself: osuper: {
++            dune_3 = osuper.dune_3.overrideAttrs (a: {
++              src = ./.;
++              preBuild = "./configure --enable-toolchains --enable-pkg-build-progress";
++            });
++          });
++      };
++      dune-static-experimental-overlay = self: super: {
++        ocamlPackages = super.ocaml-ng.ocamlPackages_4_14.overrideScope (oself: osuper: {
++          dune_3 = osuper.dune_3.overrideAttrs (a: {
++            src = ./.;
++            preBuild = ''
++              ./configure --enable-toolchains --enable-pkg-build-progress
++              ocaml boot/bootstrap.ml --static'';
++          });
++        });
++      };
++
+       pkgs-static = nixpkgs.legacyPackages.${system}.appendOverlays [
+         ocaml-overlays.overlays.default
+         dune-static-overlay
+       ];
++      pkgs-experimental = nixpkgs.legacyPackages.${system}.appendOverlays [
++        ocaml-overlays.overlays.default
++        dune-experimental-overlay
++      ];
++      pkgs-static-experimental = nixpkgs.legacyPackages.${system}.appendOverlays [
++        ocaml-overlays.overlays.default
++        dune-static-experimental-overlay
++      ];
+ 
+       ocamlformat =
+         let
+@@ -102,6 +130,8 @@
+         };
+         dune = self.packages.${system}.default;
+         dune-static = pkgs-static.pkgsCross.musl64.ocamlPackages.dune;
++        dune-experimental = pkgs-experimental.dune_3;
++        dune-static-experimental = pkgs-static-experimental.pkgsCross.musl64.ocamlPackages.dune;
+       };
+ 
+       devShells =
+-- 
+2.46.0
+
