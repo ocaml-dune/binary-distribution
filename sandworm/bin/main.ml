@@ -11,10 +11,6 @@ let main commit has_certificate =
   let () =
     Rclone.copy ~config_path:Config.rclone_path Config.artifacts_path s3_daily_bundle
   in
-  let latest_bundle = Filename.concat Config.s3_bucket_ref "latest" in
-  let () =
-    Rclone.copy ~config_path:Config.rclone_path Config.artifacts_path latest_bundle
-  in
   let bundles = Metadata.insert_unique daily_bundle bundle in
   let () = Metadata.export_to_json Config.metadata_file bundles in
   let () =
