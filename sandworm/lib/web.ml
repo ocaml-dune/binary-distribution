@@ -19,7 +19,7 @@ let artifact_code_for_bundle ~url ~artifact bundle =
           ~target:(Metadata.Target.to_string target)
           artifact
       in
-      let curl_s = Format.sprintf "$ curl -o dune %s" curl_url in
+      let curl_s = Format.sprintf "$ curl -o %s %s" artifact curl_url in
       T.div
         [ T.p [ T.strong [ T.txt (Metadata.Target.to_string target) ] ]
         ; T.pre [ T.code [ T.txt curl_s ] ]
