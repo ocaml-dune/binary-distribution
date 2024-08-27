@@ -59,9 +59,6 @@ jobs:
         id: git-commit
         run: echo "hash=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
-      - name: Remove unused symbols
-        run: strip -s result/bin/dune
-
       - name: Generate artifact attestation
         id: certificate
         uses: actions/attest-build-provenance@v1
