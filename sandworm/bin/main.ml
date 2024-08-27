@@ -6,7 +6,7 @@ let main commit has_certificate =
   let daily_bundle =
     Metadata.(Bundle.create_daily ~commit ~has_certificate Target.defaults)
   in
-  let daily_bundle_date = Metadata.Bundle.get_data_string_from daily_bundle in
+  let daily_bundle_date = Metadata.Bundle.get_date_string_from daily_bundle in
   let s3_daily_bundle = Filename.concat Config.s3_bucket_ref daily_bundle_date in
   let () =
     Rclone.copy ~config_path:Config.rclone_path Config.artifacts_path s3_daily_bundle
