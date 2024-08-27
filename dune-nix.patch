@@ -1,3 +1,13 @@
+From caa7da358a7442e59905daca69a9815a0ca1847a Mon Sep 17 00:00:00 2001
+From: Stephen Sherratt <stephen@sherra.tt>
+Date: Tue, 27 Aug 2024 21:20:15 +1000
+Subject: [PATCH] Add some experimental binaries with features enabled to flake
+
+Signed-off-by: Stephen Sherratt <stephen@sherra.tt>
+---
+ flake.nix | 24 ++++++++++++++++++++++--
+ 1 file changed, 22 insertions(+), 2 deletions(-)
+
 diff --git a/flake.nix b/flake.nix
 index ffa31ef92..71bbed8ae 100644
 --- a/flake.nix
@@ -53,3 +63,6 @@ index ffa31ef92..71bbed8ae 100644
        };
  
        devShells =
+-- 
+2.45.2
+
