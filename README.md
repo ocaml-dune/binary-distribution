@@ -87,3 +87,8 @@ $ ./sandworm/_build/install/default/bin/sandworm
 
 The deployment are automatically done through GitHub Actions. No need to add
 extra work to deploy it.
+
+## Understand the pipeline
+
+This schema provides explanations about the workflow used to build the binaries and the certificates, and export them to the correct server.
+![pipeline](https://github.com/user-attachments/assets/0db47097-49b6-4322-96ca-e2bf744b78c5)
