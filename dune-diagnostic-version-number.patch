@@ -1,0 +1,88 @@
+From 72cd9d9fb8a1137d794a0430d18c2409b4f2a281 Mon Sep 17 00:00:00 2001
+From: Stephen Sherratt <stephen@sherra.tt>
+Date: Thu, 29 Aug 2024 15:29:48 +1000
+Subject: [PATCH] Add diagnostic info to dev preview versions
+
+Signed-off-by: Stephen Sherratt <stephen@sherra.tt>
+---
+ flake.nix | 39 ++++++++++++++++++++++++++++++---------
+ 1 file changed, 30 insertions(+), 9 deletions(-)
+
+diff --git a/flake.nix b/flake.nix
+index d5b154b78..92d5be10e 100644
+--- a/flake.nix
++++ b/flake.nix
+@@ -47,19 +47,32 @@
+           });
+         })
+       ];
+-      dune-static-overlay = configureFlags: self: super: {
++
++      # Add some information about the developer preview to the version number.
++      developer-preview-set-version-command = { configureFlags, extraText ? "" }: ''
++        cat >> dune-project << EOF
++        (version "dune developer preview, built $(date --iso-8601=seconds). Feature flags: ${ nixpkgs.lib.strings.concatStringsSep " " configureFlags }.${ extraText }")
++        EOF
++      '';
++
++      dune-static-overlay = { configureFlags ? [], developerPreview ? false }: self: super: {
+         ocamlPackages = super.ocaml-ng.ocamlPackages_4_14.overrideScope (oself: osuper: {
+           dune_3 = osuper.dune_3.overrideAttrs (a: {
+             src = ./.;
+-            preBuild = "ocaml boot/bootstrap.ml --static";
++            preBuild = ''
++              ${ if developerPreview
++                 then developer-preview-set-version-command { configureFlags = configureFlags; extraText = " Statically linked."; }
++                 else "" }
++              ocaml boot/bootstrap.ml --static
++            '';
+             configureFlags = configureFlags;
+           });
+         });
+       };
+ 
+-      pkgs-static = configureFlags: nixpkgs.legacyPackages.${system}.appendOverlays [
++      pkgs-static = args: nixpkgs.legacyPackages.${system}.appendOverlays [
+         ocaml-overlays.overlays.default
+-        (dune-static-overlay configureFlags)
++        (dune-static-overlay args)
+       ];
+ 
+       experimental-configure-flags = [
+@@ -91,7 +104,7 @@
+       formatter = pkgs.nixpkgs-fmt;
+ 
+       packages = {
+-        withConfigureFlags = with pkgs; configureFlags: stdenv.mkDerivation {
++        f = with pkgs; { configureFlags ? [], developerPreview ? false }: stdenv.mkDerivation {
+           pname = "dune";
+           version = "n/a";
+           src = ./.;
+@@ -106,12 +119,20 @@
+           configurePlatforms = [ ];
+           installFlags = [ "PREFIX=${placeholder "out"}" "LIBDIR=$(OCAMLFIND_DESTDIR)" ];
+           configureFlags = configureFlags;
++          preBuild = if developerPreview then developer-preview-set-version-command { configureFlags = configureFlags; } else "";
++
+         };
+-        default = self.packages.${system}.withConfigureFlags [];
++        default = self.packages.${system}.f {};
+         dune = self.packages.${system}.default;
+-        dune-static = (pkgs-static []).pkgsCross.musl64.ocamlPackages.dune;
+-        dune-experimental = self.packages.${system}.withConfigureFlags experimental-configure-flags;
+-        dune-static-experimental = (pkgs-static experimental-configure-flags).pkgsCross.musl64.ocamlPackages.dune;
++        dune-static = (pkgs-static {}).pkgsCross.musl64.ocamlPackages.dune;
++        dune-experimental = self.packages.${system}.f {
++          configureFlags = experimental-configure-flags;
++          developerPreview = true;
++        };
++        dune-static-experimental = (pkgs-static {
++          configureFlags = experimental-configure-flags;
++          developerPreview = true;
++        }).pkgsCross.musl64.ocamlPackages.dune;
+       };
+ 
+       devShells =
+-- 
+2.44.1
+

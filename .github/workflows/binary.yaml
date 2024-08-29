@@ -38,6 +38,7 @@ jobs:
         run: |
           mv ./dune-nix.patch /tmp
           mv ./dune-locking.patch /tmp
+          mv ./dune-diagnostic-version-number.patch /tmp
 
       - uses: actions/checkout@v4
         with:
@@ -54,8 +55,10 @@ jobs:
           git config --global user.name "Temporary patch"
           mv /tmp/dune-nix.patch .
           mv /tmp/dune-locking.patch .
+          mv /tmp/dune-diagnostic-version-number.patch .
           git am dune-nix.patch
           git am dune-locking.patch
+          git am dune-diagnostic-version-number.patch
 
       - run: nix build ${{ matrix.installable }}
 
