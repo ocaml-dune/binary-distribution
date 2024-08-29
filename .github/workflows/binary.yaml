@@ -47,7 +47,9 @@ jobs:
           fetch-depth: 0 # for git describe
 
       - uses: cachix/install-nix-action@v22
-      - run: echo "(version $(git describe --always --dirty --abbrev=7))" >> dune-project
+      - run: |
+          echo "(version $(git describe --always --dirty --abbrev=7))" > git.txt
+          git add git.txt # this lets nix see git.txt
 
       - name: "WARNING: import and apply dune nix patch"
         run: |
