@@ -48,7 +48,7 @@ jobs:
 
       - uses: cachix/install-nix-action@v22
 
-      - run: echo "(version $(git describe --always --dirty --abbrev=7))" > /tmp/git.txt
+      - run: git describe --always --dirty --abbrev=7 > /tmp/git.txt
 
       - name: "WARNING: import and apply dune nix patch"
         run: |
