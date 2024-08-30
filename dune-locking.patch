@@ -1,207 +1,22 @@
-From dcd622f8123b8f220e68f3e67e80f046e84425be Mon Sep 17 00:00:00 2001
-From: Etienne Marais <dev@maiste.fr>
-Date: Tue, 27 Aug 2024 12:32:08 +0200
-Subject: [PATCH 1/5] tmp: prepare for atomic lock
-
----
- src/dune_pkg/lock_dir.ml | 92 ++++++++++++++++++++++++++++++----------
- 1 file changed, 70 insertions(+), 22 deletions(-)
-
-diff --git a/src/dune_pkg/lock_dir.ml b/src/dune_pkg/lock_dir.ml
-index cb4efcc0e..c2092128a 100644
---- a/src/dune_pkg/lock_dir.ml
-+++ b/src/dune_pkg/lock_dir.ml
-@@ -498,6 +498,32 @@ module Write_disk = struct
-     | Ok _ -> Error `Not_directory
-   ;;
- 
-+  let raise_user_error_on_check_existance path e =
-+    let error_reason_pp =
-+      match e with
-+      | `Unreadable -> Pp.text "Unable to read lock directory"
-+      | `Not_directory -> Pp.text "Specified lock dir path is not a directory"
-+      | `No_metadata_file ->
-+        Pp.textf "Specified lock dir lacks metadata file (%s)" metadata_filename
-+      | `Failed_to_parse_metadata (path, exn) ->
-+        Pp.concat
-+          ~sep:Pp.cut
-+          [ Pp.textf
-+              "Unable to parse lock directory metadata file (%s):"
-+              (Path.to_string_maybe_quoted path)
-+            |> Pp.hovbox
-+          ; Exn.pp exn |> Pp.hovbox
-+          ]
-+        |> Pp.vbox
-+    in
-+    User_error.raise
-+      [ Pp.textf
-+          "Refusing to regenerate lock directory %s"
-+          (Path.to_string_maybe_quoted path)
-+      ; error_reason_pp
-+      ]
-+  ;;
-+
-   (* Removes the existing lock directory at the specified path if it exists and
-      is a valid lock directory. Checks the validity of the existing lockdir (if
-      any) and raises if it's invalid before constructing the returned thunk, so
-@@ -507,23 +533,20 @@ module Write_disk = struct
-     match check_existing_lock_dir path with
-     | Ok `Non_existant -> Fun.const ()
-     | Ok `Is_existing_lock_dir -> fun () -> Path.rm_rf path
--    | Error e ->
-+    | Error e -> raise_user_error_on_check_existance path e
-+  ;;
-+
-+  (* Does the same checks as [safely_remove_lock_dir_if_exists_thunk] but it raises an
-+     error if the lock dir already exists. [dst] is the new file name *)
-+  let safely_rename_lock_dir ~dst path =
-+    match check_existing_lock_dir dst, check_existing_lock_dir path with
-+    | Ok `Non_existant, Ok `Is_existing_lock_dir -> fun () -> Path.rename path dst
-+    | Ok `Non_existant, Ok `Non_existant -> Fun.const ()
-+    | Ok `Is_existing_lock_dir, _ ->
-       let error_reason_pp =
--        match e with
--        | `Unreadable -> Pp.text "Unable to read lock directory"
--        | `Not_directory -> Pp.text "Specified lock dir path is not a directory"
--        | `No_metadata_file ->
--          Pp.textf "Specified lock dir lacks metadata file (%s)" metadata_filename
--        | `Failed_to_parse_metadata (path, exn) ->
--          Pp.concat
--            ~sep:Pp.cut
--            [ Pp.textf
--                "Unable to parse lock directory metadata file (%s):"
--                (Path.to_string_maybe_quoted path)
--              |> Pp.hovbox
--            ; Exn.pp exn |> Pp.hovbox
--            ]
--          |> Pp.vbox
-+        Pp.textf
-+          "Directory %s already exists: can't rename safely"
-+          (Path.to_string_maybe_quoted path)
-       in
-       User_error.raise
-         [ Pp.textf
-@@ -531,15 +554,31 @@ module Write_disk = struct
-             (Path.to_string_maybe_quoted path)
-         ; error_reason_pp
-         ]
-+    | Error e, _ | _, Error e -> raise_user_error_on_check_existance path e
-   ;;
- 
-   type t = unit -> unit
- 
--  let prepare ~lock_dir_path:lock_dir_path_src ~files lock_dir =
--    let lock_dir_path = Path.source lock_dir_path_src in
--    let remove_dir_if_exists = safely_remove_lock_dir_if_exists_thunk lock_dir_path in
--    fun () ->
--      remove_dir_if_exists ();
-+  let prepare
-+    ~lock_dir_path:lock_dir_path_src
-+    ~(files : File_entry.t Package_name.Map.Multi.t)
-+    lock_dir
-+    =
-+    let lock_dir_hidden_src =
-+      Format.sprintf ".%s" (Path.Source.to_string lock_dir_path_src)
-+      |> Path.Source.of_string
-+    in
-+    let lock_dir_hidden_src = Path.source lock_dir_hidden_src in
-+    let lock_dir_path_external = Path.source lock_dir_path_src in
-+    let remove_hidden_dir_if_exists =
-+      safely_remove_lock_dir_if_exists_thunk lock_dir_hidden_src
-+    in
-+    let rename_old_lock_dir_to_hidden =
-+      safely_rename_lock_dir ~dst:lock_dir_hidden_src lock_dir_path_external
-+    in
-+    let build lock_dir_path =
-+      rename_old_lock_dir_to_hidden ();
-+      let lock_dir_path = Result.ok_exn lock_dir_path in
-       Path.mkdir_p lock_dir_path;
-       file_contents_by_path lock_dir
-       |> List.iter ~f:(fun (path_within_lock_dir, contents) ->
-@@ -563,7 +602,16 @@ module Write_disk = struct
-             Path.mkdir_p (Path.parent_exn dst);
-             match original with
-             | Path src -> Io.copy_file ~src ~dst ()
--            | Content content -> Io.write_file dst content)))
-+            | Content content -> Io.write_file dst content)));
-+      safely_rename_lock_dir ~dst:lock_dir_path_external lock_dir_path ();
-+      remove_hidden_dir_if_exists ()
-+    in
-+    fun () ->
-+      Temp.with_temp_dir
-+        ~parent_dir:(Path.of_string "/tmp")
-+        ~prefix:"dune"
-+        ~suffix:"lock"
-+        ~f:build
-   ;;
- 
-   let commit t = t ()
--- 
-2.46.0
-
-
-From 84e57d72c3c0637bea24fe0095274d86aaa4c45c Mon Sep 17 00:00:00 2001
-From: Stephen Sherratt <stephen@sherra.tt>
-Date: Tue, 27 Aug 2024 22:34:21 +1000
-Subject: [PATCH 2/5] Minor fixes to atomic locking
-
-Signed-off-by: Stephen Sherratt <stephen@sherra.tt>
----
- src/dune_pkg/lock_dir.ml | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/src/dune_pkg/lock_dir.ml b/src/dune_pkg/lock_dir.ml
-index c2092128a..e1a74f0c1 100644
---- a/src/dune_pkg/lock_dir.ml
-+++ b/src/dune_pkg/lock_dir.ml
-@@ -579,7 +579,6 @@ module Write_disk = struct
-     let build lock_dir_path =
-       rename_old_lock_dir_to_hidden ();
-       let lock_dir_path = Result.ok_exn lock_dir_path in
--      Path.mkdir_p lock_dir_path;
-       file_contents_by_path lock_dir
-       |> List.iter ~f:(fun (path_within_lock_dir, contents) ->
-         let path = Path.relative lock_dir_path path_within_lock_dir in
-@@ -594,7 +593,7 @@ module Write_disk = struct
-         Format.asprintf "%a" Pp.to_fmt pp |> Io.write_file path;
-         Package_name.Map.iteri files ~f:(fun package_name files ->
-           let files_dir =
--            Pkg.files_dir package_name ~lock_dir:lock_dir_path_src |> Path.source
-+            Path.relative lock_dir_path (Package_name.to_string package_name ^ ".files")
-           in
-           Path.mkdir_p files_dir;
-           List.iter files ~f:(fun { File_entry.original; local_file } ->
-@@ -608,7 +607,7 @@ module Write_disk = struct
-     in
-     fun () ->
-       Temp.with_temp_dir
--        ~parent_dir:(Path.of_string "/tmp")
-+        ~parent_dir:(Path.source Path.Source.root)
-         ~prefix:"dune"
-         ~suffix:"lock"
-         ~f:build
--- 
-2.46.0
-
-
-From dbe95d051cd1199c4e958fdacd3ab9aa35733dca Mon Sep 17 00:00:00 2001
+From c7a28064562007f1e1083cd905444bb245e615fc Mon Sep 17 00:00:00 2001
 From: Etienne Marais <dev@maiste.fr>
 Date: Thu, 22 Aug 2024 11:58:26 +0200
-Subject: [PATCH 3/5] tmp: ask to re run dune pkg lock on change
+Subject: [PATCH 1/2] feat: ask to re run dune pkg lock on change
 
+Signed-off-by: Etienne Marais <dev@maiste.fr>
 ---
- bin/build_cmd.ml                  | 34 ++++++++++++++++++++++++++++++-
+ bin/build_cmd.ml                  | 36 ++++++++++++++++++++++++++++++-
  bin/pkg/pkg_common.ml             |  2 ++
  bin/pkg/pkg_common.mli            |  4 ++++
- src/dune_pkg/package_universe.ml  | 19 +++++++++++++++++
- src/dune_pkg/package_universe.mli |  8 ++++++++
- 5 files changed, 66 insertions(+), 1 deletion(-)
+ src/dune_pkg/package_universe.ml  | 19 ++++++++++++++++
+ src/dune_pkg/package_universe.mli |  8 +++++++
+ 5 files changed, 68 insertions(+), 1 deletion(-)
 
 diff --git a/bin/build_cmd.ml b/bin/build_cmd.ml
-index b7e09e8fe..973b26f2b 100644
+index b7e09e8fe..15b9c9312 100644
 --- a/bin/build_cmd.ml
 +++ b/bin/build_cmd.ml
-@@ -30,6 +30,34 @@ let with_metrics ~common f =
+@@ -30,6 +30,36 @@ let with_metrics ~common f =
      Fiber.return ())
  ;;
  
@@ -227,7 +42,9 @@ index b7e09e8fe..973b26f2b 100644
 +        List.map lock_dirs ~f:(fun lock_dir ->
 +          match Dune_pkg.Package_universe.up_to_date local_packages lock_dir with
 +          | `Valid -> Memo.return ()
-+          | `Invalid _ -> User_error.raise [ Pp.text "STOPPPPPPPP! Rerun pk lock" ])
++          | `Invalid _ ->
++            let hints = Pp.[ text "run dune pkg lock" ] in
++            User_error.raise ~hints [ Pp.text "The lock dir is not sync with your dune-project" ])
 +      in
 +      let+ (_ : unit list) = Memo.all_concurrently locks in
 +      ())
@@ -236,7 +53,7 @@ index b7e09e8fe..973b26f2b 100644
  let run_build_system ~common ~request =
    let run ~(toplevel : unit Memo.Lazy.t) =
      with_metrics ~common (fun () -> build (fun () -> Memo.Lazy.force toplevel))
-@@ -46,8 +74,12 @@ let run_build_system ~common ~request =
+@@ -46,8 +76,12 @@ let run_build_system ~common ~request =
           worth the effort. *)
        Cached_digest.invalidate_cached_timestamps ();
        let* setup = Import.Main.setup () in
@@ -331,55 +148,28 @@ index 2b2273fc1..ae90027d5 100644
 2.46.0
 
 
-From 5d37071194aae35ea5563818646a73f80f5e34ba Mon Sep 17 00:00:00 2001
+From 4f9b0bf144f978223edbf2ce514df8d495bedb90 Mon Sep 17 00:00:00 2001
 From: Etienne Marais <dev@maiste.fr>
-Date: Tue, 27 Aug 2024 15:16:27 +0200
-Subject: [PATCH 4/5] fix: turn into a closure
+Date: Tue, 27 Aug 2024 18:12:51 +0200
+Subject: [PATCH 2/2] fix: apply fmt
 
----
- src/dune_pkg/lock_dir.ml | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/src/dune_pkg/lock_dir.ml b/src/dune_pkg/lock_dir.ml
-index e1a74f0c1..262196a4c 100644
---- a/src/dune_pkg/lock_dir.ml
-+++ b/src/dune_pkg/lock_dir.ml
-@@ -570,8 +570,8 @@ module Write_disk = struct
-     in
-     let lock_dir_hidden_src = Path.source lock_dir_hidden_src in
-     let lock_dir_path_external = Path.source lock_dir_path_src in
--    let remove_hidden_dir_if_exists =
--      safely_remove_lock_dir_if_exists_thunk lock_dir_hidden_src
-+    let remove_hidden_dir_if_exists () =
-+      safely_remove_lock_dir_if_exists_thunk lock_dir_hidden_src ()
-     in
-     let rename_old_lock_dir_to_hidden =
-       safely_rename_lock_dir ~dst:lock_dir_hidden_src lock_dir_path_external
--- 
-2.46.0
-
-
-From b2ff378265b6844bfbb464303125e7b3008f584b Mon Sep 17 00:00:00 2001
-From: Etienne Marais <dev@maiste.fr>
-Date: Tue, 27 Aug 2024 16:09:44 +0200
-Subject: [PATCH 5/5] feat: improve out of date message
-
+Signed-off-by: Etienne Marais <dev@maiste.fr>
 ---
  bin/build_cmd.ml | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/bin/build_cmd.ml b/bin/build_cmd.ml
-index 973b26f2b..15b9c9312 100644
+index 15b9c9312..61994fa18 100644
 --- a/bin/build_cmd.ml
 +++ b/bin/build_cmd.ml
-@@ -52,7 +52,9 @@ let raise_on_lock_dir_out_of_sync () =
-         List.map lock_dirs ~f:(fun lock_dir ->
-           match Dune_pkg.Package_universe.up_to_date local_packages lock_dir with
+@@ -54,7 +54,9 @@ let raise_on_lock_dir_out_of_sync () =
            | `Valid -> Memo.return ()
--          | `Invalid _ -> User_error.raise [ Pp.text "STOPPPPPPPP! Rerun pk lock" ])
-+          | `Invalid _ ->
-+            let hints = Pp.[ text "run dune pkg lock" ] in
-+            User_error.raise ~hints [ Pp.text "The lock dir is not sync with your dune-project" ])
+           | `Invalid _ ->
+             let hints = Pp.[ text "run dune pkg lock" ] in
+-            User_error.raise ~hints [ Pp.text "The lock dir is not sync with your dune-project" ])
++            User_error.raise
++              ~hints
++              [ Pp.text "The lock dir is not sync with your dune-project" ])
        in
        let+ (_ : unit list) = Memo.all_concurrently locks in
        ())
