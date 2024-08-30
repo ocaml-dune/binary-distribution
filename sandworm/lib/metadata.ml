@@ -60,8 +60,8 @@ type t = Bundle.t list [@@deriving yojson]
 
 let insert_unique bundle = function
   | [] -> [ bundle ]
-  | bundle_cheked :: bs as bundles ->
-    if Bundle.equal bundle bundle_cheked then bundle :: bs else bundle :: bundles
+  | bundle_checked :: bs as bundles ->
+    if Bundle.equal bundle bundle_checked then bundle :: bs else bundle :: bundles
 ;;
 
 let import_from_json file : t = Yojson.Safe.from_file file |> of_yojson |> Result.get_ok
