@@ -1,31 +1,33 @@
 module T = Tyxml.Html
 
-let bucket_url ~url path = Format.sprintf "%s/%s" url path
+module Utils = struct
+  let bucket_url ~url path = Format.sprintf "%s/%s" url path
 
-let artifact_target_path ~url ~date ~target artifact =
-  let path = Fpath.v date in
-  let dune = Fpath.(path / target / artifact |> to_string) in
-  bucket_url ~url dune
-;;
+  let artifact_target_path ~url ~date ~target artifact =
+    let path = Fpath.v date in
+    let dune = Fpath.(path / target / artifact |> to_string) in
+    bucket_url ~url dune
+  ;;
 
-let artifact_code_for_bundle ~url ~artifact bundle =
-  let date = Metadata.Bundle.get_date_string_from bundle in
-  List.map
-    (fun target ->
-      let curl_url =
-        artifact_target_path
-          ~url
-          ~date
-          ~target:(Metadata.Target.to_string target)
-          artifact
-      in
-      let curl_s = Format.sprintf "$ curl -o %s %s" artifact curl_url in
-      T.div
-        [ T.p [ T.strong [ T.txt (Metadata.Target.to_string target) ] ]
-        ; T.pre [ T.code [ T.txt curl_s ] ]
-        ])
-    bundle.targets
-;;
+  let artifact_code_for_bundle ~url ~artifact bundle =
+    let date = Metadata.Bundle.get_date_string_from bundle in
+    List.map
+      (fun target ->
+        let curl_url =
+          artifact_target_path
+            ~url
+            ~date
+            ~target:(Metadata.Target.to_string target)
+            artifact
+        in
+        let curl_s = Format.sprintf "$ curl -o %s %s" artifact curl_url in
+        T.div
+          [ T.p [ T.strong [ T.txt (Metadata.Target.to_string target) ] ]
+          ; T.pre [ T.code [ T.txt curl_s ] ]
+          ])
+      bundle.targets
+  ;;
+end
 
 let title = T.title (T.txt "Dune Binary Distribution")
 let css = T.link ~rel:[ `Stylesheet ] ~href:"main.css" ()
@@ -57,7 +59,7 @@ let motivation =
 ;;
 
 let install ~url bundle =
-  let targets = artifact_code_for_bundle ~url ~artifact:"dune" bundle in
+  let targets = Utils.artifact_code_for_bundle ~url ~artifact:"dune" bundle in
   [ T.h2 [ T.txt "Installation" ]
   ; T.h3 [ T.txt "Download" ]
   ; T.p [ T.txt "First, download the Dune binary associated with your system." ]
@@ -89,7 +91,9 @@ let install ~url bundle =
 ;;
 
 let verify ~url bundle =
-  let targets = artifact_code_for_bundle ~url ~artifact:"attestation.jsonl" bundle in
+  let targets =
+    Utils.artifact_code_for_bundle ~url ~artifact:"attestation.jsonl" bundle
+  in
   [ T.h2 [ T.txt "Verify" ]
   ; T.p
       [ T.txt
@@ -121,14 +125,14 @@ let target_html ~url ~has_certificate path target =
     match has_certificate with
     | true ->
       let path = Fpath.(path / target / "attestation.jsonl" |> to_string) in
-      let url = bucket_url ~url path |> T.Xml.uri_of_string in
+      let url = Utils.bucket_url ~url path |> T.Xml.uri_of_string in
       [ T.txt " - "
       ; T.a ~a:[ T.a_href url; T.a_class [ "certificate" ] ] [ T.txt "certificate" ]
       ]
     | false -> [ T.em ~a:[ T.a_class [ "certificate" ] ] [ T.txt " - no certificate" ] ]
   in
   let path = Fpath.(path / target / "dune" |> to_string) in
-  let url = bucket_url ~url path |> T.Xml.uri_of_string in
+  let url = Utils.bucket_url ~url path |> T.Xml.uri_of_string in
   let name = Format.sprintf "dune-%s" target in
   T.li [ T.p (T.a ~a:[ T.a_href url ] [ T.txt name ] :: certificate) ]
 ;;

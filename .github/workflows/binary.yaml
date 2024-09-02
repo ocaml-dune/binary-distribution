@@ -88,9 +88,46 @@ jobs:
           path: ~/build/*
           name: ${{ matrix.name }}
 
+
+
+  check-artifacts:
+    strategy:
+        fail-fast: false
+        matrix:
+          include:
+            - os: macos-13
+              name: x86_64-apple-darwin
+            - os: macos-14
+              name: aarch64-apple-darwin
+            - os: ubuntu-22.04
+              name: x86_64-unknown-linux-musl
+
+    runs-on: ${{ matrix.os }}
+    needs: binary
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+
+      - name: Get dune accessible
+        run: |
+          mv ./${{ matrix.name }}/dune ./dune
+          chmod u+x ./dune
+
+      - name: Check dune is working
+        run: |
+            export PATH="$PWD:$PATH"
+            cd test
+            dune pkg lock
+            dune build
+
+
+
   deploy-s3:
     runs-on: ubuntu-latest
-    needs: binary
+    needs: check-artifacts
     permissions:
       contents: write
     steps:
@@ -137,7 +174,7 @@ jobs:
 
       - name: Export executables and generate html
         shell: bash
-        run: ./sandworm/_build/install/default/bin/sandworm --with-certificate --commit "${{ needs.binary.outputs.git-commit }}"
+        run: ./sandworm/_build/install/default/bin/sandworm sync --with-certificate --commit "${{ needs.binary.outputs.git-commit }}"
 
 
       - name: Commit changes to branch

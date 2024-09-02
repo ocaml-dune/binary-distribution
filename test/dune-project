@@ -1,0 +1,12 @@
+(lang dune 3.16)
+(name dune_test)
+(generate_opam_files true)
+
+(authors "The build system team")
+(maintainers "The build system team")
+(license ISC)
+
+(package
+ (name dune_test)
+ (allow_empty)
+ (depends ocaml dune sqlite3))
