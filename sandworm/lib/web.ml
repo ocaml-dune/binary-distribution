@@ -122,10 +122,10 @@ let target_html ~url ~has_certificate path target =
     | true ->
       let path = Fpath.(path / target / "attestation.jsonl" |> to_string) in
       let url = bucket_url ~url path |> T.Xml.uri_of_string in
-      [ T.txt "- "
+      [ T.txt " - "
       ; T.a ~a:[ T.a_href url; T.a_class [ "certificate" ] ] [ T.txt "certificate" ]
       ]
-    | false -> [ T.em ~a:[ T.a_class [ "certificate" ] ] [ T.txt "- no certificate" ] ]
+    | false -> [ T.em ~a:[ T.a_class [ "certificate" ] ] [ T.txt " - no certificate" ] ]
   in
   let path = Fpath.(path / target / "dune" |> to_string) in
   let url = bucket_url ~url path |> T.Xml.uri_of_string in
