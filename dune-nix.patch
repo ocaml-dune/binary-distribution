@@ -1,188 +1,48 @@
-From 2aa669bce2a167e5a99ba77c6b6c63c8a218cd8b Mon Sep 17 00:00:00 2001
+From 00d2b62575d1216ec8d949a791a6dfa31bdd730d Mon Sep 17 00:00:00 2001
 From: Stephen Sherratt <stephen@sherra.tt>
 Date: Tue, 27 Aug 2024 21:20:15 +1000
-Subject: [PATCH 1/3] Add some experimental binaries with features enabled to
- flake
+Subject: [PATCH] chore(nix): add experimental binaries with features enabled
 
-Co-authored-by: Etienne Marais <dev@maiste.fr>
+Use `overrideAttrs` to change the behaviour and export
+new target `dune-experimental` and `dune-static-experimental`
+
+Co-authored-by: Etienne Millon <me@emillon.org>
+
 Signed-off-by: Stephen Sherratt <stephen@sherra.tt>
 Signed-off-by: Etienne Marais <dev@maiste.fr>
+Signed-off-by: Etienne Millon <me@emillon.org>
 ---
- flake.nix | 24 ++++++++++++++++++++++--
- 1 file changed, 22 insertions(+), 2 deletions(-)
+ flake.nix | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/flake.nix b/flake.nix
-index ffa31ef92..71bbed8ae 100644
+index 3e805a9d0..ff04762d0 100644
 --- a/flake.nix
 +++ b/flake.nix
-@@ -55,10 +55,25 @@
-           });
-         });
-       };
-+      dune-static-experimental-overlay = self: super: {
-+        ocamlPackages = super.ocaml-ng.ocamlPackages_4_14.overrideScope (oself: osuper: {
-+          dune_3 = osuper.dune_3.overrideAttrs (a: {
-+            src = ./.;
-+            preBuild = ''
-+              ./configure --enable-toolchains --enable-pkg-build-progress
-+              ocaml boot/bootstrap.ml --static'';
-+          });
-+        });
-+      };
-+
-       pkgs-static = nixpkgs.legacyPackages.${system}.appendOverlays [
-         ocaml-overlays.overlays.default
+@@ -60,6 +60,14 @@
          dune-static-overlay
        ];
-+      pkgs-static-experimental = nixpkgs.legacyPackages.${system}.appendOverlays [
-+        ocaml-overlays.overlays.default
-+        dune-static-experimental-overlay
-+      ];
  
++      add-experimental-configure-flags = pkg: pkg.overrideAttrs {
++        configureFlags =
++          [
++            "--enable-toolchains"
++            "--enable-pkg-build-progress"
++          ];
++      };
++
        ocamlformat =
          let
-@@ -85,7 +100,7 @@
-       formatter = pkgs.nixpkgs-fmt;
- 
-       packages = {
--        default = with pkgs; stdenv.mkDerivation {
-+        default = with pkgs; configureFlags: stdenv.mkDerivation {
-           pname = "dune";
-           version = "n/a";
-           src = ./.;
-@@ -99,9 +114,14 @@
-           dontAddStaticConfigureFlags = true;
-           configurePlatforms = [ ];
-           installFlags = [ "PREFIX=${placeholder "out"}" "LIBDIR=$(OCAMLFIND_DESTDIR)" ];
-+          configureFlags = configureFlags;
+           ocamlformat_version =
+@@ -102,6 +110,8 @@
          };
--        dune = self.packages.${system}.default;
-+        dune = self.packages.${system}.default [];
-         dune-static = pkgs-static.pkgsCross.musl64.ocamlPackages.dune;
-+        dune-experimental = self.packages.${system}.default [
-+          "--enable-toolchains" "--enable-pkg-build-progress"
-+        ];
-+        dune-static-experimental = pkgs-static-experimental.pkgsCross.musl64.ocamlPackages.dune;
-       };
- 
-       devShells =
--- 
-2.44.1
-
-
-From 52fa8f4bb96f97fbb4e011cb10c6c35a6697fd02 Mon Sep 17 00:00:00 2001
-From: Stephen Sherratt <stephen@sherra.tt>
-Date: Wed, 28 Aug 2024 16:00:55 +1000
-Subject: [PATCH 2/3] Fix nix build
-
-It appears that the `default` field is assumed to be a set by nix
-flakes - not a function. This introduces a new function
-`withConfigureFlags` and changes `default` back into a set.
-
-Signed-off-by: Stephen Sherratt <stephen@sherra.tt>
----
- flake.nix | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/flake.nix b/flake.nix
-index 71bbed8ae..716df2e6f 100644
---- a/flake.nix
-+++ b/flake.nix
-@@ -100,7 +100,7 @@
-       formatter = pkgs.nixpkgs-fmt;
- 
-       packages = {
--        default = with pkgs; configureFlags: stdenv.mkDerivation {
-+        withConfigureFlags = with pkgs; configureFlags: stdenv.mkDerivation {
-           pname = "dune";
-           version = "n/a";
-           src = ./.;
-@@ -116,9 +116,10 @@
-           installFlags = [ "PREFIX=${placeholder "out"}" "LIBDIR=$(OCAMLFIND_DESTDIR)" ];
-           configureFlags = configureFlags;
-         };
--        dune = self.packages.${system}.default [];
-+        default = self.packages.${system}.withConfigureFlags [];
-+        dune = self.packages.${system}.default;
-         dune-static = pkgs-static.pkgsCross.musl64.ocamlPackages.dune;
--        dune-experimental = self.packages.${system}.default [
-+        dune-experimental = self.packages.${system}.withConfigureFlags [
-           "--enable-toolchains" "--enable-pkg-build-progress"
-         ];
-         dune-static-experimental = pkgs-static-experimental.pkgsCross.musl64.ocamlPackages.dune;
--- 
-2.44.1
-
-
-From 5ee793ef455a26abe7c25944a1cff23187b67fee Mon Sep 17 00:00:00 2001
-From: Stephen Sherratt <stephen@sherra.tt>
-Date: Wed, 28 Aug 2024 16:35:11 +1000
-Subject: [PATCH 3/3] Remove some duplication in flake
-
-Signed-off-by: Stephen Sherratt <stephen@sherra.tt>
----
- flake.nix | 31 ++++++++++---------------------
- 1 file changed, 10 insertions(+), 21 deletions(-)
-
-diff --git a/flake.nix b/flake.nix
-index 716df2e6f..d5b154b78 100644
---- a/flake.nix
-+++ b/flake.nix
-@@ -47,32 +47,23 @@
-           });
-         })
-       ];
--      dune-static-overlay = self: super: {
-+      dune-static-overlay = configureFlags: self: super: {
-         ocamlPackages = super.ocaml-ng.ocamlPackages_4_14.overrideScope (oself: osuper: {
-           dune_3 = osuper.dune_3.overrideAttrs (a: {
-             src = ./.;
-             preBuild = "ocaml boot/bootstrap.ml --static";
--          });
--        });
--      };
--      dune-static-experimental-overlay = self: super: {
--        ocamlPackages = super.ocaml-ng.ocamlPackages_4_14.overrideScope (oself: osuper: {
--          dune_3 = osuper.dune_3.overrideAttrs (a: {
--            src = ./.;
--            preBuild = ''
--              ./configure --enable-toolchains --enable-pkg-build-progress
--              ocaml boot/bootstrap.ml --static'';
-+            configureFlags = configureFlags;
-           });
-         });
-       };
- 
--      pkgs-static = nixpkgs.legacyPackages.${system}.appendOverlays [
-+      pkgs-static = configureFlags: nixpkgs.legacyPackages.${system}.appendOverlays [
-         ocaml-overlays.overlays.default
--        dune-static-overlay
-+        (dune-static-overlay configureFlags)
-       ];
--      pkgs-static-experimental = nixpkgs.legacyPackages.${system}.appendOverlays [
--        ocaml-overlays.overlays.default
--        dune-static-experimental-overlay
-+
-+      experimental-configure-flags = [
-+        "--enable-toolchains" "--enable-pkg-build-progress"
-       ];
- 
-       ocamlformat =
-@@ -118,11 +109,9 @@
-         };
-         default = self.packages.${system}.withConfigureFlags [];
          dune = self.packages.${system}.default;
--        dune-static = pkgs-static.pkgsCross.musl64.ocamlPackages.dune;
--        dune-experimental = self.packages.${system}.withConfigureFlags [
--          "--enable-toolchains" "--enable-pkg-build-progress"
--        ];
--        dune-static-experimental = pkgs-static-experimental.pkgsCross.musl64.ocamlPackages.dune;
-+        dune-static = (pkgs-static []).pkgsCross.musl64.ocamlPackages.dune;
-+        dune-experimental = self.packages.${system}.withConfigureFlags experimental-configure-flags;
-+        dune-static-experimental = (pkgs-static experimental-configure-flags).pkgsCross.musl64.ocamlPackages.dune;
+         dune-static = pkgs-static.pkgsCross.musl64.ocamlPackages.dune;
++        dune-experimental = add-experimental-configure-flags self.packages.${system}.dune;
++        dune-static-experimental = add-experimental-configure-flags self.packages.${system}.dune-static;
        };
  
        devShells =
 -- 
-2.44.1
+2.46.0
 

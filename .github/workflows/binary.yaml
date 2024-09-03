@@ -38,7 +38,6 @@ jobs:
         run: |
           mv ./dune-nix.patch /tmp
           mv ./dune-locking.patch /tmp
-          mv ./dune-diagnostic-version-number.patch /tmp
 
       - uses: actions/checkout@v4
         with:
@@ -48,7 +47,12 @@ jobs:
 
       - uses: cachix/install-nix-action@v22
 
-      - run: git describe --always --dirty --abbrev=7 > /tmp/git.txt
+      - name: Extract build informations
+        id: git-commit
+        run: |
+          GIT_REVISION=$(git rev-parse HEAD)
+          echo "hash=$GIT_REVISION" >> "$GITHUB_OUTPUT"
+          echo "(version \"Dune Developer Preview: build $(date --iso-8601=seconds), git revision $GIT_REVISION\")" >> dune-project 
 
       - name: "WARNING: import and apply dune nix patch"
         run: |
@@ -56,20 +60,10 @@ jobs:
           git config --global user.name "Temporary patch"
           mv /tmp/dune-nix.patch .
           mv /tmp/dune-locking.patch .
-          mv /tmp/dune-diagnostic-version-number.patch .
           git am dune-nix.patch
           git am dune-locking.patch
-          git am dune-diagnostic-version-number.patch
-
-      - run: |
-          cp /tmp/git.txt .
-          git add git.txt # this lets nix see git.txt
 
       - run: nix build ${{ matrix.installable }}
-
-      - name: Extract commit
-        id: git-commit
-        run: echo "hash=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Generate artifact attestation
         id: certificate
