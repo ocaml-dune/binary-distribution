@@ -36,7 +36,6 @@ jobs:
 
       - name: "WARNING: Store patches in tmp"
         run: |
-          mv ./dune-nix.patch /tmp
           mv ./dune-locking.patch /tmp
 
       - uses: actions/checkout@v4
@@ -58,9 +57,7 @@ jobs:
         run: |
           git config --global user.email "temporary@tarides.com"
           git config --global user.name "Temporary patch"
-          mv /tmp/dune-nix.patch .
           mv /tmp/dune-locking.patch .
-          git am dune-nix.patch
           git am dune-locking.patch
 
       - run: nix build ${{ matrix.installable }}
