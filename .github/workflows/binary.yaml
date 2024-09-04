@@ -119,7 +119,7 @@ jobs:
 
   deploy-s3:
     runs-on: ubuntu-latest
-    needs: check-artifacts
+    needs: [binary, check-artifacts]
     permissions:
       contents: write
     steps:
@@ -166,7 +166,7 @@ jobs:
 
       - name: Export executables and generate html
         shell: bash
-        run: ./sandworm/_build/install/default/bin/sandworm sync --with-certificate --commit "${{ jobs.binary.outputs.git-commit }}"
+        run: ./sandworm/_build/install/default/bin/sandworm sync --with-certificate --commit "${{ needs.binary.outputs.git-commit }}"
 
 
       - name: Commit changes to branch
