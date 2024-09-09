@@ -31,7 +31,7 @@ index b7e09e8fe..15b9c9312 100644
 +    let lock_dirs =
 +      List.filter_map per_contexts ~f:(fun lock_dir_path ->
 +        match Path.exists (Path.source lock_dir_path) with
-+        | true -> Some (Dune_pkg.Lock_dir.read_disk lock_dir_path)
++        | true -> Some (Dune_pkg.Lock_dir.read_disk_exn lock_dir_path)
 +        | false -> None)
 +    in
 +    match lock_dirs with
