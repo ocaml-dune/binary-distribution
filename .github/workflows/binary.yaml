@@ -34,10 +34,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: "WARNING: Store patch(es) in tmp"
-        run: |
-          mv ./dune-locking.patch /tmp
-
       - uses: actions/checkout@v4
         with:
           repository: ocaml/dune
@@ -53,13 +49,6 @@ jobs:
       - name: Export version
         run: |
           echo "(version \"Dune Developer Preview: build $(date --iso-8601=seconds), git revision $(git rev-parse HEAD)\")" >> dune-project
-
-      - name: "WARNING: import and apply patch(es)"
-        run: |
-          git config --global user.email "temporary@tarides.com"
-          git config --global user.name "Temporary patch"
-          mv /tmp/dune-locking.patch .
-          git am dune-locking.patch
 
       - run: nix build ${{ matrix.installable }}
 
