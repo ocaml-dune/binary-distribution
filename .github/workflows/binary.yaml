@@ -177,8 +177,8 @@ jobs:
         with:
           channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
           slack-message: |
-            :red_circle: I'm sorry to disturbe you, but it seems that something is failing here:
-            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            :red_circle: I'm sorry to bother you, but it seems your build is failing:
+            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
