@@ -120,6 +120,17 @@ let verify ~url bundle =
     ]
 ;;
 
+let getting_started =
+  [ T.h2 [ T.txt "Getting Started" ]
+  ; T.p
+      [ T.txt
+          "To start using Dune Package Management, you need to initialise the lock dir. \
+           To do it, simply run:"
+      ]
+  ; T.pre [ T.code [ T.txt "dune pkg lock" ] ]
+  ]
+;;
+
 let target_html ~url ~has_certificate path target =
   let certificate =
     match has_certificate with
@@ -163,7 +174,11 @@ let content ~url t =
   let bundles = T.h2 [ T.txt "Binaries" ] :: List.map (bundle_html ~url) t in
   let latest = List.hd t in
   let body =
-    (main_title :: motivation) @ install ~url latest @ verify ~url latest @ bundles
+    (main_title :: motivation)
+    @ install ~url latest
+    @ verify ~url latest
+    @ getting_started
+    @ bundles
   in
   T.main body
 ;;
