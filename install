@@ -79,8 +79,6 @@ echo
 
 case $(basename "$SHELL") in
 fish)
-    # Install completions, but we don't care if it fails
-    IS_dune_AUTO_UPDATE=true SHELL=fish $exe completions &>/dev/null || :
 
     commands=(
         "set --export PATH $bin_dir \$PATH"
@@ -110,8 +108,6 @@ fish)
     fi
     ;;
 zsh)
-    # Install completions, but we don't care if it fails
-    IS_dune_AUTO_UPDATE=true SHELL=zsh $exe completions &>/dev/null || :
 
     commands=(
         "export PATH=\"$bin_dir:\$PATH\""
@@ -141,8 +137,6 @@ zsh)
     fi
     ;;
 bash)
-    # Install completions, but we don't care if it fails
-    IS_dune_AUTO_UPDATE=true SHELL=bash $exe completions &>/dev/null || :
 
     commands=(
         "export PATH=$bin_dir:\$PATH"
