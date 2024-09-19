@@ -17,18 +17,13 @@ module Common_args = struct
     Arg.(value & opt (some string) None & info ~doc [ "c"; "commit" ])
   ;;
 
-  let has_certificate =
-    let doc = "Indicate that the build produced a certificate." in
-    Arg.(value & flag & info ~doc [ "with-certificate" ])
-  ;;
-
   let dry_run =
     let doc = "Simulate the command executation" in
     Arg.(value & flag & info ~doc [ "n"; "dry-run" ])
   ;;
 end
 
-module Website = struct
+module Gen_html = struct
   let generate_website html_file metadata_file =
     Format.printf "--> Generate the index %s\n" html_file;
     let bundles = Metadata.import_from_json metadata_file in
@@ -52,11 +47,11 @@ module Website = struct
 end
 
 module Sync = struct
-  let synchronise html_file metadata_file commit has_certificate dry_run =
+  let synchronise html_file metadata_file commit dry_run =
     Format.printf "--> Start synchronisation\n";
     let bundle = Metadata.import_from_json metadata_file in
     let daily_bundle =
-      Metadata.(Bundle.create_daily ~commit ~has_certificate Target.defaults)
+      Metadata.(Bundle.create_daily ~commit Target.defaults)
     in
     let daily_bundle_date = Metadata.Bundle.get_date_string_from daily_bundle in
     let s3_daily_bundle = Filename.concat Config.s3_bucket_ref daily_bundle_date in
@@ -90,9 +85,11 @@ module Sync = struct
     let+ html_file = Common_args.html_file
     and+ metadata_file = Common_args.metadata_file
     and+ commit = Common_args.commit
-    and+ has_certificate = Common_args.has_certificate
     and+ dry_run = Common_args.dry_run in
-    synchronise html_file metadata_file commit has_certificate dry_run
+    match commit with
+    | None -> failwith "Commit is mandatory"
+    | Some commit ->
+        synchronise html_file metadata_file commit dry_run
   ;;
 
   let info =
@@ -107,6 +104,6 @@ let info = Cmd.info "sandworm"
 let root_term = Term.ret (Term.const (`Help (`Pager, None)))
 
 let () =
-  let cmd = Cmd.group ~default:root_term info [ Sync.cmd; Website.cmd ] in
+  let cmd = Cmd.group ~default:root_term info [ Sync.cmd; Gen_html.cmd ] in
   Cmd.eval cmd |> exit
 ;;

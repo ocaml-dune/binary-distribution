@@ -21,6 +21,7 @@
           yojson
           ppx_deriving_yojson
           mlx
+          ocamlmerlin-mlx
           ptime
           fpath
           cmdliner

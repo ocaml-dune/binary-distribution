@@ -23,6 +23,12 @@ module Target = struct
     | X86_64_unknown_linux_musl -> "Linux for Intel 64-bit processors"
   ;;
 
+  let to_triple = function
+    | Aarch64_apple_darwin -> ("aarch64", "apple", "macOS")
+    | X86_64_apple_darwin -> ("x86-64", "apple", "macOS")
+    | X86_64_unknown_linux_musl -> ("x86-64", "unknown", "Linux")
+  ;;
+
   let defaults = [ Aarch64_apple_darwin; X86_64_apple_darwin; X86_64_unknown_linux_musl ]
 end
 
@@ -42,13 +48,13 @@ module Bundle = struct
   type t =
     { date : pdate
     ; targets : Target.t list
-    ; has_certificate : (bool[@default false])
-    ; commit : (string option[@default None])
+    ; has_certificate : bool [@default false]
+    ; commit : string [@default "-"]
     }
   [@@deriving yojson]
 
-  let create ~date ~commit ~has_certificate targets =
-    { date; targets; commit; has_certificate }
+  let create ~date ~commit targets =
+    { date; targets; commit; has_certificate = true}
   ;;
 
   let create_daily targets =
