@@ -11,6 +11,18 @@ module Target = struct
     | X86_64_unknown_linux_musl -> "x86_64-unknown-linux-musl"
   ;;
 
+  let to_human_readable_string = function
+    | Aarch64_apple_darwin -> "Apple macOS (ARM64)"
+    | X86_64_apple_darwin -> "Apple macOS (x86-64)"
+    | X86_64_unknown_linux_musl -> "Linux (amd64, MUSL)"
+  ;;
+
+  let to_description = function
+    | Aarch64_apple_darwin -> "macOS 11 or later for Apple Sillicon processors"
+    | X86_64_apple_darwin -> "macOS 11 or later for Intel processors"
+    | X86_64_unknown_linux_musl -> "Linux for Intel 64-bit processors"
+  ;;
+
   let defaults = [ Aarch64_apple_darwin; X86_64_apple_darwin; X86_64_unknown_linux_musl ]
 end
 

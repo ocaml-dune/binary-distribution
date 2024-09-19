@@ -12,12 +12,12 @@ depends: [
   "dune" {>= "3.16"}
   "yojson"
   "ppx_deriving_yojson"
-  "tyxml"
+  "mlx"
   "ptime"
   "fpath"
   "cmdliner"
-  "ocaml-lsp-server" {with-dev-setup}
-  "ocamlformat" {with-dev-setup}
+  "html_of_jsx"
+  "ocaml-lsp-server"
   "odoc" {with-doc}
 ]
 build: [

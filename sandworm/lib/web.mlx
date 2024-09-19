@@ -1,0 +1,123 @@
+let logo () =
+  <svg width="54" height="54" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M7.02289 11.2854L33.5174 0.927063L43.4073 6.49664L43.3032 9.77593L24.9809 23.5177L16.9128 37.1033L7.02289 37.8388V11.2854Z" fill="#E0C7A9"/>
+<path d="M34.3503 2.15029C34.3503 2.15029 32.1641 0.692826 35.1311 0.276408C38.0981 -0.140009 46.999 4.33648 46.9469 4.28442C46.8949 4.23237 46.9469 10.1424 46.9469 10.1424C46.9469 10.1424 44.1361 10.2184 42.2622 8.60475C42.2622 8.60475 42.4965 6.80895 40.4144 5.61175C38.3323 4.41455 35.9899 3.37351 35.6256 2.85299C35.2612 2.33247 34.5845 2.33247 34.3503 2.15029Z" fill="#F28B03"/>
+<path d="M42.2622 8.60474C42.2814 8.55633 44.7086 10.3225 46.9989 10.1142C46.9989 10.1142 46.9599 21.7869 46.9989 21.7479C47.038 21.7089 45.4327 17.2444 43.652 15.2279C41.8713 13.2114 39.5555 11.7279 41.1691 10.1142C41.1691 10.1142 41.8197 9.72386 42.2622 8.60474Z" fill="#AF5235"/>
+<path d="M7.02289 37.8581C6.97084 37.8627 7.02289 39.6013 7.02289 39.6013C7.02289 39.6013 46.9989 39.9391 46.9989 39.6013V21.878C46.9989 21.878 45.6196 16.855 42.9129 14.4086C40.2061 11.9621 40.6746 10.869 41.039 10.2444C41.039 10.2444 35.4694 13.6798 32.086 15.6058C28.7026 17.5317 25.8397 19.0933 22.2481 26.1203C18.6565 33.1473 15.6896 37.0512 7.02289 37.8581Z" fill="#D54000"/>
+<path d="M10.3615 52.7512H6.75213V42.5694H10.3913C11.4155 42.5694 12.2971 42.7732 13.0362 43.1809C13.7753 43.5852 14.3438 44.1669 14.7415 44.9259C15.1425 45.6849 15.343 46.593 15.343 47.6503C15.343 48.7109 15.1425 49.6224 14.7415 50.3847C14.3438 51.147 13.772 51.732 13.0263 52.1397C12.2839 52.5474 11.3956 52.7512 10.3615 52.7512ZM8.90483 50.9067H10.272C10.9084 50.9067 11.4437 50.794 11.8778 50.5687C12.3153 50.34 12.6435 49.987 12.8622 49.5097C13.0843 49.0291 13.1953 48.4093 13.1953 47.6503C13.1953 46.898 13.0843 46.2832 12.8622 45.8059C12.6435 45.3286 12.317 44.9773 11.8828 44.7519C11.4486 44.5265 10.9134 44.4138 10.277 44.4138H8.90483V50.9067ZM24.2267 42.5694H26.3794V49.1816C26.3794 49.924 26.2021 50.5736 25.8475 51.1305C25.4962 51.6873 25.004 52.1215 24.3709 52.433C23.7379 52.7412 23.0004 52.8954 22.1586 52.8954C21.3134 52.8954 20.5743 52.7412 19.9412 52.433C19.3082 52.1215 18.816 51.6873 18.4647 51.1305C18.1133 50.5736 17.9377 49.924 17.9377 49.1816V42.5694H20.0904V48.9976C20.0904 49.3854 20.1749 49.7301 20.3439 50.0317C20.5163 50.3333 20.7582 50.5703 21.0698 50.7427C21.3813 50.915 21.7443 51.0012 22.1586 51.0012C22.5762 51.0012 22.9391 50.915 23.2473 50.7427C23.5589 50.5703 23.7992 50.3333 23.9682 50.0317C24.1406 49.7301 24.2267 49.3854 24.2267 48.9976V42.5694ZM37.6669 42.5694V52.7512H35.8075L31.3778 46.3428H31.3033V52.7512H29.1506V42.5694H31.0398L35.4347 48.9728H35.5241V42.5694H37.6669ZM40.4455 52.7512V42.5694H47.3063V44.3442H42.5982V46.7704H46.9533V48.5452H42.5982V50.9763H47.3262V52.7512H40.4455Z" fill="#D54000"/>
+</svg>
+
+let navbar () =
+  <nav class_="w-full flex flex-row justify-between items-center align-center px-4 py-2">
+    <logo />
+    <div class_="flex flex-row gap-6">
+      <a href="#featured-downloads">"Download Dune"</a>
+      <a href="#getting-started">"Getting Started"</a>
+      <a href="#release-history">"Release History"</a>
+      <a href="#faq">"FAQ"</a>
+    </div>
+  </nav>
+
+let hero () =
+  <section class_="flex flex-col px-4 py-10 gap-2">
+    <h4 class_="text-md font-regular rounded bg-gray-900 text-white w-fit px-2 py-[0.5]"> "Dune Developer Preview" </h4>
+    <h1 class_="text-6xl font-black pb-4"> "Setup OCaml in under a minute" </h1>
+    <p>
+      "The Dune Developer Preview is an "
+      <span class_="italic">"experimental nightly release"</span>
+      " of Dune that lets you develop, test, run, and manage dependencies for
+      OCaml projects – all with just Dune."
+    </p>
+    <p>
+      "After downloading a binary release for your system, please follow the "
+      <a  class_="text-[var(--accent)]" href="#getting-started">"getting started instructions."</a>
+    </p>
+    <p>
+      "See the "
+      <a class_="text-[var(--accent)]" href="#release-history">"release history"</a>
+      " section for all releases and information on how to verify the binaries."
+    </p>
+  </section>
+
+let installation_target target =
+  let open Metadata in
+  let title = Target.to_human_readable_string target in
+  let desc = Target.to_description target in
+   <li class_="min-w-1/3 max-w-1/3 px-4 py-2 flex flex-col gap-4 items-center border-[2px] border-solid border-[var(--accent)] rounded"> 
+     <h4 class_="font-bold">(JSX.string title)</h4>
+     <p>(JSX.string desc)</p>
+     <div class_="w-full flex flex-row justify-between gap-4">
+      <a class_="text-[var(--accent)]">"Download"</a>
+      <a>"Cert"</a>
+     </div>
+   </li>
+
+let featured_downloads ~url:_ ~(bundle : Metadata.Bundle.t) () = 
+  <section id="featured-downloads" class_="flex flex-col px-4 pb-10 gap-2">
+    <h2 class_="text-2xl font-black pb-4"> "Featured Downloads" </h2>
+    <ul class_="flex flex-row flex-wrap gap-5 justify-center items-center align-center">
+      (bundle.targets
+       |> List.map installation_target
+       |> JSX.list)
+    </ul>
+  </section>
+
+
+let faq () =  
+  <section id="faq" class_="flex flex-col px-4 py-10 gap-2">
+    <h2 class_="text-2xl font-black pb-4"> "Frequently Asked Questions" </h2>
+  </section>
+
+let release_history () =  
+  <section id="release-history" class_="flex flex-col px-4 py-10 gap-2">
+    <h2 class_="text-2xl font-black pb-4"> "Release History" </h2>
+  </section>
+
+let getting_started () =  
+  <section id="release-history" class_="flex flex-col px-4 py-10 gap-2">
+    <h2 class_="text-2xl font-black pb-4"> "Getting Started" </h2>
+    <p>
+      "After downloading a binary release of Dune, make it executable and place it somewhere reachable by your PATH:"
+      <pre>
+        "
+$ chmod u+x ./dune
+$ sudo mv ./dune /usr/local/bin/dune
+        "
+      </pre>
+      "You can verify your installation by running:"
+      <pre>
+      {|
+$ dune --version
+"Dune Developer Preview: build , git revision cc260345db57ab639db6363b2dc89072a1492832"
+|}
+      </pre>
+    </p>
+  </section>
+
+let page ~url data =
+  <html>
+    <head>
+      <meta charset="utf-8" />
+      <title> "Dune Developer Preview" </title>
+      <link rel="stylesheet" href="main.css" />
+      <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body class_="flex flex-col justify-center items-center">
+      <navbar />
+      <section class_="flex flex-col w-full max-w-screen-lg">
+        <hero />
+        <featured_downloads url bundle=(List.hd data) />
+        <getting_started />
+        <release_history />
+        <faq />
+      </section>
+    </body>
+  </html>
+
+let export_bundle_to_file ~url ~file t =
+  let file_handle = open_out file in
+  let fmt = Format.formatter_of_out_channel file_handle in
+  let page = (page ~url t) |> JSX.render in
+  Format.fprintf fmt "%s" page;
+  close_out file_handle
+;;
