@@ -48,7 +48,7 @@ case $(uname -ms) in
     target=aarch64-apple-darwin
     ;;
 'Linux x86_64' | *)
-    target=x96_64-unknown-linux-musl
+    target=x86_64-unknown-linux-musl
     ;;
 esac
 
