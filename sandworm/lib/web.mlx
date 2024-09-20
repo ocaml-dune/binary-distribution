@@ -32,7 +32,7 @@ let getting_started () =
     <h1 class_="text-6xl font-black pb-4"> "Setup OCaml in under a minute" </h1>
     <p>
       "The Dune Developer Preview is an "
-      <span class_="italic">"experimental nightly release"</span>
+      <em class_="italic">"experimental nightly release"</em>
       " of Dune that lets you develop, test, run, and manage dependencies for
       OCaml projects – all with just Dune."
     </p>
