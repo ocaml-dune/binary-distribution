@@ -120,7 +120,7 @@ let release_history ~data () =
             bundle.targets
       |> List.map (fun (target: Target.t) ->
           let title = Target.to_string target in
-          let (arch, _vendor, os) = Target.to_triple target in
+          let (arch, _, os) = Target.to_triple target in
                   (<tr>
                   <td><a>"dune-"(JSX.string title)</a></td>
                   <td>(JSX.string os)</td>
