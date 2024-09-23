@@ -200,7 +200,7 @@ $ dune --version
     <p>
       <span>"To ensure trust in the binary distribution, we generate a build certificate associated with the Github Actions pipeline where the binaries are built. Once you download this certificate, you can use the "</span>
       <code>"gh"</code>
-      <span>"tool to verify it with the following command: "</span>
+      <span>" tool to verify it with the following command: "</span>
       <pre>
 "
 $ gh attestation verify ./dune -R tarides/dune-binary-distribution --bundle attestation.jsonl
