@@ -114,13 +114,9 @@ let release_history ~data () =
     <section class_="flex flex-col gap-4">
     (
       data
-      |> List.map (fun (bundle: Bundle.t) -> 
-          let date = 
-            let (y,m,d) = bundle.date in
-            Format.sprintf "nightly-%d-%d-%d" y m d
-          in
-
-          let files = 
+      |> List.map (fun (bundle: Bundle.t) ->
+          let date = Bundle.get_date_string_from ~prefix:"nightly-" bundle in
+          let files =
             bundle.targets
       |> List.map (fun (target: Target.t) ->
           let title = Target.to_string target in

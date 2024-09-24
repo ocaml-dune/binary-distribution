@@ -62,9 +62,12 @@ module Bundle = struct
     create ~date targets
   ;;
 
-  let get_date_string_from t =
+  let get_date_string_from ?prefix t =
     let y, m, d = t.date in
-    Format.sprintf "%d-%02d-%02d" y m d
+    let date = Format.sprintf "%d-%02d-%02d" y m d in
+    match prefix with
+    | None -> date
+    | Some prefix -> prefix ^ date
   ;;
 
   let equal b1 b2 =
