@@ -1,3 +1,7 @@
+module Info = struct
+  let title = "Dune Developer Preview"
+end
+
 module Icons = struct
   let copy ~id ~class_ () =
     <div id class_=("bg-[var(--accent)] w-fit inline p-2 " ^ class_)>
@@ -214,7 +218,7 @@ let page ~url data =
   <html>
     <head>
       <meta charset="utf-8" />
-      <title> "Dune Developer Preview" </title>
+      <title> (JSX.string Info.title) </title>
       <link rel="stylesheet" href="main.css" />
       <script src="https://cdn.tailwindcss.com"></script>
     </head>
