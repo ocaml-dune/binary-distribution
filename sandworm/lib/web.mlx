@@ -10,6 +10,13 @@ module Icons = struct
 </svg>
 </div>
 
+  let ok ~id ~class_ () = 
+    <div id class_=("bg-[var(--accent)] w-fit inline p-2 " ^ class_)>
+    <svg xmlns="http://www.w3.org/2000/svg" class_="h-6 w-6" fill="none" viewBox="0 0 24 24" aria_hidden=true>
+  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" stroke="white" d="M5 13l4 4L19 7"></path>
+</svg>
+</div>
+
 end
 
 let logo () =
@@ -46,15 +53,19 @@ let getting_started () =
         <span id="install-cmd" class_="pr-2 font-mono">
           "curl https://dune.ci.dev/install | bash"
         </span>
-        <Icons.copy id="copy-cmd" class_="rounded-tr rounded-br cursor-pointer" />
+        <Icons.copy id="copy-btn" class_="rounded-tr rounded-br cursor-pointer" />
+        <Icons.ok id="ok-btn" class_="rounded-tr rounded-br cursor-pointer hidden" />
         <script>
           (JSX.unsafe {|
             document.addEventListener('DOMContentLoaded', () => {
-              const copyBtn = document.querySelector('#copy-cmd');
+              const copyBtn = document.querySelector('#copy-btn');
+              const okBtn = document.querySelector('#ok-btn');
               const installCmd = document.querySelector('#install-cmd');
               copyBtn.addEventListener('click', () => {
                 navigator.clipboard.writeText(installCmd.innerText)
                   console.log('Async: Copying to clipboard was successful!');
+                  copyBtn.classList.add("hidden")
+                  okBtn.classList.remove("hidden")
                 }, function(err) {
                   console.error('Async: Could not copy text: ', err);
                 });
@@ -70,7 +81,7 @@ let getting_started () =
     <h2 class_="text-2xl font-medium pt-4 pb-2"> "Getting Started" </h2>
     <p>
       "You can create and run your first hello-world program using Dune like this:"
-      <pre>
+      <pre class_="pl-4 py-2 bg-gray-100 flex flex-row items-center gap-2 font-mono w-1/2">
 "
 $ dune init proj hello_world
 $ cd hello_world
@@ -111,7 +122,9 @@ let release_history ~releases () =
   <section id="release-history" class_="flex flex-col py-10 gap-2 text-left">
     <h2 class_="text-2xl font-medium pb-4"> "Release History" </h2>
     <p>
-      "Here is a table of all the releases of the Dune Developer Preview so far."
+      "Here is a table of the last "
+      (JSX.int (List.length releases))
+      " releases of the Dune Developer Preview so far."
     </p>
     <section class_="flex flex-col gap-4">
     (
@@ -236,6 +249,7 @@ let page ~base_url releases =
 let export_bundle_to_file ~base_url ~file releases =
   let file_handle = open_out file in
   let fmt = Format.formatter_of_out_channel file_handle in
+  let releases = releases |> List.to_seq |> Seq.take 10 |> List.of_seq in
   let page = (page ~base_url releases) |> JSX.render in
   Format.fprintf fmt "%s" page;
   close_out file_handle
