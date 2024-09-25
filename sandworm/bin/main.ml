@@ -27,7 +27,7 @@ module Gen_html = struct
   let generate_website html_file metadata_file =
     Format.printf "--> Generate the index %s\n" html_file;
     let bundles = Metadata.import_from_json metadata_file in
-    Web.export_bundle_to_file ~url:Config.s3_public_url ~file:html_file bundles;
+    Web.export_bundle_to_file ~base_url:Config.s3_public_url ~file:html_file bundles;
     Format.printf "--> Completed ✓\n"
   ;;
 
@@ -75,7 +75,7 @@ module Sync = struct
     let () =
       if dry_run
       then Format.printf "- Export HTML code to %s\n" html_file
-      else Web.export_bundle_to_file ~url:Config.s3_public_url ~file:html_file bundles
+      else Web.export_bundle_to_file ~base_url:Config.s3_public_url ~file:html_file bundles
     in
     Format.printf "--> Completed ✓\n"
   ;;

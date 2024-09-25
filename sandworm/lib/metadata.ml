@@ -75,6 +75,22 @@ module Bundle = struct
     let p2 = Ptime.of_date b2.date |> Option.get in
     Ptime.equal p1 p2
   ;;
+
+  let (/) = Filename.concat
+  ;;
+
+  let to_url ~base_url ~target t =
+    base_url / (get_date_string_from t) / (Target.to_string target) 
+  ;;
+
+  let to_certificate_url ~base_url ~target t = 
+    to_url ~base_url ~target t / "attestation.jsonl"
+  ;;
+
+  let download_file_name = "dune"
+  let to_download_url ~base_url ~target t = 
+    to_url ~base_url ~target  t/ download_file_name 
+  ;;
 end
 
 type t = Bundle.t list [@@deriving yojson]
