@@ -47,9 +47,11 @@ case $(uname -ms) in
 'Darwin arm64')
     target=aarch64-apple-darwin
     ;;
-'Linux x86_64' | *)
+'Linux x86_64')
     target=x86_64-unknown-linux-musl
     ;;
+*)
+    error "The Dune Developer Preview does not currently support $(uname -ms)."
 esac
 
 today=$(date +"%Y-%m-%d")
@@ -79,7 +81,6 @@ echo
 
 case $(basename "$SHELL") in
 fish)
-
     commands=(
         "set --export PATH $bin_dir \$PATH"
     )
