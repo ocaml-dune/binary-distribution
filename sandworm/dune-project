@@ -27,6 +27,7 @@
           cmdliner
           html_of_jsx
           ocaml-lsp-server
+          ocamlformat
           ))
 
 (dialect
