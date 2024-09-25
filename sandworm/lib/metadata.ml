@@ -11,6 +11,24 @@ module Target = struct
     | X86_64_unknown_linux_musl -> "x86_64-unknown-linux-musl"
   ;;
 
+  let to_human_readable_string = function
+    | Aarch64_apple_darwin -> "Apple macOS (ARM64)"
+    | X86_64_apple_darwin -> "Apple macOS (x86-64)"
+    | X86_64_unknown_linux_musl -> "Linux (amd64, MUSL)"
+  ;;
+
+  let to_description = function
+    | Aarch64_apple_darwin -> "macOS 11 or later for Apple Sillicon processors"
+    | X86_64_apple_darwin -> "macOS 11 or later for Intel processors"
+    | X86_64_unknown_linux_musl -> "Linux for Intel 64-bit processors"
+  ;;
+
+  let to_triple = function
+    | Aarch64_apple_darwin -> ("aarch64", "apple", "macOS")
+    | X86_64_apple_darwin -> ("x86-64", "apple", "macOS")
+    | X86_64_unknown_linux_musl -> ("x86-64", "unknown", "Linux")
+  ;;
+
   let defaults = [ Aarch64_apple_darwin; X86_64_apple_darwin; X86_64_unknown_linux_musl ]
 end
 
@@ -30,13 +48,13 @@ module Bundle = struct
   type t =
     { date : pdate
     ; targets : Target.t list
-    ; has_certificate : (bool[@default false])
-    ; commit : (string option[@default None])
+    ; has_certificate : bool [@default false]
+    ; commit : string [@default "-"]
     }
   [@@deriving yojson]
 
-  let create ~date ~commit ~has_certificate targets =
-    { date; targets; commit; has_certificate }
+  let create ~date ~commit targets =
+    { date; targets; commit; has_certificate = true}
   ;;
 
   let create_daily targets =
@@ -44,15 +62,34 @@ module Bundle = struct
     create ~date targets
   ;;
 
-  let get_date_string_from t =
+  let get_date_string_from ?prefix t =
     let y, m, d = t.date in
-    Format.sprintf "%d-%02d-%02d" y m d
+    let date = Format.sprintf "%d-%02d-%02d" y m d in
+    match prefix with
+    | None -> date
+    | Some prefix -> prefix ^ date
   ;;
 
   let equal b1 b2 =
     let p1 = Ptime.of_date b1.date |> Option.get in
     let p2 = Ptime.of_date b2.date |> Option.get in
     Ptime.equal p1 p2
+  ;;
+
+  let (/) = Filename.concat
+  ;;
+
+  let to_url ~base_url ~target t =
+    base_url / (get_date_string_from t) / (Target.to_string target) 
+  ;;
+
+  let to_certificate_url ~base_url ~target t = 
+    to_url ~base_url ~target t / "attestation.jsonl"
+  ;;
+
+  let download_file_name = "dune"
+  let to_download_url ~base_url ~target t = 
+    to_url ~base_url ~target  t/ download_file_name 
   ;;
 end
 

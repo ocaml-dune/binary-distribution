@@ -20,11 +20,20 @@
           dune
           yojson
           ppx_deriving_yojson
-          tyxml
+          mlx
+          ocamlmerlin-mlx
           ptime
           fpath
           cmdliner
-          (ocaml-lsp-server :with-dev-setup)
-          (ocamlformat :with-dev-setup)))
+          html_of_jsx
+          ocaml-lsp-server
+          ocamlformat
+          ))
 
-; See the complete stanza docs at https://dune.readthedocs.io/en/stable/reference/dune-project/index.html
+(dialect
+ (name mlx)
+ (implementation
+  (extension mlx)
+  (merlin_reader mlx)
+  (preprocess
+   (run mlx-pp %{input-file}))))

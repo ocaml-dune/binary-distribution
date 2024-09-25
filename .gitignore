@@ -1,3 +1,5 @@
+.parcel-cache
+dist
 node_modules
 package.json
 package-lock.json
@@ -11,3 +13,5 @@ _build/
 
 # Local OPAM switch
 _opam/
+dune.lock
+dev-tools.locks
