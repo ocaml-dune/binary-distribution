@@ -219,6 +219,9 @@ let page ~base_url releases =
       <title> (JSX.string Info.title) </title>
       <link rel="stylesheet" href="main.css" />
       <script src="https://cdn.tailwindcss.com"></script>
+      <script 
+        dataDomain="dune.ci.dev" defer=true 
+        src="https://plausible.ci.dev/js/script.file-downloads.js"></script>
     </head>
     <body class_="w-full flex flex-col overflow-scroll justify-center items-center">
       <navbar />
