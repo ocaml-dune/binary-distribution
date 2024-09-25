@@ -13,11 +13,13 @@ depends: [
   "yojson"
   "ppx_deriving_yojson"
   "mlx"
+  "ocamlmerlin-mlx"
   "ptime"
   "fpath"
   "cmdliner"
   "html_of_jsx"
   "ocaml-lsp-server"
+  "ocamlformat"
   "odoc" {with-doc}
 ]
 build: [

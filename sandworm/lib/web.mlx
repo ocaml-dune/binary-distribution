@@ -19,6 +19,12 @@ module Icons = struct
 
 end
 
+module Link = struct
+  let make ?(class_ = "") ~href ~children () =
+    <a class_=("text-[var(--accent)] " ^ class_) href>children</a>
+end
+
+
 let logo () =
   <svg width="54" height="54" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M7.02289 11.2854L33.5174 0.927063L43.4073 6.49664L43.3032 9.77593L24.9809 23.5177L16.9128 37.1033L7.02289 37.8388V11.2854Z" fill="#E0C7A9"/>
@@ -45,7 +51,10 @@ let getting_started () =
       "The Dune Developer Preview is an "
       <em class_="italic">"experimental nightly release"</em>
       " of Dune that lets you develop, test, run, and manage dependencies for
-      OCaml projects – all with just Dune."
+      OCaml projects – all with just Dune - following the "
+      <Link href="https://ocaml.org/tools/platform-roadmap#g1-dune-is-the-frontend-of-the-ocaml-platform">
+      "OCaml Platform Roadmap."
+      </Link>
     </p>
     <h2 class_="text-2xl font-medium pt-4 pb-2"> "Install Dune" </h2>
     <div class_="flex flex-row gap-4 items-center rounded pt-2 pb-5">
@@ -76,7 +85,7 @@ let getting_started () =
     </div>
     <p>
       "If you wish to install the binary distribution manually, please follow the "
-      <a  class_="text-[var(--accent)]" href="#manual-installation">"manual installation instructions."</a>
+      <Link href="#manual-installation">"manual installation instructions."</Link>
     </p>
     <h2 class_="text-2xl font-medium pt-4 pb-2"> "Getting Started" </h2>
     <p>
@@ -92,15 +101,29 @@ $ dune exec hello_world
     </p>
     <p> 
     "For more information on Dune and Package Management, check the "
-    <a class_="text-[var(--accent)]" href="https://dune.readthedocs.io/en/latest/"> "latest dune docs." </a>
+    <Link href="https://dune.readthedocs.io/en/latest/"> "latest dune docs." </Link>
     </p>
   </section>
 
 
+let q_and_a = [
+    "Is it stable?", (<p>"It will but currently it is not. Expect bugs - you can report them to "<Link href="https://github.com/ocaml/dune/issues">"ocaml/dune"</Link></p>)
+  ; "Does it support Windows", JSX.string "No, not yet."
+]
+
 let faq () =  
   <section id="faq" class_="flex flex-col py-10 gap-2">
     <h2 class_="text-3xl font-black pb-4"> "Frequently Asked Questions" </h2>
+    (List.map
+      (fun (question, answer) ->
+      (<details class_="flex flex-col gap-2">
+         <summary class_="font-medium text-lg">
+         (JSX.string question)
+         </summary>
+         <p>answer</p>
+      </details>)) q_and_a |> JSX.list)
   </section>
+
 
 let installation_target ~base_url ~bundle target =
   let open Metadata in
@@ -112,12 +135,12 @@ let installation_target ~base_url ~bundle target =
     <h4 class_="font-bold">(JSX.string title)</h4>
     <p>(JSX.string desc)</p>
     <div class_="w-full flex flex-row justify-between gap-4">
-     <a class_="text-[var(--accent)]" href=tar_href>"Download"</a>
-     <a class_="text-[var(--accent)]" href=cert_href>"Cert"</a>
+     <Link href=tar_href>"Download"</Link>
+     <Link href=cert_href>"Cert"</Link>
     </div>
   </li>
 
-let release_history ~releases () =  
+let release_history ~base_url ~releases () =  
   let open Metadata in
   <section id="release-history" class_="flex flex-col py-10 gap-2 text-left">
     <h2 class_="text-2xl font-medium pb-4"> "Release History" </h2>
@@ -135,13 +158,15 @@ let release_history ~releases () =
             bundle.targets
       |> List.map (fun (target: Target.t) ->
           let title = Target.to_string target in
+          let cert_href = Bundle.to_certificate_url bundle ~base_url ~target in
+          let tar_href = Bundle.to_download_url bundle ~base_url ~target  in
           let (arch, _, os) = Target.to_triple target in
                   (<tr>
-                  <td><a>"dune-"(JSX.string title)</a></td>
+                  <td><Link href=tar_href>(JSX.string ("dune-" ^ title))</Link></td>
                   <td>(JSX.string os)</td>
                   <td>(JSX.string arch)</td>
                   <td>(JSX.string bundle.commit)</td>
-                  <td><a>"Certificate"</a></td>
+                  <td><Link href=cert_href>"Certificate"</Link></td>
                   </tr>)
           )
           in
@@ -183,7 +208,7 @@ let manual_installation ~base_url ~releases () =
     <h2 class_="text-2xl font-medium pt-4 pb-2"> "Featured Downloads" </h2>
     <p class_="pb-2">
       "This is the latest release of the Dune Developer Preview. See the "
-      <a class_="text-[var(--accent)]" href="#release-history">"release history"</a>
+      <Link class_="text-[var(--accent)]" href="#release-history">"release history"</Link>
       " section for all past releases."
     </p>
     <ul class_="flex flex-row flex-wrap gap-5 justify-center items-center align-center">
@@ -222,7 +247,7 @@ $ gh attestation verify ./dune -R tarides/dune-binary-distribution --bundle atte
 "
       </pre>
     </p>
-    <release_history releases />
+    <release_history base_url releases />
   </section>
 
 let page ~base_url releases =
