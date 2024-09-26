@@ -24,6 +24,13 @@ module Link = struct
     <a class_=("text-[var(--accent)] " ^ class_) href>children</a>
 end
 
+module Code = struct
+  let make ~children () =
+      <pre class_="px-4 py-2 bg-gray-100 flex flex-row items-center gap-2 font-mono 
+      min-w-fit w-1/2">
+        children
+      </pre>
+end
 
 let logo () =
   <svg width="54" height="54" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -90,25 +97,64 @@ let getting_started () =
     <h2 class_="text-2xl font-medium pt-4 pb-2"> "Getting Started" </h2>
     <p>
       "You can create and run your first hello-world program using Dune like this:"
-      <pre class_="pl-4 py-2 bg-gray-100 flex flex-row items-center gap-2 font-mono w-1/2">
+      <Code>
 "
 $ dune init proj hello_world
 $ cd hello_world
 $ dune pkg lock
 $ dune exec hello_world
 "
-      </pre>
+      </Code>
     </p>
     <p> 
     "For more information on Dune and Package Management, check the "
     <Link href="https://dune.readthedocs.io/en/latest/"> "latest dune docs." </Link>
     </p>
+    <h2 class_="text-2xl font-medium pt-4 pb-2"> "Share Feedback" </h2>
+    <p>
+      "We are excited to learn from your experience with the Dune Developer Preview, so feel encouraged to tell us what you think:"
+      <ul class_="list-disc pl-4">
+        <li><Link href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3HaJbskiCLHqLS6Oi1S3-rWYwv0hb_Iz8O9VlspuDdK5qbXYUZDpRRlWfEY1GP8KFy6XY8MFb9">"Book a Feedback Call"</Link></li>
+        <li><Link href="https://docs.google.com/forms/u/2/d/e/1FAIpQLSda-mOTHIdATTt_e9dFmNgUCy-fD55Qzr3bGGsxpfY_Ecfyxw/viewform?usp=send_form">"Submit Feedback"</Link></li>
+        <li><Link href="https://github.com/ocaml/dune/issues/new/choose">"Open a Github Issue"</Link></li>
+      </ul>
+    </p>
   </section>
 
 
 let q_and_a = [
-    "Is it stable?", (<p>"It will but currently it is not. Expect bugs - you can report them to "<Link href="https://github.com/ocaml/dune/issues">"ocaml/dune"</Link></p>)
-  ; "Does it support Windows", JSX.string "No, not yet."
+    "Is it stable?", (<p>"We are working to stabilize these features and move them from a Developer Preview to a regular released version of Dune. In the meantime, expect some bugs and please report them to "<Link href="https://github.com/ocaml/dune/issues">"ocaml/dune"</Link></p>)
+  ; "Does it support Windows", <p>"No, not yet. Watch this space for news!"</p>
+  ; "Can I build the Developer Preview of Dune from sources?",
+    <div class_="flex flex-col gap-2">
+      <p>"Yes. the only difference from a regular build from source is in a few
+      configuration flags. Please look in the Dune repository for complete instructions
+      on how to do a source build of Dune."
+      </p>
+      <p>"When configuring the build you'll want to enable the following flags:" </p>
+      <Code>
+"
+--enable-toolchains
+--enable-pkg-build-progress
+--enable-lock-dev-tool
+"
+</Code>
+    </div>
+  ; "Can I access these features from a version of Dune managed by opam?",
+    <div class_="flex flex-col gap-2">
+      <p>"Yes, but we can't guarantee they will work correctly since the Dune Developer Preview makes some assumptions for package management that aren't supported by opam."
+      </p>
+      <p>"To enable these features make sure you are pinning dune to the development version, and export the following environment variables: "
+      </p>
+      <Code>
+"
+$ opam pin add dune --dev
+$ export DUNE_CONFIG__TOOLCHAINS=enabled
+$ export DUNE_CONFIG__PKG_BUILD_PROGRESS=enabled
+$ export DUNE_CONFIG__LOCK_DEV_TOOL=enabled
+"
+</Code>
+    </div>
 ]
 
 let faq () =  
@@ -221,19 +267,19 @@ let manual_installation ~base_url ~releases () =
     <h2 class_="text-2xl font-medium pt-4 pb-2"> "Installing the binary" </h2>
     <p>
       "After downloading a binary release of Dune, make it executable and place it somewhere reachable by your PATH:"
-      <pre>
-        "
+      <Code>
+"
 $ chmod u+x ./dune
 $ sudo mv ./dune /usr/local/bin/dune
-        "
-      </pre>
+"
+      </Code>
       "You can verify your installation by running:"
-      <pre>
-      {|
+      <Code>
+{|
 $ dune --version
 "Dune Developer Preview: build , git revision cc260345db57ab639db6363b2dc89072a1492832"
 |}
-      </pre>
+      </Code>
     </p>
 
     <h2 class_="text-2xl font-medium pt-4 pb-2"> "Verifying the Dune binary" </h2>
@@ -241,11 +287,11 @@ $ dune --version
       <span>"To ensure trust in the binary distribution, we generate a build certificate associated with the Github Actions pipeline where the binaries are built. Once you download this certificate, you can use the "</span>
       <code>"gh"</code>
       <span>" tool to verify it with the following command: "</span>
-      <pre>
+      <Code>
 "
 $ gh attestation verify ./dune -R tarides/dune-binary-distribution --bundle attestation.jsonl
 "
-      </pre>
+      </Code>
     </p>
     <release_history base_url releases />
   </section>
