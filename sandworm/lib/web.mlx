@@ -116,7 +116,7 @@ $ dune exec hello_world
       <ul class_="list-disc pl-4">
         <li><Link href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3HaJbskiCLHqLS6Oi1S3-rWYwv0hb_Iz8O9VlspuDdK5qbXYUZDpRRlWfEY1GP8KFy6XY8MFb9">"Book a Feedback Call"</Link></li>
         <li><Link href="https://docs.google.com/forms/u/2/d/e/1FAIpQLSda-mOTHIdATTt_e9dFmNgUCy-fD55Qzr3bGGsxpfY_Ecfyxw/viewform?usp=send_form">"Submit Feedback"</Link></li>
-        <li><Link href="https://github.com/ocaml/dune/issues/new/choose">"Open a Github Issue"</Link></li>
+        <li><Link href="https://github.com/ocaml/dune/issues/new/choose">"Open a GitHub Issue"</Link></li>
       </ul>
     </p>
   </section>
