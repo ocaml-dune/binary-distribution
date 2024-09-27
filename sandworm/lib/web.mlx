@@ -110,6 +110,15 @@ $ dune exec hello_world
     "For more information on Dune and Package Management, check the "
     <Link href="https://dune.readthedocs.io/en/latest/"> "latest dune docs." </Link>
     </p>
+    <h3 class_="text-xl font-medium pt-4 pb-2"> "Editor Setup" </h3>
+    <p>
+      "If you're using an LSP-enabled editor, you can point your LSP to run this command to start the OCaml LSP server:"
+    </p>
+    <Code>
+"
+dune tools exec ocamllsp
+"
+    </Code>
     <h2 class_="text-2xl font-medium pt-4 pb-2"> "Share Feedback" </h2>
     <p>
       "We are excited to learn from your experience with the Dune Developer Preview, so feel encouraged to tell us what you think:"
