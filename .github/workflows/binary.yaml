@@ -169,7 +169,7 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     needs: [ binary, check-artifacts, deploy-s3 ]
-    if: ${{ !cancelled() && (needs.binary.result == 'failure' || needs.check-artifacts.result == 'failure' || needs.deploy-s3.result == 'failure' ) }}
+    if: ${{ github.ref == 'refs/heads/main' && !cancelled() && (needs.binary.result == 'failure' || needs.check-artifacts.result == 'failure' || needs.deploy-s3.result == 'failure' ) }}
     steps:
       - name: Post an error message to Slack
         id: slack
