@@ -1,6 +1,13 @@
-let s3_bucket_ref = "dune-binary-distribution:/dune/"
-let s3_public_url = "https://download.dune.ci.dev"
-let artifacts_path = "./artifacts"
-let metadata_file = "./metadata.json"
-let rclone_file = "./rclone.conf"
-let html_file = "./index.html"
+module Server = struct
+  let bucket_dir = "/dune/"
+  let rclone_bucket_ref = Format.sprintf "dune-binary-distribution:%s" bucket_dir
+  let url = "https://get.dune.build"
+end
+
+module Path = struct
+  let artifacts_dir = "./artifacts"
+  let metadata = "./metadata.json"
+  let rclone = "./rclone.conf"
+  let install = "./install"
+  let html_index = "./index.html"
+end

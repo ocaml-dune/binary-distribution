@@ -12,11 +12,13 @@ let run cmd args =
     raise (Invalid_argument (Format.sprintf "--> Command stopped by signal %d" signal))
 ;;
 
+(* It uses rclone copyto as it also allows us to copy one file if [src] points
+   to a file. In case [src] is a directory, it behaves exactly like copy. *)
 let copy ~config_path src dest =
   let cmd = "rclone" in
   let args =
     [| "rclone"
-     ; "copy"
+     ; "copyto"
      ; "-v"
      ; "--config"
      ; Unix.realpath config_path
