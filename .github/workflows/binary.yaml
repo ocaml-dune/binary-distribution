@@ -74,7 +74,7 @@ jobs:
           cp ${{ steps.certificate.outputs.bundle-path }} ~/build
           cp result/bin/dune ~/build/$ARCHIVE_DIR
           cp result/bin/dune ~/build/
-          tar -czvf ~/build/$ARCHIVE_TARGZ -C ~/build $ARCHIVE_DIR
+          tar --format=posix -cvf - -C ~/build $ARCHIVE_DIR | gzip -9 > "~/build/$ARCHIVE_TARGZ"
           rm -rf ~/build/$ARCHIVE_DIR
 
       - uses: actions/upload-artifact@v4
