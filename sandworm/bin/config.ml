@@ -1,6 +1,6 @@
 module Server = struct
   let rclone_bucket_ref = "dune-binary-distribution:/dune/"
-  let url = "https://download.dune.ci.dev"
+  let url = "https://get.dune.build"
 end
 
 module Path = struct
