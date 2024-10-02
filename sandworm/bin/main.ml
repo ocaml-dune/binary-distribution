@@ -50,11 +50,11 @@ module Sync = struct
   let synchronise html_file metadata_file commit dry_run =
     Format.printf "--> Start synchronisation\n";
     let bundle = Metadata.import_from_json metadata_file in
-    let daily_bundle =
-      Metadata.(Bundle.create_daily ~commit Target.defaults)
-    in
+    let daily_bundle = Metadata.(Bundle.create_daily ~commit Target.defaults) in
     let daily_bundle_date = Metadata.Bundle.get_date_string_from daily_bundle in
-    let s3_daily_bundle = Filename.concat Config.Server.rclone_bucket_ref daily_bundle_date in
+    let s3_daily_bundle =
+      Filename.concat Config.Server.rclone_bucket_ref daily_bundle_date
+    in
     let () =
       if dry_run
       then
@@ -64,7 +64,27 @@ module Sync = struct
           s3_daily_bundle
           Config.Path.rclone
       else
-        Rclone.copy ~config_path:Config.Path.rclone Config.Path.artifacts_dir s3_daily_bundle
+        Rclone.copy
+          ~config_path:Config.Path.rclone
+          Config.Path.artifacts_dir
+          s3_daily_bundle
+    in
+    let () =
+      let install_bucket_path =
+        Filename.concat Config.Server.rclone_bucket_ref Config.Path.install
+      in
+      if dry_run
+      then
+        Format.printf
+          "- Copy file (%s) to %s, using RClone (%s)\n"
+          Config.Path.install
+          install_bucket_path
+          Config.Path.rclone
+      else
+        Rclone.copy
+          ~config_path:Config.Path.rclone
+          Config.Path.install
+          install_bucket_path
     in
     let bundles = Metadata.insert_unique daily_bundle bundle in
     let () =
@@ -88,8 +108,7 @@ module Sync = struct
     and+ dry_run = Common_args.dry_run in
     match commit with
     | None -> failwith "Commit is mandatory"
-    | Some commit ->
-        synchronise html_file metadata_file commit dry_run
+    | Some commit -> synchronise html_file metadata_file commit dry_run
   ;;
 
   let info =
