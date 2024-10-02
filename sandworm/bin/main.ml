@@ -4,12 +4,12 @@ open Cmdliner
 module Common_args = struct
   let html_file =
     let doc = "The file where to export the HTML code." in
-    Arg.(value & opt string Config.html_file & info ~doc [ "html" ])
+    Arg.(value & opt string Config.Path.html_index & info ~doc [ "html" ])
   ;;
 
   let metadata_file =
     let doc = "The JSON file to import the data from." in
-    Arg.(value & opt string Config.metadata_file & info ~doc [ "metadata" ])
+    Arg.(value & opt string Config.Path.metadata & info ~doc [ "metadata" ])
   ;;
 
   let commit =
@@ -27,7 +27,7 @@ module Gen_html = struct
   let generate_website html_file metadata_file =
     Format.printf "--> Generate the index %s\n" html_file;
     let bundles = Metadata.import_from_json metadata_file in
-    Web.export_bundle_to_file ~base_url:Config.s3_public_url ~file:html_file bundles;
+    Web.export_bundle_to_file ~base_url:Config.Server.url ~file:html_file bundles;
     Format.printf "--> Completed ✓\n"
   ;;
 
@@ -54,17 +54,17 @@ module Sync = struct
       Metadata.(Bundle.create_daily ~commit Target.defaults)
     in
     let daily_bundle_date = Metadata.Bundle.get_date_string_from daily_bundle in
-    let s3_daily_bundle = Filename.concat Config.s3_bucket_ref daily_bundle_date in
+    let s3_daily_bundle = Filename.concat Config.Server.rclone_bucket_ref daily_bundle_date in
     let () =
       if dry_run
       then
         Format.printf
           "- Copy files from path (%s) to %s, using RClone (%s)\n"
-          Config.artifacts_path
+          Config.Path.artifacts_dir
           s3_daily_bundle
-          Config.rclone_file
+          Config.Path.rclone
       else
-        Rclone.copy ~config_path:Config.rclone_file Config.artifacts_path s3_daily_bundle
+        Rclone.copy ~config_path:Config.Path.rclone Config.Path.artifacts_dir s3_daily_bundle
     in
     let bundles = Metadata.insert_unique daily_bundle bundle in
     let () =
@@ -75,7 +75,7 @@ module Sync = struct
     let () =
       if dry_run
       then Format.printf "- Export HTML code to %s\n" html_file
-      else Web.export_bundle_to_file ~base_url:Config.s3_public_url ~file:html_file bundles
+      else Web.export_bundle_to_file ~base_url:Config.Server.url ~file:html_file bundles
     in
     Format.printf "--> Completed ✓\n"
   ;;
