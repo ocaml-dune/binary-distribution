@@ -1,7 +1,7 @@
 module Info = struct
   let title = "Dune Developer Preview"
   let curl_with_bash url =
-      Format.sprintf "curl %s | bash" url  |> JSX.string
+    Format.sprintf "curl -fsSL %s | bash" url  |> JSX.string
 end
 
 module Icons = struct
