@@ -31,13 +31,22 @@ jobs:
       git-commit: ${{ steps.git-commit.outputs.hash }}
     steps:
 
+      - name: Set DATE environment variable
+        run: echo "DATE=$(date +'%Y-%m-%d')" >> "$GITHUB_ENV"
+
+      - name: Set archive environment variables
+        run: |
+          echo "ARCHIVE_DIR=dune-$DATE-${{ matrix.name }}" >> $GITHUB_ENV
+          echo "ARCHIVE_TAR=dune-$DATE-${{ matrix.name }}.tar" >> $GITHUB_ENV
+          echo "ARCHIVE_TARGZ=dune-$DATE-${{ matrix.name }}.tar.gz" >> $GITHUB_ENV
+
       - name: Checkout
         uses: actions/checkout@v4
 
       - uses: actions/checkout@v4
         with:
           repository: ocaml/dune
-          ref: main # At some point we might need to change it to point to a developer preview branch
+          ref: main
           fetch-depth: 0 # for git describe
 
       - uses: cachix/install-nix-action@v22
@@ -59,14 +68,20 @@ jobs:
           subject-path: "result/bin/dune"
           show-summary: false
 
+      # TODO: remove the extra Dune file when the complete move to tar is done.
       - name: Extract artifact and attestation
         run: |
-          mkdir -p ~/build/
-          cp ${{ steps.certificate.outputs.bundle-path }} result/bin/dune ~/build/
+          mkdir -p ~/build/$ARCHIVE_DIR/
+          cp ${{ steps.certificate.outputs.bundle-path }} ~/build
+          cp result/bin/dune ~/build/$ARCHIVE_DIR
+          cp result/bin/dune ~/build/
+          tar --format=posix -cvf ~/build/$ARCHIVE_TAR -C ~/build $ARCHIVE_DIR
+          gzip -9 ~/build/$ARCHIVE_TAR
+          rm -rf ~/build/$ARCHIVE_DIR
 
       - uses: actions/upload-artifact@v4
         with:
-          path: ~/build/*
+          path: ~/build
           name: ${{ matrix.name }}
 
 
@@ -87,6 +102,14 @@ jobs:
     needs: binary
     steps:
 
+      - name: Set DATE environment variable
+        run: echo "DATE=$(date +'%Y-%m-%d')" >> "$GITHUB_ENV"
+
+      - name: Set archive environment variables
+        run: |
+          echo "ARCHIVE_TARGZ=dune-$DATE-${{ matrix.name }}.tar.gz" >> $GITHUB_ENV
+          echo "ARCHIVE_DIR=dune-$DATE-${{ matrix.name }}" >> $GITHUB_ENV
+
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -94,8 +117,9 @@ jobs:
 
       - name: Get dune accessible
         run: |
-          mv ./${{ matrix.name }}/dune ./dune
-          chmod u+x ./dune
+          mv ${{ matrix.name }}/$ARCHIVE_TARGZ .
+          tar -xvf $ARCHIVE_TARGZ
+          mv ./$ARCHIVE_DIR/dune ./dune
 
       - name: Check dune is working
         run: |
@@ -103,8 +127,6 @@ jobs:
             cd test
             dune pkg lock
             dune build
-
-
 
   deploy-s3:
     runs-on: ubuntu-latest
@@ -150,6 +172,7 @@ jobs:
       - name: Move artifacts to scope
         run: mv "/home/runner/artifacts" "."
 
+
       - name: Export Rclone configuration
         run: echo "${{ secrets.RCLONE_CONF }}" >> rclone.conf
 
@@ -161,7 +184,7 @@ jobs:
       - name: Commit changes to branch
         run: |
           git config --global user.name 'Sandworm'
-          git config --global user.email 'tarides@users.noreply.github.com'
+          git config --global user.email 'ocaml-dune@users.noreply.github.com'
           (git add index.html metadata.json && \
           git commit -m "Nightly build $(date +'%Y-%m-%d')" && \
           git push) || echo "No new data" # Prevent from committing empty stuff
