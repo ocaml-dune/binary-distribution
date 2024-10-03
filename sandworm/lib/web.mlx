@@ -125,7 +125,7 @@ $ dune exec hello_world
 
 
 let q_and_a = [
-    "Is it stable?", (<p>"No. For a stable release of OCaml, please follow the installation guide on "<Link href="https://ocaml.org">OCaml.org</Link>". The Developer Preview is an unstable distribution of Dune and, by nature, will always be unstable. However, its features will stabilise over time and move to a stable release of Dune. If you use the Developer Preview, expect bugs and please report them to "<Link href="https://github.com/ocaml/dune/issues">"ocaml/dune"</Link></p>)
+    "Is it stable?", (<p>"No. For a stable release of OCaml, please follow the installation guide on "<Link href="https://ocaml.org">"OCaml.org"</Link>". The Developer Preview is an unstable distribution of Dune and, by nature, will always be unstable. However, its features will stabilise over time and move to a stable release of Dune. If you use the Developer Preview, expect bugs and please report them to "<Link href="https://github.com/ocaml/dune/issues">"ocaml/dune"</Link></p>)
   ; "Does it support Windows?", <p>"No, not yet. Watch this space for news!"</p>
   ; "Can I build the Developer Preview of Dune from sources?",
     <div class_="flex flex-col gap-2">
