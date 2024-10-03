@@ -125,7 +125,7 @@ $ dune exec hello_world
 
 
 let q_and_a = [
-    "Is it stable?", (<p>"We are working to stabilize these features and move them from a Developer Preview to a regular released version of Dune. In the meantime, expect some bugs and please report them to "<Link href="https://github.com/ocaml/dune/issues">"ocaml/dune"</Link></p>)
+    "Is it stable?", (<p>"No. We are working to stabilize these features and move them from a Developer Preview to a regular released version of Dune. In the meantime, expect some bugs and please report them to "<Link href="https://github.com/ocaml/dune/issues">"ocaml/dune"</Link></p>)
   ; "Does it support Windows?", <p>"No, not yet. Watch this space for news!"</p>
   ; "Can I build the Developer Preview of Dune from sources?",
     <div class_="flex flex-col gap-2">
@@ -311,6 +311,9 @@ let page ~base_url releases =
         src="https://plausible.ci.dev/js/script.file-downloads.js"></script>
     </head>
     <body class_="w-full flex flex-col overflow-scroll justify-center items-center">
+      <div class_="w-full flex flex-col justify-center items-center py-4 bg-yellow-200 text-black">
+        <p>"🏗️ This page is under " <strong class_="underline">"heavy development"</strong>". It may change or be broken at any moment until it is stable."</p>
+      </div>
       <navbar />
       <section class_="flex flex-col w-full px-4 lg:max-w-screen-xl">
         <getting_started install_url />
