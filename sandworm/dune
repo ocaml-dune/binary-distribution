@@ -1,0 +1,10 @@
+(rule
+ (target main.css)
+ (deps
+  (:input %{workspace_root}/css/style.css)
+  (:config %{workspace_root}/tailwind.config.js)
+  (source_tree %{workspace_root}/lib/))
+ (action
+  (chdir
+   %{workspace_root}
+   (run tailwindcss -c %{config} -i %{input} -o %{target}))))

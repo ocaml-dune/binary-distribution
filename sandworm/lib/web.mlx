@@ -305,7 +305,6 @@ let page ~base_url releases =
       <meta charset="utf-8" />
       <title> (JSX.string Info.title) </title>
       <link rel="stylesheet" href="main.css" />
-      <script src="https://cdn.tailwindcss.com"></script>
       <script 
         dataDomain="preview.dune.build" defer=true
         src="https://plausible.ci.dev/js/script.file-downloads.js"></script>
