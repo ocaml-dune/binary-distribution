@@ -180,6 +180,8 @@ jobs:
         shell: bash
         run: ./sandworm/_build/install/default/bin/sandworm sync --commit "${{ needs.binary.outputs.git-commit }}"
 
+      - name: Regenerate CSS from Tailwind tags
+        run: ./generate-css.sh
 
       - name: Commit changes to branch
         run: |
