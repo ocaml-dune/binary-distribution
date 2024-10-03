@@ -10,7 +10,7 @@ it:
 - updates the content of `index.html`
 - generates new artifacts and pushes them to their SSH storage using `RClone`
 
-The web page is deployed on [dune.ci.dev](https://dune.ci.dev).
+The web page is deployed on [preview.dune.build](https://preview.dune.build).
 
 > :hourglass: The pipeline is triggered every day at _01:00 UTC_.
 
