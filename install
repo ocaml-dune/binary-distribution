@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# the whole body of the script is wrapped in a function so that a partially
+# downloaded script does not get executed by accident. The function is called
+# at the end
+main () {
+
 # Reset
 Color_Off='\033[0m' # Text Reset
 
@@ -220,3 +225,8 @@ if [[ $refresh_command ]]; then
 fi
 
 info_bold "  dune --help"
+
+# end of main
+}
+
+main
