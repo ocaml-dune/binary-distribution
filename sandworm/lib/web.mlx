@@ -291,7 +291,7 @@ $ dune --version
       <span>" tool to verify it with the following command: "</span>
       <Code>
 "
-$ gh attestation verify ./dune -R tarides/dune-binary-distribution --bundle attestation.jsonl
+$ gh attestation verify ./dune -R ocaml-dune/binary-distribution --bundle attestation.jsonl
 "
       </Code>
     </p>
