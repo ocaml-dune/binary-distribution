@@ -24,15 +24,15 @@ error() {
 }
 
 info() {
-    echo -e "${Dim}$@ ${Color_Off}"
+    echo -e "${Dim}$* ${Color_Off}"
 }
 
 info_bold() {
-    echo -e "${Bold_White}$@ ${Color_Off}"
+    echo -e "${Bold_White}$* ${Color_Off}"
 }
 
 success() {
-    echo -e "${Green}$@ ${Color_Off}"
+    echo -e "${Green}$* ${Color_Off}"
 }
 
 tildify() {
@@ -64,24 +64,24 @@ tar_target_name="dune-$today-$target"
 tar_target="$tar_target_name.tar.gz"
 dune_tar_uri="https://get.dune.build/$today/$target/$tar_target"
 
-install_dir=$HOME/.dune
-bin_dir=$install_dir/bin
-tmp_dir=$install_dir/tmp
-exe=$bin_dir/dune
+install_dir="$HOME/.dune"
+bin_dir="$install_dir/bin"
+tmp_dir="$install_dir/tmp"
+exe="$bin_dir/dune"
 tmp_tar="$tmp_dir/$tar_target"
 tmp_tar_dir="$tmp_dir/$tar_target_name"
 tmp_exe="$tmp_tar_dir/dune"
-tilde_bin_dir=$(tildify $bin_dir)
+tilde_bin_dir=$(tildify "$bin_dir")
 
 command -v tar >/dev/null 2>&1 ||
     error "Failed to find tar. This script needs tar to be able to install dune."
 
-if [[ ! -d $bin_dir ]]; then
+if [[ ! -d "$bin_dir" ]]; then
     mkdir -p "$bin_dir" ||
         error "Failed to create install directory \"$bin_dir\""
 fi
 
-if [[ ! -d $tmp_dir ]]; then
+if [[ ! -d "$tmp_dir" ]]; then
     mkdir -p "$tmp_dir" ||
         error "Failed to create temporary directory \"$tmp_dir\""
 fi
@@ -89,10 +89,10 @@ fi
 curl --fail --location --progress-bar --output "$tmp_tar" "$dune_tar_uri" ||
     error "Failed to download dune tar from \"$dune_tar_uri\""
 
-tar -xvf "$tmp_tar" -C $tmp_dir 2>&1 > /dev/null ||
+tar -xf "$tmp_tar" -C "$tmp_dir" 2>&1 > /dev/null ||
     error "Failed to extract dune archive content from \"$tmp_tar\""
 
-mv $tmp_exe $exe ||
+mv "$tmp_exe" "$exe" ||
     error "Failed to move executable from $tmp_exe to $exe"
 
 (rm "$tmp_tar" && rmdir "$tmp_tar_dir" && rmdir "$tmp_dir") ||
