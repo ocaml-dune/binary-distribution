@@ -163,7 +163,7 @@ jobs:
           dune-cache: true
 
       - name: Install Sandworm
-        run: cd sandworm && opam install -y . --deps-only && opam exec  -- dune build
+        run: opam install -y . --deps-only && opam exec  -- dune build
 
       - uses: actions/download-artifact@v4
         with:
@@ -178,7 +178,7 @@ jobs:
 
       - name: Export executables and generate html
         shell: bash
-        run: ./sandworm/_build/install/default/bin/sandworm sync --commit "${{ needs.binary.outputs.git-commit }}"
+        run: ./_build/install/default/bin/sandworm sync --commit "${{ needs.binary.outputs.git-commit }}"
 
 
       - name: Commit changes to branch
