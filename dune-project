@@ -26,8 +26,8 @@
           fpath
           cmdliner
           html_of_jsx
-          ocaml-lsp-server
-          ocamlformat
+          (ocaml-lsp-server :with-dev-setup)
+          (ocamlformat :with-dev-setup)
           ))
 
 (dialect
