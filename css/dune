@@ -6,7 +6,8 @@
   (source_tree %{workspace_root}/lib/))
  (mode
   (promote
-   (into ../static)))
+   (into ../static)
+   (only main.css)))
  (action
   (chdir
    %{workspace_root}
