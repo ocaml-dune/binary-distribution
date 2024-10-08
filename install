@@ -95,6 +95,9 @@ tar -xf "$tmp_tar" -C "$tmp_dir" 2>&1 > /dev/null ||
 mv "$tmp_exe" "$exe" ||
     error "Failed to move executable from $tmp_exe to $exe"
 
+mv "$tmp_dir/completions" "$install_dir" ||
+    error "Failed to move completions from $tmp_dir to $install_dir"
+
 (rm "$tmp_tar" && rmdir "$tmp_tar_dir" && rmdir "$tmp_dir") ||
     error "Failed to delete the temporary directory $tmp_dir"
 
@@ -136,6 +139,10 @@ zsh)
 
     commands=(
         "export PATH=\"$bin_dir:\$PATH\""
+        "autoload -Uz compinit bashcompinit"
+        "compinit"
+        "bashcompinit"
+        "source $install_dir/completions/bash.sh"
     )
 
     zsh_config=$HOME/.zshrc
@@ -165,6 +172,7 @@ bash)
 
     commands=(
         "export PATH=$bin_dir:\$PATH"
+        "source $install_dir/completions/bash.sh"
     )
 
     bash_configs=(
@@ -211,8 +219,9 @@ bash)
     fi
     ;;
 *)
-    echo 'Manually add the directory to ~/.bashrc (or similar):'
+    echo 'Manually add the following to ~/.bashrc (or similar):'
     info_bold "  export PATH=\"$bin_dir:\$PATH\""
+    info bold "  source $install_dir/completions/bash.sh"
     ;;
 esac
 
