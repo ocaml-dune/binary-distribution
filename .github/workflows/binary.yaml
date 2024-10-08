@@ -3,7 +3,7 @@ name: Binaries
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 1 * * *' # Triggers the build at 1:00 UTC time
+    - cron: "0 1 * * *" # Triggers the build at 1:00 UTC time
 
 jobs:
   binary:
@@ -30,7 +30,6 @@ jobs:
     outputs:
       git-commit: ${{ steps.git-commit.outputs.hash }}
     steps:
-
       - name: Set DATE environment variable
         run: echo "DATE=$(date +'%Y-%m-%d')" >> "$GITHUB_ENV"
 
@@ -84,24 +83,21 @@ jobs:
           path: ~/build
           name: ${{ matrix.name }}
 
-
-
   check-artifacts:
     strategy:
-        fail-fast: false
-        matrix:
-          include:
-            - os: macos-13
-              name: x86_64-apple-darwin
-            - os: macos-14
-              name: aarch64-apple-darwin
-            - os: ubuntu-22.04
-              name: x86_64-unknown-linux-musl
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-13
+            name: x86_64-apple-darwin
+          - os: macos-14
+            name: aarch64-apple-darwin
+          - os: ubuntu-22.04
+            name: x86_64-unknown-linux-musl
 
     runs-on: ${{ matrix.os }}
     needs: binary
     steps:
-
       - name: Set DATE environment variable
         run: echo "DATE=$(date +'%Y-%m-%d')" >> "$GITHUB_ENV"
 
@@ -123,10 +119,10 @@ jobs:
 
       - name: Check dune is working
         run: |
-            export PATH="$PWD:$PATH"
-            cd test
-            dune pkg lock
-            dune build
+          export PATH="$PWD:$PATH"
+          cd test
+          dune pkg lock
+          dune build
 
   deploy-s3:
     runs-on: ubuntu-latest
@@ -134,7 +130,6 @@ jobs:
     permissions:
       contents: write
     steps:
-
       - name: Install rclone
         run: |
           sudo -v ; curl https://rclone.org/install.sh | sudo bash
@@ -162,8 +157,8 @@ jobs:
           ocaml-compiler: "5.2"
           dune-cache: true
 
-      - name: Install Sandworm
-        run: cd sandworm && opam install -y . --deps-only && opam exec  -- dune build
+      - name: Install Sandworm deps && build
+        run: opam install -y . --deps-only && opam exec -- dune build
 
       - uses: actions/download-artifact@v4
         with:
@@ -172,14 +167,12 @@ jobs:
       - name: Move artifacts to scope
         run: mv "/home/runner/artifacts" "."
 
-
       - name: Export Rclone configuration
         run: echo "${{ secrets.RCLONE_CONF }}" >> rclone.conf
 
       - name: Export executables and generate html
         shell: bash
-        run: ./sandworm/_build/install/default/bin/sandworm sync --commit "${{ needs.binary.outputs.git-commit }}"
-
+        run: opam exec -- dune exec sandworm -- sync --commit "${{ needs.binary.outputs.git-commit }}"
 
       - name: Commit changes to branch
         run: |
@@ -191,7 +184,7 @@ jobs:
 
   notify:
     runs-on: ubuntu-latest
-    needs: [ binary, check-artifacts, deploy-s3 ]
+    needs: [binary, check-artifacts, deploy-s3]
     if: ${{ github.ref == 'refs/heads/main' && !cancelled() && (needs.binary.result == 'failure' || needs.check-artifacts.result == 'failure' || needs.deploy-s3.result == 'failure' ) }}
     steps:
       - name: Post an error message to Slack
@@ -204,4 +197,3 @@ jobs:
             ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-

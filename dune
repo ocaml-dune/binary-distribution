@@ -1,0 +1,4 @@
+;; INFO: Prevent `dune` from detecting `dune` binaries and considering them
+;; as build files.
+
+(data_only_dirs artifacts)

@@ -26,11 +26,10 @@ You need to have `opam` available to install and build the project.
 
 ### Install
 
-The _OCaml code_ is stored in the [sandworm](./sandworm/) directory. Install
+The _OCaml code_ is stored in the repository root directory. Install
 the dependencies with the following commands:
 
 ```shell
-$ cd sandworm/
 $ opam install . --deps-only --with-dev-setup
 ```
 
@@ -39,7 +38,7 @@ purpose.
 
 ### Configure
 
-The configuration is in [sandworm/bin/config.ml](./sandworm/bin/config.ml)
+The configuration is in [bin/config.ml](./bin/config.ml)
 file. When running in the pipeline, the _sandworm_ binary is generated before
 its execution. As a result, the path taken is the root of this repository. If
 you want to run it locally, make sure the _files artifacts_ and `rclone.conf`
@@ -75,12 +74,9 @@ Now your setup is ready, you can execute this list of commands to generate or
 update the files:
 
 ```shell
-$ cd sandworm
-$ dune build
-$ cd ../
 $ ls
 artifacts rclone.conf
-$ ./sandworm/_build/install/default/bin/sandworm
+$ dune exec sandworm
 ```
 
 ## Deploying
