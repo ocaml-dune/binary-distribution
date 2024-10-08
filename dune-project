@@ -29,7 +29,8 @@
   cmdliner
   html_of_jsx
   dream
-  crunch
+  dream-encoding
+  tailwindcss
   (ocaml-lsp-server :with-dev-setup)
   (ocamlformat :with-dev-setup)))
 
@@ -40,3 +41,9 @@
   (merlin_reader mlx)
   (preprocess
    (run mlx-pp %{input-file}))))
+
+(pin
+ (url
+  "git+https://github.com/tmattio/opam-tailwindcss/archive/e5bb6361a50c7cc5cad802311e609336583ca08f.tar.gz")
+ (package
+  (name tailwindcss)))

@@ -1,4 +1,4 @@
 (executable
  (public_name sandworm)
  (name main)
- (libraries sandworm cmdliner dream))
+ (libraries sandworm cmdliner dream dream-encoding css))

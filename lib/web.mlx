@@ -303,9 +303,9 @@ let page ~base_url releases =
   <html>
     <head>
       <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
       <title> (JSX.string Info.title) </title>
-      <link rel="stylesheet" href="main.css" />
-      <script src="https://cdn.tailwindcss.com"></script>
+      <link rel="stylesheet" href="static/main.css" />
       <script 
         dataDomain="preview.dune.build" defer=true
         src="https://plausible.ci.dev/js/script.file-downloads.js"></script>

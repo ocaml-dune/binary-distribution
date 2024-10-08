@@ -19,7 +19,8 @@ depends: [
   "cmdliner"
   "html_of_jsx"
   "dream"
-  "crunch"
+  "dream-encoding"
+  "tailwindcss"
   "ocaml-lsp-server" {with-dev-setup}
   "ocamlformat" {with-dev-setup}
   "odoc" {with-doc}
@@ -39,3 +40,6 @@ build: [
   ]
 ]
 dev-repo: "git+https://github.com/tarides/dune-binary-distribution.git"
+pin-depends: [
+  ["tailwindcss.dev" "https://github.com/tmattio/opam-tailwindcss/archive/e5bb6361a50c7cc5cad802311e609336583ca08f.tar.gz"]
+]
