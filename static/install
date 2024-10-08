@@ -1,5 +1,5 @@
-#!/usr/bin/env bash
-set -euo pipefail
+#!/bin/sh
+set -eu
 
 # the whole body of the script is wrapped in a function so that a partially
 # downloaded script does not get executed by accident. The function is called
@@ -19,30 +19,32 @@ Bold_Green='\033[1;32m' # Bold Green
 Bold_White='\033[1m'    # Bold White
 
 error() {
-    echo -e "${Red}error${Color_Off}:" "$@" >&2
+    printf "%berror%b: %s\n" "${Red}" "${Color_Off}" "$*" >&2
     exit 1
 }
 
 info() {
-    echo -e "${White}$* ${Color_Off}"
+     printf "%b%s %b\n" "${White}" "$*" "${Color_Off}"
 }
 
 info_bold() {
-    echo -e "${Bold_White}$* ${Color_Off}"
+    printf "%b%s %b\n" "${Bold_White}" "$*" "${Color_Off}"
 }
 
 success() {
-    echo -e "${Green}$* ${Color_Off}"
+    printf "%b%s %b\n" "${Green}" "$*" "${Color_Off}"
 }
 
 tildify() {
-    if [[ $1 = $HOME/* ]]; then
-        local replacement=\~/
-
-        echo "${1/$HOME\//$replacement}"
-    else
+    case "$1" in
+    "$HOME"/*)
+        tilde_replacement=\~/
+        echo "$1" | sed "s/$HOME/$tilde_replacement/g"
+        ;;
+    *)
         echo "$1"
-    fi
+        ;;
+    esac
 }
 
 case $(uname -ms) in
@@ -76,12 +78,12 @@ tilde_bin_dir=$(tildify "$bin_dir")
 command -v tar >/dev/null 2>&1 ||
     error "Failed to find tar. This script needs tar to be able to install dune."
 
-if [[ ! -d "$bin_dir" ]]; then
+if [ ! -d "$bin_dir" ]; then
     mkdir -p "$bin_dir" ||
         error "Failed to create install directory \"$bin_dir\""
 fi
 
-if [[ ! -d "$tmp_dir" ]]; then
+if [ ! -d "$tmp_dir" ]; then
     mkdir -p "$tmp_dir" ||
         error "Failed to create temporary directory \"$tmp_dir\""
     trap 'rm -r "$tmp_dir"' EXIT
@@ -90,7 +92,7 @@ fi
 curl --fail --location --progress-bar --output "$tmp_tar" "$dune_tar_uri" ||
     error "Failed to download dune tar from \"$dune_tar_uri\""
 
-tar -xf "$tmp_tar" -C "$tmp_dir" 2>&1 > /dev/null ||
+tar -xf "$tmp_tar" -C "$tmp_dir" > /dev/null 2>&1 ||
     error "Failed to extract dune archive content from \"$tmp_tar\""
 
 mv "$tmp_exe" "$exe" ||
@@ -102,50 +104,31 @@ echo
 
 case $(basename "$SHELL") in
 fish)
-    commands=(
-        "set --export PATH $bin_dir \$PATH"
-    )
+    command="set --export PATH $bin_dir \$PATH"
 
     fish_config=$HOME/.config/fish/config.fish
     tilde_fish_config=$(tildify "$fish_config")
 
-    if [[ -w $fish_config ]]; then
-        {
-            echo -e '\n# dune'
-
-            for command in "${commands[@]}"; do
-                echo "$command"
-            done
-        } >>"$fish_config"
+    if [ -w "$fish_config" ]; then
+        printf "\n# dune\n%s\n" "$command" >> "$fish_config"
 
         info "Added \"$tilde_bin_dir\" to \$PATH in \"$tilde_fish_config\""
 
         refresh_command="source $tilde_fish_config"
     else
         echo "Manually add the directory to $tilde_fish_config (or similar):"
-
-        for command in "${commands[@]}"; do
-            info_bold "  $command"
-        done
+        info_bold "  $command"
     fi
     ;;
 zsh)
 
-    commands=(
-        "export PATH=\"$bin_dir:\$PATH\""
-    )
+    command="export PATH=\"$bin_dir:\$PATH\""
 
     zsh_config=$HOME/.zshrc
     tilde_zsh_config=$(tildify "$zsh_config")
 
-    if [[ -w $zsh_config ]]; then
-        {
-            echo -e '\n# dune'
-
-            for command in "${commands[@]}"; do
-                echo "$command"
-            done
-        } >>"$zsh_config"
+    if [ -w "$zsh_config" ]; then
+        printf "\n# dune\n%s\n" "$command" >>"$zsh_config"
 
         info "Added \"$tilde_bin_dir\" to \$PATH in \"$tilde_zsh_config\""
 
@@ -153,43 +136,25 @@ zsh)
     else
         echo "Manually add the directory to $tilde_zsh_config (or similar):"
 
-        for command in "${commands[@]}"; do
-            info_bold "  $command"
-        done
+        info_bold "  $command"
     fi
     ;;
 bash)
 
-    commands=(
-        "export PATH=$bin_dir:\$PATH"
-    )
+    command="export PATH=$bin_dir:\$PATH"
 
-    bash_configs=(
-        "$HOME/.bashrc"
-        "$HOME/.bash_profile"
-    )
+    bash_configs="$HOME/.bashrc $HOME/.bash_profile"
 
-    if [[ ${XDG_CONFIG_HOME:-} ]]; then
-        bash_configs+=(
-            "$XDG_CONFIG_HOME/.bash_profile"
-            "$XDG_CONFIG_HOME/.bashrc"
-            "$XDG_CONFIG_HOME/bash_profile"
-            "$XDG_CONFIG_HOME/bashrc"
-        )
+    if [ "${XDG_CONFIG_HOME:-}" ]; then
+        bash_configs="$bash_configs $XDG_CONFIG_HOME/.bash_profile $XDG_CONFIG_HOME/.bashrc $XDG_CONFIG_HOME/bash_profile $XDG_CONFIG_HOME/bashrc"
     fi
 
     set_manually=true
-    for bash_config in "${bash_configs[@]}"; do
+    for bash_config in $bash_configs; do
         tilde_bash_config=$(tildify "$bash_config")
 
-        if [[ -w $bash_config ]]; then
-            {
-                echo -e '\n# dune'
-
-                for command in "${commands[@]}"; do
-                    echo "$command"
-                done
-            } >>"$bash_config"
+        if [ -w "$bash_config" ]; then
+            printf "\n# dune\n%s\n" "$command" >> "$bash_config"
 
             info "Added \"$tilde_bin_dir\" to \$PATH in \"$tilde_bash_config\""
 
@@ -199,12 +164,10 @@ bash)
         fi
     done
 
-    if [[ $set_manually = true ]]; then
+    if [ $set_manually = true ]; then
         echo "Manually add the directory to $tilde_bash_config (or similar):"
 
-        for command in "${commands[@]}"; do
-            info_bold "  $command"
-        done
+        info_bold "  $command"
     fi
     ;;
 *)
@@ -217,7 +180,7 @@ echo
 info "To get started, run:"
 echo
 
-if [[ ! -z ${refresh_command+x} ]]; then
+if [ -n "${refresh_command+x}" ]; then
     info_bold "  $refresh_command"
 fi
 
