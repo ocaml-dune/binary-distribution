@@ -29,6 +29,7 @@
   cmdliner
   html_of_jsx
   dream
+  crunch
   (ocaml-lsp-server :with-dev-setup)
   (ocamlformat :with-dev-setup)))
 

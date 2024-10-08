@@ -21,6 +21,16 @@ module Common_args = struct
     let doc = "Simulate the command executation" in
     Arg.(value & flag & info ~doc [ "n"; "dry-run" ])
   ;;
+
+  let dev =
+    let doc = "Enable develoment mode" in
+    Arg.(value & flag & info ~doc [ "dev" ])
+  ;;
+
+  let port =
+    let doc = "Specify a port for the web server" in
+    Arg.(value & opt int 8080 & info ~doc [ "p"; "port" ])
+  ;;
 end
 
 module Gen_html = struct
@@ -119,10 +129,33 @@ module Sync = struct
   let cmd = Cmd.v info term
 end
 
+module Http = struct
+  let serve dev metadata_file port =
+    let bundles = Metadata.import_from_json metadata_file in
+    let content = Web.export_bundle_to_string ~base_url:Config.Server.url bundles in
+    Server.serve ~dev content port
+  ;;
+
+  let term =
+    let open Term.Syntax in
+    let+ dev = Common_args.dev
+    and+ port = Common_args.port
+    and+ metadata_file = Common_args.metadata_file in
+    serve dev metadata_file port
+  ;;
+
+  let info =
+    let doc = "Run the HTTP server and expose the content on a specific port." in
+    Cmd.info "serve" ~doc
+  ;;
+
+  let cmd = Cmd.v info term
+end
+
 let info = Cmd.info "sandworm"
 let root_term = Term.ret (Term.const (`Help (`Pager, None)))
 
 let () =
-  let cmd = Cmd.group ~default:root_term info [ Sync.cmd; Gen_html.cmd ] in
+  let cmd = Cmd.group ~default:root_term info [ Sync.cmd; Gen_html.cmd; Http.cmd ] in
   Cmd.eval cmd |> exit
 ;;

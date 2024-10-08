@@ -323,11 +323,18 @@ let page ~base_url releases =
     </body>
   </html>
 
+let export_bundle_to_string ~base_url releases =
+  let releases =
+    releases
+    |> List.to_seq
+    |> Seq.take 10
+    |> List.of_seq
+  in page ~base_url releases |> JSX.render
+
 let export_bundle_to_file ~base_url ~file releases =
   let file_handle = open_out file in
   let fmt = Format.formatter_of_out_channel file_handle in
-  let releases = releases |> List.to_seq |> Seq.take 10 |> List.of_seq in
-  let page = (page ~base_url releases) |> JSX.render in
+  let page = export_bundle_to_string ~base_url releases in
   Format.fprintf fmt "%s" page;
   close_out file_handle
 ;;

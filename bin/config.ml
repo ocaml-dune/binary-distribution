@@ -8,6 +8,6 @@ module Path = struct
   let artifacts_dir = "./artifacts"
   let metadata = "./metadata.json"
   let rclone = "./rclone.conf"
-  let install = "./install"
-  let html_index = "./index.html"
+  let install = "./static/install"
+  let html_index = "./static/index.html"
 end
