@@ -7,8 +7,8 @@ _YAML_ part, the code is written in _OCaml_.
 The GitHub Actions pipeline regularly creates commit on the `main` branch where
 it:
 - updates the content of `metadata.json`
-- updates the content of `index.html`
 - generates new artifacts and pushes them to their SSH storage using `RClone`
+- publishes the Dockerfile used to deploy the website
 
 The web page is deployed on [preview.dune.build](https://preview.dune.build).
 
@@ -76,8 +76,21 @@ update the files:
 ```shell
 $ ls
 artifacts rclone.conf
-$ dune exec sandworm
+$ dune exec -- sandworm sync --commit [commit hash]
 ```
+
+## Running the developement server
+
+To make the development of the web pages easier, you can use the web server in
+developement mode. It will auto update the page will saving files and,
+regenarate the CSS if needed:
+
+```sh
+$ dune exec --watch sandworm -- serve --dev
+```
+
+You can then go to [http://localhost:8080/](http://localhost:8080) and see the
+website.
 
 ## Deploying
 
@@ -86,5 +99,6 @@ extra work to deploy it.
 
 ## Understand the pipeline
 
-This schema provides explanations about the workflow used to build the binaries and the certificates, and export them to the correct server.
+This schema provides explanations about the workflow used to build the binaries
+and the certificates, and export them to the correct server.
 ![pipeline](./docs/pipeline.svg)
