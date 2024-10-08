@@ -13,11 +13,12 @@ let livereload ~dev inner_handler request =
 ;;
 
 let serve ?(dev = false) site port =
+  let interface = if dev then "127.0.0.1" else "0.0.0.0" in
   Dream.log
     "Server is up and running with mode %s and with css %s"
     (if dev then "dev" else "production")
     Css.hash;
-  Dream.run ~port
+  Dream.run ~interface ~port
   @@ Dream.logger
   @@ Dream_encoding.compress
   @@ livereload ~dev
