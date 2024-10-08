@@ -84,6 +84,7 @@ fi
 if [[ ! -d "$tmp_dir" ]]; then
     mkdir -p "$tmp_dir" ||
         error "Failed to create temporary directory \"$tmp_dir\""
+    trap 'rm -r "$tmp_dir"' EXIT
 fi
 
 curl --fail --location --progress-bar --output "$tmp_tar" "$dune_tar_uri" ||
@@ -94,10 +95,6 @@ tar -xf "$tmp_tar" -C "$tmp_dir" 2>&1 > /dev/null ||
 
 mv "$tmp_exe" "$exe" ||
     error "Failed to move executable from $tmp_exe to $exe"
-
-(rm "$tmp_tar" && rmdir "$tmp_tar_dir" && rmdir "$tmp_dir") ||
-    error "Failed to delete the temporary directory $tmp_dir"
-
 
 success "dune $target was installed successfully to $Bold_Green$(tildify "$exe")"
 
