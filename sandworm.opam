@@ -18,6 +18,7 @@ depends: [
   "fpath"
   "cmdliner"
   "html_of_jsx"
+  "dream"
   "ocaml-lsp-server" {with-dev-setup}
   "ocamlformat" {with-dev-setup}
   "odoc" {with-doc}
