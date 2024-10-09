@@ -217,7 +217,7 @@ echo
 info "To get started, run:"
 echo
 
-if [[ $refresh_command ]]; then
+if [[ ! -z ${refresh_command+x} ]]; then
     info_bold "  $refresh_command"
 fi
 
