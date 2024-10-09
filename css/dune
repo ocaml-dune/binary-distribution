@@ -22,7 +22,7 @@
    (progn
     (echo "let hash = \"")
     (pipe-stdout
-     (run "md5sum" %{css})
+     (run "sha1sum" %{css})
      (run "cut" "-d" " " "-f" "1"))
     (echo "\"\n")))))
 

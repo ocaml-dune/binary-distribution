@@ -18,7 +18,7 @@ module Common_args = struct
   ;;
 
   let dev =
-    let doc = "Enable develoment mode" in
+    let doc = "Active development features" in
     Arg.(value & flag & info ~doc [ "dev" ])
   ;;
 

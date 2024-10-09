@@ -29,7 +29,7 @@ You need to have `opam` available to install and build the project.
 The _OCaml code_ is stored in the repository root directory. Install
 the dependencies with the following commands:
 
-```shell
+```sh
 $ opam install . --deps-only --with-dev-setup
 ```
 
@@ -73,7 +73,7 @@ let s3_bucket_ref = "dune-binary-distribution:/path/to/your/server/dir"
 Now your setup is ready, you can execute this list of commands to generate or
 update the files:
 
-```shell
+```sh
 $ ls
 artifacts rclone.conf
 $ dune exec -- sandworm sync --commit [commit hash]
@@ -91,6 +91,10 @@ $ dune exec --watch sandworm -- serve --dev
 
 You can then go to [http://localhost:8080/](http://localhost:8080) and see the
 website.
+
+The flag `--dev` has two actions. To protect the users, it only exposes the
+server to `localhost` instead of `0.0.0.0`. Also, it injects a script in the
+page to ensure the page is reloaded when you restart the server. 
 
 ## Deploying
 
