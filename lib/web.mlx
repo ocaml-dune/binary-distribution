@@ -305,6 +305,7 @@ let page ~base_url releases =
       <meta charset="utf-8" />
       <title> (JSX.string Info.title) </title>
       <link rel="stylesheet" href="main.css" />
+      <link rel="shortcut icon" href="https://dune.build/assets/imgs/dune_favicon.png" />
       <script src="https://cdn.tailwindcss.com"></script>
       <script 
         dataDomain="preview.dune.build" defer=true
