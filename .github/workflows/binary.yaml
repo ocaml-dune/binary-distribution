@@ -39,14 +39,16 @@ jobs:
           echo "ARCHIVE_TAR=dune-$DATE-${{ matrix.name }}.tar" >> $GITHUB_ENV
           echo "ARCHIVE_TARGZ=dune-$DATE-${{ matrix.name }}.tar.gz" >> $GITHUB_ENV
 
-      - name: Checkout
-        uses: actions/checkout@v4
-
       - uses: actions/checkout@v4
         with:
           repository: ocaml/dune
           ref: main
           fetch-depth: 0 # for git describe
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: dune-binary-distribution
 
       - uses: cachix/install-nix-action@v22
 
@@ -73,6 +75,7 @@ jobs:
           mkdir -p ~/build/$ARCHIVE_DIR/
           cp ${{ steps.certificate.outputs.bundle-path }} ~/build
           cp result/bin/dune ~/build/$ARCHIVE_DIR
+          cp -r $GITHUB_WORKSPACE/dune-binary-distribution/env ~/build/$ARCHIVE_DIR
           cp result/bin/dune ~/build/
           tar --format=posix -cvf ~/build/$ARCHIVE_TAR -C ~/build $ARCHIVE_DIR
           gzip -9 ~/build/$ARCHIVE_TAR
