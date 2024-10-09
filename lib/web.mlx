@@ -402,6 +402,7 @@ let page ~base_url releases =
       <meta charset="utf-8" />
       <title> (JSX.string Info.title) </title>
       <link rel="stylesheet" href="/static/main.css" />
+      <link rel="shortcut icon" href="/static/dune_favicon.png" />
       <script 
         dataDomain="preview.dune.build" defer=true
         src="https://plausible.ci.dev/js/script.file-downloads.js"></script>
