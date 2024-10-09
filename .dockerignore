@@ -1,0 +1,10 @@
+*
+!dune
+!dune-project
+!sandworm.opam
+!bin/
+!lib/
+!static/
+!css/
+!metadata.json
+!tailwind.config.js

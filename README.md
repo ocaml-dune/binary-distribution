@@ -7,8 +7,8 @@ _YAML_ part, the code is written in _OCaml_.
 The GitHub Actions pipeline regularly creates commit on the `main` branch where
 it:
 - updates the content of `metadata.json`
-- updates the content of `index.html`
 - generates new artifacts and pushes them to their SSH storage using `RClone`
+- publishes the Dockerfile used to deploy the website
 
 The web page is deployed on [preview.dune.build](https://preview.dune.build).
 
@@ -29,7 +29,7 @@ You need to have `opam` available to install and build the project.
 The _OCaml code_ is stored in the repository root directory. Install
 the dependencies with the following commands:
 
-```shell
+```sh
 $ opam install . --deps-only --with-dev-setup
 ```
 
@@ -73,11 +73,28 @@ let s3_bucket_ref = "dune-binary-distribution:/path/to/your/server/dir"
 Now your setup is ready, you can execute this list of commands to generate or
 update the files:
 
-```shell
+```sh
 $ ls
 artifacts rclone.conf
-$ dune exec sandworm
+$ dune exec -- sandworm sync --commit [commit hash]
 ```
+
+## Running the developement server
+
+To make the development of the web pages easier, you can use the web server in
+developement mode. It will auto update the page will saving files and,
+regenarate the CSS if needed:
+
+```sh
+$ dune exec --watch sandworm -- serve --dev
+```
+
+You can then go to [http://localhost:8080/](http://localhost:8080) and see the
+website.
+
+The flag `--dev` has two actions. To protect the users, it only exposes the
+server to `localhost` instead of `0.0.0.0`. Also, it injects a script in the
+page to ensure the page is reloaded when you restart the server. 
 
 ## Deploying
 
@@ -86,5 +103,6 @@ extra work to deploy it.
 
 ## Understand the pipeline
 
-This schema provides explanations about the workflow used to build the binaries and the certificates, and export them to the correct server.
+This schema provides explanations about the workflow used to build the binaries
+and the certificates, and export them to the correct server.
 ![pipeline](./docs/pipeline.svg)

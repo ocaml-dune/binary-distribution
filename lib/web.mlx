@@ -303,9 +303,9 @@ let page ~base_url releases =
   <html>
     <head>
       <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
       <title> (JSX.string Info.title) </title>
-      <link rel="stylesheet" href="main.css" />
-      <script src="https://cdn.tailwindcss.com"></script>
+      <link rel="stylesheet" href="static/main.css" />
       <script 
         dataDomain="preview.dune.build" defer=true
         src="https://plausible.ci.dev/js/script.file-downloads.js"></script>
@@ -323,11 +323,18 @@ let page ~base_url releases =
     </body>
   </html>
 
+let export_bundle_to_string ~base_url releases =
+  let releases =
+    releases
+    |> List.to_seq
+    |> Seq.take 10
+    |> List.of_seq
+  in page ~base_url releases |> JSX.render
+
 let export_bundle_to_file ~base_url ~file releases =
   let file_handle = open_out file in
   let fmt = Format.formatter_of_out_channel file_handle in
-  let releases = releases |> List.to_seq |> Seq.take 10 |> List.of_seq in
-  let page = (page ~base_url releases) |> JSX.render in
+  let page = export_bundle_to_string ~base_url releases in
   Format.fprintf fmt "%s" page;
   close_out file_handle
 ;;

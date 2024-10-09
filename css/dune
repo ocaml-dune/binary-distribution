@@ -1,0 +1,30 @@
+(rule
+ (target main.css)
+ (deps
+  (:input %{workspace_root}/css/style.css)
+  (:config %{workspace_root}/tailwind.config.js)
+  (source_tree %{workspace_root}/lib/))
+ (mode
+  (promote
+   (into ../static)
+   (only main.css)))
+ (action
+  (chdir
+   %{workspace_root}
+   (run tailwindcss -c %{config} -i %{input} -o %{target}))))
+
+(rule
+ (deps
+  (:css main.css))
+ (action
+  (with-stdout-to
+   css.ml
+   (progn
+    (echo "let hash = \"")
+    (pipe-stdout
+     (run "sha1sum" %{css})
+     (run "cut" "-d" " " "-f" "1"))
+    (echo "\"\n")))))
+
+(library
+ (name css))
