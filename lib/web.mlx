@@ -4,23 +4,6 @@ module Info = struct
     Format.sprintf "curl -fsSL %s | bash" url  |> JSX.string
 end
 
-module Icons = struct
-  let copy ~id ~class_ () =
-    <div id class_=("bg-[var(--accent)] w-fit inline p-2 " ^ class_)>
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M15.75 17.25V20.625C15.75 21.246 15.246 21.75 14.625 21.75H4.875C4.57663 21.75 4.29048 21.6315 4.0795 21.4205C3.86853 21.2095 3.75 20.9234 3.75 20.625V7.875C3.75 7.254 4.254 6.75 4.875 6.75H6.75C7.25257 6.74966 7.7543 6.79114 8.25 6.874M15.75 17.25H19.125C19.746 17.25 20.25 16.746 20.25 16.125V11.25C20.25 6.79 17.007 3.089 12.75 2.374C12.2543 2.29114 11.7526 2.24966 11.25 2.25H9.375C8.754 2.25 8.25 2.754 8.25 3.375V6.874M15.75 17.25H9.375C9.07663 17.25 8.79048 17.1315 8.5795 16.9205C8.36853 16.7095 8.25 16.4234 8.25 16.125V6.874M20.25 13.5V11.625C20.25 10.7299 19.8944 9.87145 19.2615 9.23852C18.6286 8.60558 17.7701 8.25 16.875 8.25H15.375C15.0766 8.25 14.7905 8.13148 14.5795 7.9205C14.3685 7.70952 14.25 7.42337 14.25 7.125V5.625C14.25 5.18179 14.1627 4.74292 13.9931 4.33345C13.8235 3.92397 13.5749 3.55191 13.2615 3.23852C12.9481 2.92512 12.576 2.67652 12.1666 2.50691C11.7571 2.3373 11.3182 2.25 10.875 2.25H9.75" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-</svg>
-</div>
-
-  let ok ~id ~class_ () = 
-    <div id class_=("bg-[var(--accent)] w-fit inline p-2 " ^ class_)>
-    <svg xmlns="http://www.w3.org/2000/svg" class_="h-6 w-6" fill="none" viewBox="0 0 24 24" aria_hidden=true>
-  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" stroke="white" d="M5 13l4 4L19 7"></path>
-</svg>
-</div>
-
-end
-
 module Link = struct
   let make ?(class_ = "") ~href ~children () =
     <a class_=("text-[var(--accent)] " ^ class_) href>children</a>
@@ -28,101 +11,202 @@ end
 
 module Code = struct
   let make ~children () =
-      <pre class_="px-4 py-2 bg-gray-100 flex flex-row items-center gap-2 font-mono 
-      min-w-fit w-1/2">
+      <pre class_="max-w-sixty bg-section-code py-4 px-5 rounded-md">
+        <code>
         children
+        </code>
       </pre>
 end
 
-let logo () =
-  <svg width="54" height="54" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M7.02289 11.2854L33.5174 0.927063L43.4073 6.49664L43.3032 9.77593L24.9809 23.5177L16.9128 37.1033L7.02289 37.8388V11.2854Z" fill="#E0C7A9"/>
-<path d="M34.3503 2.15029C34.3503 2.15029 32.1641 0.692826 35.1311 0.276408C38.0981 -0.140009 46.999 4.33648 46.9469 4.28442C46.8949 4.23237 46.9469 10.1424 46.9469 10.1424C46.9469 10.1424 44.1361 10.2184 42.2622 8.60475C42.2622 8.60475 42.4965 6.80895 40.4144 5.61175C38.3323 4.41455 35.9899 3.37351 35.6256 2.85299C35.2612 2.33247 34.5845 2.33247 34.3503 2.15029Z" fill="#F28B03"/>
-<path d="M42.2622 8.60474C42.2814 8.55633 44.7086 10.3225 46.9989 10.1142C46.9989 10.1142 46.9599 21.7869 46.9989 21.7479C47.038 21.7089 45.4327 17.2444 43.652 15.2279C41.8713 13.2114 39.5555 11.7279 41.1691 10.1142C41.1691 10.1142 41.8197 9.72386 42.2622 8.60474Z" fill="#AF5235"/>
-<path d="M7.02289 37.8581C6.97084 37.8627 7.02289 39.6013 7.02289 39.6013C7.02289 39.6013 46.9989 39.9391 46.9989 39.6013V21.878C46.9989 21.878 45.6196 16.855 42.9129 14.4086C40.2061 11.9621 40.6746 10.869 41.039 10.2444C41.039 10.2444 35.4694 13.6798 32.086 15.6058C28.7026 17.5317 25.8397 19.0933 22.2481 26.1203C18.6565 33.1473 15.6896 37.0512 7.02289 37.8581Z" fill="#D54000"/>
-<path d="M10.3615 52.7512H6.75213V42.5694H10.3913C11.4155 42.5694 12.2971 42.7732 13.0362 43.1809C13.7753 43.5852 14.3438 44.1669 14.7415 44.9259C15.1425 45.6849 15.343 46.593 15.343 47.6503C15.343 48.7109 15.1425 49.6224 14.7415 50.3847C14.3438 51.147 13.772 51.732 13.0263 52.1397C12.2839 52.5474 11.3956 52.7512 10.3615 52.7512ZM8.90483 50.9067H10.272C10.9084 50.9067 11.4437 50.794 11.8778 50.5687C12.3153 50.34 12.6435 49.987 12.8622 49.5097C13.0843 49.0291 13.1953 48.4093 13.1953 47.6503C13.1953 46.898 13.0843 46.2832 12.8622 45.8059C12.6435 45.3286 12.317 44.9773 11.8828 44.7519C11.4486 44.5265 10.9134 44.4138 10.277 44.4138H8.90483V50.9067ZM24.2267 42.5694H26.3794V49.1816C26.3794 49.924 26.2021 50.5736 25.8475 51.1305C25.4962 51.6873 25.004 52.1215 24.3709 52.433C23.7379 52.7412 23.0004 52.8954 22.1586 52.8954C21.3134 52.8954 20.5743 52.7412 19.9412 52.433C19.3082 52.1215 18.816 51.6873 18.4647 51.1305C18.1133 50.5736 17.9377 49.924 17.9377 49.1816V42.5694H20.0904V48.9976C20.0904 49.3854 20.1749 49.7301 20.3439 50.0317C20.5163 50.3333 20.7582 50.5703 21.0698 50.7427C21.3813 50.915 21.7443 51.0012 22.1586 51.0012C22.5762 51.0012 22.9391 50.915 23.2473 50.7427C23.5589 50.5703 23.7992 50.3333 23.9682 50.0317C24.1406 49.7301 24.2267 49.3854 24.2267 48.9976V42.5694ZM37.6669 42.5694V52.7512H35.8075L31.3778 46.3428H31.3033V52.7512H29.1506V42.5694H31.0398L35.4347 48.9728H35.5241V42.5694H37.6669ZM40.4455 52.7512V42.5694H47.3063V44.3442H42.5982V46.7704H46.9533V48.5452H42.5982V50.9763H47.3262V52.7512H40.4455Z" fill="#D54000"/>
-</svg>
+module Curl = struct
+  let make ~script () =
+        <div class_="max-w-sixty pl-4 bg-secondary text-white flex flex-row items-center justify-between rounded-md">
+          <span id="install-cmd" class_="pr-2 font-mono">
+            script
+          </span>
+          <Icons.copy id="copy-btn" class_="rounded-tr-md rounded-br-md cursor-pointer bg-copy" />
+          <Icons.ok id="copy-btn-active" class_="h-[52px] w-[52px] flex items-center justify-center hidden rounded-tr-md rounded-br-md cursor-pointer bg-primary-light" />
+          <script>
+            (JSX.unsafe {|
+              function activeButton(active) {
+                const copyBtn = document.querySelector('#copy-btn');
+                const copyBtnActive = document.querySelector('#copy-btn-active');
+                if (active) {
+                    copyBtn.classList.add("hidden")
+                    copyBtnClicked.classList.remove("hidden")
+                } else {
+                    copyBtnClciked.classList.add("hidden")
+                    copyBtn.classList.remove("hidden")
+                }
+              }
+
+              document.addEventListener('DOMContentLoaded', () => {
+                const installCmd = document.querySelector('#install-cmd');
+                const copyBtn = document.querySelector('#copy-btn');
+                const copyBtnActive = document.querySelector('#copy-btn-active');
+                copyBtn.addEventListener('click', () => {
+                  navigator.clipboard.writeText(installCmd.innerText)
+                    copyBtn.classList.add("hidden")
+                    copyBtnActive.classList.remove("hidden")
+                    setTimeout(() => {
+                      copyBtnActive.classList.add("hidden")
+                      copyBtn.classList.remove("hidden")
+                    }, 2000);
+                  }, function(err) {
+                    console.error('Async: Could not copy text: ', err);
+                  });
+                });
+              |})
+          </script>
+        </div>
+end
+
+module Note = struct
+    let make ~class_ ~children () = 
+      <div class_=("w-full px-5 py-2.5 mt-5 flex flex-row items-center border border-tertiary rounded-md bg-tertiary/20 " ^ class_)>
+        <Icons.info class_="mr-2" />
+        children
+      </div>
+
+end
+
+module LinkButton = struct
+    let make ~children ~href () =
+      <a href>
+        <div class_="flex flex-row items-center w-max p-2.5 bg-none rounded-md border border-white/87 hover:border-primary-light hover:bg-primary-light">
+          children
+        </div>
+      </a>
+end
+
+module Faq = struct
+
+    let load_script () =
+    <script>
+    (JSX.unsafe {|
+        function listenOnDetails(idDetails, idArrowOpen, idArrowClose) {
+          const arrowOpen = document.getElementById(idArrowOpen);
+          const arrowClose = document.getElementById(idArrowClose);
+          const details = document.getElementById(idDetails);
+          details.addEventListener("toggle", function () {
+            let isOpened = details.hasAttribute("open");
+            if (isOpened) {
+              arrowOpen.classList.remove("hidden");
+              arrowClose.classList.add("hidden");
+            } else {
+              arrowClose.classList.remove("hidden");
+              arrowOpen.classList.add("hidden");
+            }
+          });
+        }
+     |})
+    </script>
+
+    let make ~question ~answer ~idx () =
+      let idx = string_of_int idx in
+      let details_id = "faq-details-" ^ idx in
+      let arrow_open_id = "faq-arrow-open" ^ idx in
+      let arrow_close_id = "faq-arrow-close-" ^ idx in
+      let toggleScript = Format.sprintf {|
+       document.addEventListener('DOMContentLoaded', () => {
+        listenOnDetails('%s', '%s', '%s');
+      })
+      |} details_id arrow_open_id arrow_close_id
+      in
+      <details id=details_id class_="w-full flex flex border border-section-faq-background rounded-md list-none">
+      <script>(JSX.unsafe toggleScript)</script>
+         <summary class_="flex flex-row items-center w-full p-2.5 bg-black/1">
+            <span class_="bg-tertiary/20 rounded-md px-2.5 py-2 mr-2.5">
+              <Icons.arrow_close id=arrow_close_id class_="" />
+              <Icons.arrow_open id=arrow_open_id class_="hidden"/>
+            </span>
+            (JSX.string question)
+         </summary>
+         <div class_="px-14 py-1 border-t border-section-faq-background w-full">answer</div>
+      </details>
+end
+
+
 
 let navbar () =
-  <nav class_="w-full flex flex-row justify-between items-center align-center px-4 py-2">
-    <logo />
+  <nav class_="w-full bg-secondary flex flex-row justify-between items-center align-center pl-7 pr-8 py-2.5 text-white/60">
+    <Icons.logo />
     <div class_="flex flex-row gap-6">
-      <a href="#faq">"FAQ"</a>
-      <a href="#manual-installation">"Manual Installation"</a>
+      <a class_="p-2.5" href="#download">"Download & Install Dune"</a>
+      <a class_="p-2.5" href="#feedback">"Share Feedback"</a>
+      <a class_="p-2.5" href="#faq">"FAQ'S"</a>
+      <a class_="p-2.5" href="#manual-installation">"Manual Installation"</a>
+      <a class_="p-2.5" href="#release-history">"Last Month Release History"</a>
     </div>
   </nav>
 
+let header_info () = 
+  <section class_="w-full px-40 h-[250px] bg-black">
+  </section>
+
 let getting_started ~install_url () =
-  <section class_="flex flex-col pt-10 gap-2">
-    <h4 class_="text-md font-regular rounded bg-gray-900 text-white w-fit px-2 py-[0.5]"> "Dune Developer Preview" </h4>
-    <h1 class_="text-6xl font-black pb-4"> "Setup OCaml in under a minute" </h1>
-    <p>
-      "The Dune Developer Preview is an "
-      <em class_="italic">"experimental nightly release"</em>
-      " of Dune that lets you develop, test, run, and manage dependencies for
-      OCaml projects – all with just Dune - following the "
-      <Link href="https://ocaml.org/tools/platform-roadmap#g1-dune-is-the-frontend-of-the-ocaml-platform">
-      "OCaml Platform Roadmap."
-      </Link>
-    </p>
-    <h2 class_="text-2xl font-medium pt-4 pb-2"> "Install Dune" </h2>
-    <div class_="flex flex-row gap-4 items-center rounded pt-2 pb-5">
-      <div class_="pl-4 bg-gray-100 flex flex-row items-center gap-2">
-        <span id="install-cmd" class_="pr-2 font-mono">
-          (Info.curl_with_bash install_url)
-        </span>
-        <Icons.copy id="copy-btn" class_="rounded-tr rounded-br cursor-pointer" />
-        <Icons.ok id="ok-btn" class_="rounded-tr rounded-br cursor-pointer hidden" />
-        <script>
-          (JSX.unsafe {|
-            document.addEventListener('DOMContentLoaded', () => {
-              const copyBtn = document.querySelector('#copy-btn');
-              const okBtn = document.querySelector('#ok-btn');
-              const installCmd = document.querySelector('#install-cmd');
-              copyBtn.addEventListener('click', () => {
-                navigator.clipboard.writeText(installCmd.innerText)
-                  console.log('Async: Copying to clipboard was successful!');
-                  copyBtn.classList.add("hidden")
-                  okBtn.classList.remove("hidden")
-                }, function(err) {
-                  console.error('Async: Could not copy text: ', err);
-                });
-              });
-            |})
-        </script>
-      </div>
-    </div>
-    <p>
-      "If you wish to install the binary distribution manually, please follow the "
-      <Link href="#manual-installation">"manual installation instructions."</Link>
-    </p>
-    <h2 class_="text-2xl font-medium pt-4 pb-2"> "Getting Started" </h2>
-    <p>
-      "You can create and run your first hello-world program using Dune like this:"
-      <Code>
-"
-$ dune init proj hello_world
+  <section class_="w-full px-40 flex flex-col pt-9 pb-12">
+    <h2 class_="mb-5">"Install Dune"</h2>
+    <h4>
+      <span class_="mr-2.5"><Icons.terminal /></span>
+      "Copy & Install"
+    </h4>
+    <Curl script=(Info.curl_with_bash install_url) />
+    <h3 class_="mt-10 mb-2.5">"Getting Started"</h3>
+    <p>"You can create and run your first hello-world program using Dune like this"</p>
+    <h4 class_="mt-2.5">
+      <span class_="mr-2.5"><Icons.terminal /></span>
+      "Run"
+    </h4>
+    <Code>
+"$ dune init proj hello_world
 $ cd hello_world
 $ dune pkg lock
 $ dune exec hello_world
 "
-      </Code>
-    </p>
-    <p> 
-    "For more information on Dune and Package Management, check the "
-    <Link href="https://dune.readthedocs.io/en/latest/"> "latest dune docs." </Link>
-    </p>
-    <h2 class_="text-2xl font-medium pt-4 pb-2"> "Share Feedback" </h2>
-    <p>
-      "We are excited to learn from your experience with the Dune Developer Preview, so feel encouraged to tell us what you think:"
-      <ul class_="list-disc pl-4">
-        <li><Link href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3HaJbskiCLHqLS6Oi1S3-rWYwv0hb_Iz8O9VlspuDdK5qbXYUZDpRRlWfEY1GP8KFy6XY8MFb9">"Book a Feedback Call"</Link></li>
-        <li><Link href="https://docs.google.com/forms/u/2/d/e/1FAIpQLSda-mOTHIdATTt_e9dFmNgUCy-fD55Qzr3bGGsxpfY_Ecfyxw/viewform?usp=send_form">"Submit Feedback"</Link></li>
-        <li><Link href="https://github.com/ocaml/dune/issues/new/choose">"Open a GitHub Issue"</Link></li>
-      </ul>
-    </p>
+    </Code>
+    <Note class_="max-w-sixty">
+      <p class_="text-secondary">
+        "For more information on Dune and Package Management, check "
+        <Link class_="text-primary-light" href="https://dune.readthedocs.io/en/latest">"the latest Dune docs."</Link>
+      </p>
+    </Note>
   </section>
 
+
+
+let feedback () =
+  <section id="#feedback" class_="w-full px-40 pt-9 pb-14 bg-secondary text-white/60" >
+    <h2 class_="flex flex-row items-center text-white mb-5">
+      <span>
+        <Icons.community class_="mr-2"/>
+      </span>
+      "Share Feedback"
+    </h2>
+    <p class_="mb-6 text-white/60">"We are excited to learn from your experience with the Dune Developer Preview, so feel encourage to tell us what you think"</p>
+    <div class_="flex flex-row items-center gap-10">
+      <LinkButton href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3HaJbskiCLHqLS6Oi1S3-rWYwv0hb_Iz8O9VlspuDdK5qbXYUZDpRRlWfEY1GP8KFy6XY8MFb9">
+        <p>
+          <Icons.message class_="mr-2.5" />
+          "Book a Feedback Call"
+        </p>
+      </LinkButton>
+
+      <LinkButton href="https://docs.google.com/forms/u/2/d/e/1FAIpQLSda-mOTHIdATTt_e9dFmNgUCy-fD55Qzr3bGGsxpfY_Ecfyxw/viewform?usp=send_form">
+        <p>
+          <Icons.pencil class_="mr-2.5" />
+          "Submit Feedback"
+        </p>
+      </LinkButton>
+
+      <LinkButton href="https://github.com/ocaml/dune/issues/new/choose">
+        <p>
+          <Icons.github class_="mr-2.5" />
+          "Open a GitHub Issue"
+        </p>
+      </LinkButton>
+    </div>
+  </section>
 
 let q_and_a = [
     "Is it stable?", (<p>"No. For a stable release of OCaml, please follow the installation guide on "<Link href="https://ocaml.org">"OCaml.org"</Link>". The Developer Preview is an unstable distribution of Dune and, by nature, will always be unstable. However, its features will stabilise over time and move to a stable release of Dune. If you use the Developer Preview, expect bugs and please report them to "<Link href="https://github.com/ocaml/dune/issues">"ocaml/dune"</Link></p>)
@@ -135,8 +219,7 @@ let q_and_a = [
       </p>
       <p>"When configuring the build you'll want to enable the following flags:" </p>
       <Code>
-"
---enable-toolchains
+"--enable-toolchains
 --enable-pkg-build-progress
 --enable-lock-dev-tool
 "
@@ -149,8 +232,7 @@ let q_and_a = [
       <p>"To enable these features make sure you are pinning dune to the development version, and export the following environment variables: "
       </p>
       <Code>
-"
-$ opam pin add dune --dev
+"$ opam pin add dune --dev
 $ export DUNE_CONFIG__TOOLCHAINS=enabled
 $ export DUNE_CONFIG__PKG_BUILD_PROGRESS=enabled
 $ export DUNE_CONFIG__LOCK_DEV_TOOL=enabled
@@ -159,17 +241,12 @@ $ export DUNE_CONFIG__LOCK_DEV_TOOL=enabled
     </div>
 ]
 
-let faq () =  
-  <section id="faq" class_="flex flex-col py-10 gap-2">
-    <h2 class_="text-3xl font-black pb-4"> "Frequently Asked Questions" </h2>
-    (List.map
-      (fun (question, answer) ->
-      (<details class_="flex flex-col gap-2">
-         <summary class_="font-medium text-lg">
-         (JSX.string question)
-         </summary>
-         <p>answer</p>
-      </details>)) q_and_a |> JSX.list)
+let faq () =
+  <section id="faq" class_="w-full max-w-sixty px-40 flex flex-col py-10 gap-2">
+    <Faq.load_script />
+    <h2 class_="mb-7"> "Frequently Asked Questions" </h2>
+    (List.mapi
+      (fun idx (question, answer) -> (<Faq question answer idx />)) q_and_a |> JSX.list)
   </section>
 
 
@@ -177,27 +254,82 @@ let installation_target ~base_url ~bundle target =
   let open Metadata in
   let title = Target.to_human_readable_string target in
   let desc = Target.to_description target in
+  let targz = Target.to_targz_file target in
   let cert_href = Bundle.to_certificate_url bundle ~base_url ~target in
   let tar_href = Bundle.to_download_url bundle ~base_url ~target  in
-  <li class_="min-w-1/3 max-w-1/3 px-4 py-2 flex flex-col gap-4 items-center border-[2px] border-solid border-[var(--accent)] rounded"> 
+  <li class_="w-1/4 px-4 py-2 flex flex-col gap-4 justify-center items-center border-[2px] border-solid border-primary-light rounded-md bg-white"> 
     <h4 class_="font-bold">(JSX.string title)</h4>
-    <p>(JSX.string desc)</p>
-    <div class_="w-full flex flex-row justify-between gap-4">
-     <Link href=tar_href>"Download"</Link>
-     <Link href=cert_href>"Cert"</Link>
+    <p class_="text-center">(JSX.string desc)</p>
+    <div class_="flex flex-row items-center justify-center">
+      <span class_="mr-2.5">
+        <Icons.download class_="stroke-primary-light" />
+      </span>
+      <Link href=tar_href>(JSX.string targz)</Link>
     </div>
+    <a class_="text-black underline" href=cert_href>"Certificate"</a>
   </li>
+
+let manual_installation ~base_url ~releases () =  
+  <section class_="w-full border-t border-b border-black/20 px-40 pt-6 pb-[52px] flex flex-col gap-2 bg-section-manual">
+    <h2 id="manual-installation" class_="text-3xl font-black pb-2"> "Manual Installation" </h2>
+    <p class_="mb-5">
+      "In this section you’ll find instructions to manually install the Dune Developer Review, and verify the installation. This is recommended for advanced users, or if you want s understand where the binaries come from."
+    </p>
+    <h3 class_="mb-2.5"> "Featured Downloads" </h3>
+    <p class_="mb-4">
+      "This is the latest release of the Dune Developer Preview. See the "
+      <Link class_="text-[var(--accent)]" href="#release-history">"release history"</Link>
+      " section for all past releases."
+    </p>
+    <ul class_="flex flex-row flex-wrap gap-4 justify-around items-center align-center mb-5">
+      (let bundle: Metadata.Bundle.t = releases |> List.hd in
+      bundle.targets
+       |> List.map (installation_target ~base_url ~bundle)
+       |> JSX.list)
+    </ul>
+
+    <h3 class_="mb-2.5"> "Installing the Binary" </h3>
+    <p>
+      "After downloading a binary release of Dune, make it executable and place it somewhere reachable by your PATH:"
+    </p>
+    <h4 class_="mt-2.5">
+      <span class_="mr-2.5"><Icons.terminal /></span>
+      "Run"
+    </h4>
+    <Code>
+"$ tar xzvf dune-<arch>.tar.gz
+dune-<arch>
+$ cd dune-arch
+$ sudo mv ./dune /usr/local/bin/dune
+"
+    </Code>
+      "You can verify your installation by running:"
+    <Code>
+{|$ dune --version
+"Dune Developer Preview: build , git revision cc260345db57ab639db6363b2dc89072a1492832"
+|}
+    </Code>
+
+    <h3 class_="mt-5 mb-2.5"> "Verifying the Dune binary" </h3>
+    <p>
+      <span>"To ensure trust in the binary distribution, we generate a build certificate associated with the Github Actions pipeline where the binaries are built. Once you download this certificate, you can use the "</span>
+      <code class_="font-mono text-block-p">"gh"</code>
+      <span>" tool to verify it with the following command: "</span>
+    </p>
+    <Code>"$ gh attestation verify ./dune -R ocaml-dune/binary-distribution --bundle attestation.jsonl"</Code>
+  </section>
+
 
 let release_history ~base_url ~releases () =  
   let open Metadata in
-  <section id="release-history" class_="flex flex-col py-10 gap-2 text-left">
+  <section id="release-history" class_="w-full px-40 flex flex-col py-10 gap-2 text-left">
     <h2 class_="text-2xl font-medium pb-4"> "Release History" </h2>
     <p>
       "Here is a list of the "
       (JSX.int (List.length releases))
       " releases of the Dune Developer Preview so far."
     </p>
-    <section class_="flex flex-col gap-4">
+    <div class_="flex flex-col gap-4">
     (
       releases
       |> List.map (fun (bundle: Bundle.t) ->
@@ -241,71 +373,35 @@ let release_history ~base_url ~releases () =
       )
       |> JSX.list
     )
-    </section>
+    </div>
   </section>
 
-let manual_installation ~base_url ~releases () =  
-  <section class_="flex flex-col gap-2">
-    <h2 id="manual-installation" class_="text-3xl font-black pb-2"> "Manual Installation" </h2>
-    <p>
-      "In this section you'll find instructions to manually install the Dune
-      Developer Preview, and verify the installation. This is recommended for
-      advanced users, or if you want so understand where the binaries come from."
-    </p>
-
-    <h2 class_="text-2xl font-medium pt-4 pb-2"> "Featured Downloads" </h2>
-    <p class_="pb-2">
-      "This is the latest release of the Dune Developer Preview. See the "
-      <Link class_="text-[var(--accent)]" href="#release-history">"release history"</Link>
-      " section for all past releases."
-    </p>
-    <ul class_="flex flex-row flex-wrap gap-5 justify-center items-center align-center">
-      (let bundle: Metadata.Bundle.t = releases |> List.hd in
-      bundle.targets
-       |> List.map (installation_target ~base_url ~bundle)
-       |> JSX.list)
-    </ul>
-
-    <h2 class_="text-2xl font-medium pt-4 pb-2"> "Installing the binary" </h2>
-    <p>
-      "After downloading a binary release of Dune, make it executable and place it somewhere reachable by your PATH:"
-      <Code>
-"
-$ chmod u+x ./dune
-$ sudo mv ./dune /usr/local/bin/dune
-"
-      </Code>
-      "You can verify your installation by running:"
-      <Code>
-{|
-$ dune --version
-"Dune Developer Preview: build , git revision cc260345db57ab639db6363b2dc89072a1492832"
-|}
-      </Code>
-    </p>
-
-    <h2 class_="text-2xl font-medium pt-4 pb-2"> "Verifying the Dune binary" </h2>
-    <p>
-      <span>"To ensure trust in the binary distribution, we generate a build certificate associated with the Github Actions pipeline where the binaries are built. Once you download this certificate, you can use the "</span>
-      <code>"gh"</code>
-      <span>" tool to verify it with the following command: "</span>
-      <Code>
-"
-$ gh attestation verify ./dune -R ocaml-dune/binary-distribution --bundle attestation.jsonl
-"
-      </Code>
-    </p>
-    <release_history base_url releases />
-  </section>
+let footer_info () =
+  <footer class_="px-32 flex flex-row justify-between w-full bg-secondary py-10 text-white/60">
+    <div class_="flex flex-col max-w-[263px]">
+      <Icons.logo />
+      <p class_="text-white">"Dune is a build system for OCaml, simplifying project management and streaminlining comppilation."</p>
+      <div class_="flex">
+        <Icons.github class_="p-2.5" />
+        <Icons.discourse class_="p-2.5" />
+        <Icons.discord class_="p-2.5" />
+        <Icons.twitter class_="p-2.5" />
+      </div>
+    </div>
+    <a href="#download">"Download & Install Dune"</a>
+    <a href="#feedback">"Share Feedback"</a>
+    <a href="#faq">"FAQ'S"</a>
+    <a href="#manual-installation">"Manual Installation"</a>
+    <a href="#release-history">"Last Month Release History"</a>
+  </footer>
 
 let page ~base_url releases =
   let install_url = Filename.concat base_url "install" in
   <html>
     <head>
       <meta charset="utf-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
       <title> (JSX.string Info.title) </title>
-      <link rel="stylesheet" href="static/main.css" />
+      <link rel="stylesheet" href="/static/main.css" />
       <script 
         dataDomain="preview.dune.build" defer=true
         src="https://plausible.ci.dev/js/script.file-downloads.js"></script>
@@ -315,11 +411,15 @@ let page ~base_url releases =
         <p>"🏗️ This page is under " <strong class_="underline">"heavy development"</strong>". It may change or be broken at any moment until it is stable."</p>
       </div>
       <navbar />
-      <section class_="flex flex-col w-full px-4 lg:max-w-screen-xl">
+      <main class_="flex flex-col w-full">
+        <header_info />
         <getting_started install_url />
+        <feedback />
         <faq />
         <manual_installation base_url releases />
-      </section>
+        <release_history base_url releases />
+      </main>
+      <footer_info />
     </body>
   </html>
 
