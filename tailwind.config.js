@@ -19,8 +19,7 @@ export default {
   theme: {
     screens: {
       sm: "40em",
-      md: "48em",
-      lg: "64em",
+      lg: "80em",
     },
     extend: {
       colors: {
@@ -49,10 +48,10 @@ export default {
       },
       maxWidth: {
         banner: "890px",
-        lg: "1280px",
+        lg: "1024px",
       },
       width: {
-        lg: "1280px",
+        lg: "1024px",
       },
     },
     borderWidth: {
