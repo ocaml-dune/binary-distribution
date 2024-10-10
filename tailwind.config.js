@@ -8,6 +8,9 @@ const figma_color = {
   paragraph: "#555659",
   curl_icon: "#364150",
   faq_background: "#D0D0D0",
+  gradient_start: "#0B1228",
+  gradient_end: "#0F254F",
+  information_background: "#F28B03",
 };
 
 /** @type {import('tailwindcss').Config} */
@@ -25,7 +28,6 @@ export default {
           light: figma_color.primary_light,
           dark: figma_color.primary_dark,
         },
-
         secondary: figma_color.secondary,
         tertiary: figma_color.tertiary,
         section: {
@@ -39,8 +41,17 @@ export default {
         block: {
           p: figma_color.paragraph,
         },
+        gradient: {
+          start: figma_color.gradient_start,
+          end: figma_color.gradient_end,
+        },
+        warning: figma_color.information_background,
       },
       maxWidth: {
+        banner: "890px",
+        lg: "1280px",
+      },
+      width: {
         lg: "1280px",
       },
     },

@@ -65,7 +65,7 @@ end
 module Note = struct
     let make ~class_ ~children () = 
       <div class_=("w-full px-5 py-2.5 mt-5 flex flex-row items-center border border-tertiary rounded-md bg-tertiary/20 " ^ class_)>
-        <Icons.info class_="mr-2" />
+        <Icons.info class_="stroke-tertiary mr-2" />
         children
       </div>
 
@@ -142,8 +142,43 @@ let navbar () =
   </nav>
 
 let header_info () = 
-  <section class_="w-full px-40 h-[250px] bg-black">
+  <section class_="relative flex items-center justify-center h-64 overflow-hidden h-64 bg-black md:bg-transparent">
+    <img src="/static/img_camel_hero_banner.png"
+         alt="Hero Image"
+         class_="absolute inset-0 h-full w-full object-cover hidden md:block" />
+
+    <div class_="absolute inset-0 bg-black opacity-40"></div>
+
+    <div class_="absolute inset-0"
+         style="background: linear-gradient(to right, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 7) 59%, rgba(0, 0, 0, 0) 100%);">
+    </div>
+
+    <div class_="w-lg flex flex-col px-4 text-white text-left z-10 p-4">
+       <h1 class_="w-full text-4xl font-bold">
+           "Setup OCaml with Dune in "
+           <span style="color: rgb(194, 79, 30);">"Under a Minute"</span>
+       </h1>
+       <p class_="max-w-banner text-lg leading-7 mt-4">
+          "The Dune Developer Preview is an "
+           <span class_="text-primary-light">"experimental nightly release of Dune"</span>
+           " that lets you develop, test, run, and manage dependencies for OCaml projects - "<em>"All with just Dune."</em>
+       </p>
+    </div>
   </section>
+
+let warning () =
+  <div class_="flex justify-center items-centerrelative w-full bg-warning/20 border-y border-warning " style=" ;">
+    <div class_="flex items-center justify-between max-w-lg mx-auto p-4">
+        <Icons.info class_="stroke-warning mr-2" />
+        <span class_="flex-1 text-left">
+            "This Dune Install is only an "
+            <span class_="font-bold text-warning">
+            "EXPERIMENTAL NIGHTLY RELEASE"
+            </span>" of Dune"
+        </span>
+    </div>
+  </div>
+
 
 let getting_started ~install_url () =
   <section class_="w-full px-40 flex flex-col pt-9 pb-12">
@@ -177,7 +212,7 @@ $ dune exec hello_world
 
 
 let feedback () =
-  <section id="#feedback" class_="w-full px-40 pt-9 pb-14 bg-secondary text-white/60" >
+  <section id="#feedback" class_="w-full px-40 pt-9 pb-14 text-white/60 bg-gradient-to-r from-gradient-start to-gradient-end" >
     <h2 class_="flex flex-row items-center text-white mb-5">
       <span>
         <Icons.community class_="mr-2"/>
@@ -415,6 +450,7 @@ let page ~base_url releases =
       <navbar />
       <main class_="flex flex-col w-full">
         <header_info />
+        <warning />
         <getting_started install_url />
         <feedback />
         <faq />
