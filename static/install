@@ -40,8 +40,8 @@ success() {
 tildify() {
     case "$1" in
     "$HOME"/*)
-        tilde_replacement=\~/
-        echo "$1" | sed "s/$HOME/$tilde_replacement/g"
+        tilde_replacement=\~
+        echo "$1" | sed "s|$HOME|$tilde_replacement|g"
         ;;
     *)
         echo "$1"
