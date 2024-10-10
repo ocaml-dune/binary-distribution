@@ -14,6 +14,11 @@ const figma_color = {
 export default {
   content: ["**/*.mlx"],
   theme: {
+    screens: {
+      sm: "40em",
+      md: "48em",
+      lg: "64em",
+    },
     extend: {
       colors: {
         primary: {
@@ -36,7 +41,7 @@ export default {
         },
       },
       maxWidth: {
-        sixty: "60%",
+        lg: "1280px",
       },
     },
     borderWidth: {

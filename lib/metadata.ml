@@ -14,7 +14,7 @@ module Target = struct
   let to_human_readable_string = function
     | Aarch64_apple_darwin -> "Apple macOS (ARM64)"
     | X86_64_apple_darwin -> "Apple macOS (x86-64)"
-    | X86_64_unknown_linux_musl -> "Linux (amd64, MUSL)"
+    | X86_64_unknown_linux_musl -> "Linux (x86-64, musl)"
   ;;
 
   let to_description = function
@@ -27,11 +27,6 @@ module Target = struct
     | Aarch64_apple_darwin -> "aarch64", "apple", "macOS"
     | X86_64_apple_darwin -> "x86-64", "apple", "macOS"
     | X86_64_unknown_linux_musl -> "x86-64", "unknown", "Linux"
-  ;;
-
-  let to_targz_file target =
-    let name = to_string target in
-    Format.sprintf "dune-%s.tar.gz" name
   ;;
 
   let defaults = [ Aarch64_apple_darwin; X86_64_apple_darwin; X86_64_unknown_linux_musl ]
@@ -89,11 +84,21 @@ module Bundle = struct
     to_url ~base_url ~target t / "attestation.jsonl"
   ;;
 
-  let download_file_name ~target = Target.to_targz_file target
+  let download_file_name ~date arch =
+    match date with
+    | None -> Format.sprintf "dune-%s.tar.gz" arch
+    | Some date -> Format.sprintf "dune-%s-%s.tar.gz" date arch
+  ;;
 
-  (* TODO: use the right URL *)
   let to_download_url ~base_url ~target t =
-    to_url ~base_url ~target t / download_file_name ~target
+    let date = get_date_string_from t |> Option.some in
+    let arch = Target.to_string target in
+    to_url ~base_url ~target t / download_file_name ~date arch
+  ;;
+
+  let to_download_file target =
+    let arch = Target.to_string target in
+    download_file_name ~date:None arch
   ;;
 end
 

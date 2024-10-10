@@ -9,9 +9,10 @@ module Link = struct
     <a class_=("text-[var(--accent)] " ^ class_) href>children</a>
 end
 
+(** TODO: fix size max 1280 *)
 module Code = struct
   let make ~children () =
-      <pre class_="max-w-sixty bg-section-code py-4 px-5 rounded-md">
+      <pre class_="bg-section-code md:bg-black py-4 px-5 rounded-md overflow-scroll">
         <code>
         children
         </code>
@@ -249,22 +250,23 @@ let faq () =
       (fun idx (question, answer) -> (<Faq question answer idx />)) q_and_a |> JSX.list)
   </section>
 
-
 let installation_target ~base_url ~bundle target =
   let open Metadata in
   let title = Target.to_human_readable_string target in
   let desc = Target.to_description target in
-  let targz = Target.to_targz_file target in
+  let targz = Bundle.to_download_file target in
   let cert_href = Bundle.to_certificate_url bundle ~base_url ~target in
   let tar_href = Bundle.to_download_url bundle ~base_url ~target  in
-  <li class_="w-1/4 px-4 py-2 flex flex-col gap-4 justify-center items-center border-[2px] border-solid border-primary-light rounded-md bg-white"> 
-    <h4 class_="font-bold">(JSX.string title)</h4>
-    <p class_="text-center">(JSX.string desc)</p>
-    <div class_="flex flex-row items-center justify-center">
-      <span class_="mr-2.5">
-        <Icons.download class_="stroke-primary-light" />
-      </span>
-      <Link href=tar_href>(JSX.string targz)</Link>
+  <li class_="w-[440px] flex flex-col justify-center items-end">
+    <div class_="w-full h-[140px] px-4 py-2 mb-2.5 gap-y-2.5 flex flex-col justify-center items-center border-[2px] border-solid border-primary-light rounded-md bg-white">
+      <h4 class_="font-bold">(JSX.string title)</h4>
+      <p class_="text-center">(JSX.string desc)</p>
+      <div class_="flex flex-row items-center justify-center">
+        <span class_="mr-2.5">
+          <Icons.download class_="stroke-primary-light" />
+        </span>
+        <Link href=tar_href>(JSX.string targz)</Link>
+      </div>
     </div>
     <a class_="text-black underline" href=cert_href>"Certificate"</a>
   </li>
@@ -297,13 +299,12 @@ let manual_installation ~base_url ~releases () =
       "Run"
     </h4>
     <Code>
-"$ tar xzvf dune-<arch>.tar.gz
+{|$ tar xzvf dune-<arch>.tar.gz
 dune-<arch>
-$ cd dune-arch
-$ sudo mv ./dune /usr/local/bin/dune
-"
+$ cd dune-<arch>
+$ sudo mv "./dune" "$HOME/.local/bin/dune"|}
     </Code>
-      "You can verify your installation by running:"
+    <p class_="mt-2.5 mb-2.5">"You can verify your installation by running:"</p>
     <Code>
 {|$ dune --version
 "Dune Developer Preview: build , git revision cc260345db57ab639db6363b2dc89072a1492832"
@@ -311,7 +312,7 @@ $ sudo mv ./dune /usr/local/bin/dune
     </Code>
 
     <h3 class_="mt-5 mb-2.5"> "Verifying the Dune binary" </h3>
-    <p>
+    <p class_="mb-2.5">
       <span>"To ensure trust in the binary distribution, we generate a build certificate associated with the Github Actions pipeline where the binaries are built. Once you download this certificate, you can use the "</span>
       <code class_="font-mono text-block-p">"gh"</code>
       <span>" tool to verify it with the following command: "</span>
@@ -427,9 +428,7 @@ let page ~base_url releases =
 let export_bundle_to_string ~base_url releases =
   let releases =
     releases
-    |> List.to_seq
-    |> Seq.take 10
-    |> List.of_seq
+    |> Core.List.take 30
   in page ~base_url releases |> JSX.render
 
 let export_bundle_to_file ~base_url ~file releases =
