@@ -57,13 +57,13 @@ let getting_started ~install_url () =
     <h4 class_="text-md font-regular rounded bg-gray-900 text-white w-fit px-2 py-[0.5]"> "Dune Developer Preview" </h4>
     <h1 class_="text-6xl font-black pb-4"> "Setup OCaml in under a minute" </h1>
     <p>
-      "The Dune Developer Preview is an "
-      <em class_="italic">"experimental nightly release"</em>
-      " of Dune that lets you develop, test, run, and manage dependencies for
-      OCaml projects – all with just Dune - following the "
+      "The Dune Developer Preview is an ongoing program that provides early access to new and experimental features in Dune and the broader OCaml Platform with an "
+      <em class_="italic">"experimental nightly release</em>
+      ". Read the"
       <Link href="https://ocaml.org/tools/platform-roadmap#g1-dune-is-the-frontend-of-the-ocaml-platform">
-      "OCaml Platform Roadmap."
+      "OCaml Platform Roadmap"
       </Link>
+      " for more details on our plans."
     </p>
     <h2 class_="text-2xl font-medium pt-4 pb-2"> "Install Dune" </h2>
     <div class_="flex flex-row gap-4 items-center rounded pt-2 pb-5">
@@ -125,7 +125,13 @@ $ dune exec hello_world
 
 
 let q_and_a = [
-    "Is it stable?", (<p>"No. For a stable release of OCaml, please follow the installation guide on "<Link href="https://ocaml.org">"OCaml.org"</Link>". The Developer Preview is an unstable distribution of Dune and, by nature, will always be unstable. However, its features will stabilise over time and move to a stable release of Dune. If you use the Developer Preview, expect bugs and please report them to "<Link href="https://github.com/ocaml/dune/issues">"ocaml/dune"</Link></p>)
+    "What is the Dune Developer Preview?",
+    <div class_="flex flex-col gap-2">
+      <p>"The Dune Developer Preview is an ongoing program that provides early access to new and experimental features in Dune and the broader OCaml Platform. It's not limited to a single feature or time period – instead, it's a continuous initiative to involve the community in testing and refining upcoming developments."</p>
+      <p>"While it currently showcases Dune's new package management capabilities, the Developer Preview will continue to introduce and iterate on various features even after the package management system is fully integrated into stable releases."</p>
+      <p>"By participating in the Developer Preview, you'll have the opportunity to try out cutting-edge functionality, provide valuable feedback, and help shape the future of Dune and the OCaml ecosystem. We encourage users to think of the Developer Preview as a persistent "beta channel" for Dune and related tools, always offering a glimpse into what's coming next."</p>
+    </div>
+  ; "Is it stable?", (<p>"No. For a stable release of OCaml, please follow the installation guide on "<Link href="https://ocaml.org">"OCaml.org"</Link>". The Developer Preview is an unstable distribution of Dune and, by nature, will always be unstable. However, its features will stabilise over time and move to a stable release of Dune. If you use the Developer Preview, expect bugs and please report them to "<Link href="https://github.com/ocaml/dune/issues">"ocaml/dune"</Link></p>)
   ; "Does it support Windows?", <p>"No, not yet. Watch this space for news!"</p>
   ; "Can I build the Developer Preview of Dune from sources?",
     <div class_="flex flex-col gap-2">
