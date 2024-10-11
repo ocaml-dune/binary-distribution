@@ -1257,11 +1257,8 @@ code {
     padding-right: 3.5rem;
   }
 
-  .lg\:pl-24 {
+  .lg\:px-24 {
     padding-left: 6rem;
-  }
-
-  .lg\:pr-24 {
     padding-right: 6rem;
   }
 }

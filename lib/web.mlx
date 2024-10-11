@@ -95,7 +95,7 @@ end
 
 
 let navbar () =
-  <nav class_="w-full bg-secondary flex flex-row flex-wrap justify-between items-center align-center lg:pl-24 lg:pr-24 px-5 py-2.5 text-white/60">
+  <nav class_="w-full bg-secondary flex flex-row flex-wrap justify-between items-center align-center lg:px-24 px-5 py-2.5 text-white/60">
     <Icons.logo />
     <div class_="flex flex-row flex-wrap gap-6">
       <a class_="p-2.5 hover:text-primary-light" href="#download">"Download & Install Dune"</a>
@@ -394,10 +394,9 @@ let release_history ~base_url ~releases () =
   </div>
   </section>
 
-(* FIXME: set the same limit than the top *)
 let footer_info () =
-  <footer class_="w-full flex justify-center bg-secondary py-10 text-white/60">
-    <div class_="w-lg flex flex-col-reverse lg:flex-row justify-between items-center">
+  <footer class_="w-full flex justify-center px-5 lg:px-24 bg-secondary py-10 text-white/60">
+    <div class_="w-full flex flex-col-reverse lg:flex-row justify-between items-center">
     <div class_="flex flex-col lg:items-start max-w-[263px] mt-10 lg:mt-0 ">
       <Icons.logo />
       <p class_="text-sm text-white text-justify mb-2.5">
