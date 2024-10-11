@@ -1,9 +1,9 @@
 module List = struct
   let take n xs =
-    let rec aux k acc = function
-      | [] -> acc
-      | x :: xs -> if k < n then aux (k + 1) (x :: acc) xs else acc
+    let rec aux acc = function
+      | 0, _ | _, [] -> acc
+      | k, x :: xs -> aux (x :: acc) (k - 1, xs)
     in
-    aux 0 [] xs |> List.rev
+    aux [] (n, xs) |> List.rev
   ;;
 end
