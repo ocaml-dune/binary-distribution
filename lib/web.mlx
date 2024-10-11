@@ -5,8 +5,8 @@ module Info = struct
 end
 
 module Link = struct
-  let make ?(class_ = "") ~href ~children () =
-    <a class_=("text-[var(--accent)] " ^ class_) href>children</a>
+  let make ?(class_ = "") ?(color = "text-primary-light") ~href ~children () =
+    <a class_=(color ^ " " ^ class_) href>children</a>
 end
 
 module Code = struct
@@ -80,15 +80,15 @@ module LinkButton = struct
 end
 
 module Details = struct
-    let make ~summary ~children () =
-      <details class_="w-full flex flex border border-section-faq-background rounded-md list-none [&_svg]:open:rotate-90">
+    let make ~summary ~container_class ~children () =
+      <details class_="w-full flex flex border border-section-faq-background rounded-md list-none [&>summary>span>svg]:open:rotate-90">
          <summary class_="w-full flex flex-row items-center w-full p-2.5 bg-black/1 font-bold">
             <span class_="bg-tertiary/20 rounded-md px-2.5 py-2 mr-2.5">
               <Icons.arrow class_="transition-all duration-200" />
             </span>
             (JSX.string summary)
          </summary>
-         <div class_="px-4 lg:px-14 py-1 border-t border-section-faq-background w-full">children</div>
+         <div class_=("border-t border-section-faq-background w-full " ^ container_class) >children</div>
       </details>
 end
 
@@ -256,7 +256,7 @@ let faq () =
   <div class_="w-full lg:w-lg flex flex-col gap-2">
     <h2 class_="mb-7"> "Frequently Asked Questions" </h2>
     (List.map
-      (fun (question, answer) -> (<Details summary=question>answer</Details>)) q_and_a |> JSX.list)
+      (fun (question, answer) -> (<Details container_class="px-4 lg:px-14 py-1" summary=question>answer</Details>)) q_and_a |> JSX.list)
   </div>
   </section>
 
@@ -335,16 +335,22 @@ $ sudo mv "./dune" "$HOME/.local/bin/dune"|}
 
 let release_information ~base_url ~bundle ~target () =
   let open Metadata in
-  let title = Target.to_string target in
+  let targz = Bundle.to_download_file target in
   let cert_href = Bundle.to_certificate_url bundle ~base_url ~target in
   let tar_href = Bundle.to_download_url bundle ~base_url ~target  in
   let (arch, _, os) = Target.to_triple target in
-  <tr>
-    <td><Link href=tar_href>(JSX.string ("dune-" ^ title))</Link></td>
-    <td class_="hidden lg:table-cell">(JSX.string os)</td>
-    <td class_="hidden lg:table-cell">(JSX.string arch)</td>
-    <td class_="hidden lg:table-cell">(JSX.string bundle.commit)</td>
-    <td class_="hidden lg:table-cell"><Link href=cert_href>"Certificate"</Link></td>
+  <tr class_="odd:bg-tertiary/5">
+    <td class_="pl-14 border"><Link class_="hover:underline" href=tar_href>(JSX.string targz)</Link></td>
+    <td class_="hidden lg:table-cell py-2.5 pl-2.5 border">"Archive"</td>
+    <td class_="hidden lg:table-cell py-2.5 pl-2.5 border">(JSX.string os)</td>
+    <td class_="hidden lg:table-cell py-2.5 pl-2.5 border">(JSX.string arch)</td>
+    <td class_="hidden lg:table-cell py-2.5 pl-2.5 border">(String.sub bundle.commit 0 6 |> JSX.string)</td>
+    <td class_="hidden lg:table-cell py-2.5 pl-2.5 border">
+      <div class_="group w-full flex flex-raw gap-2.5 items-center">
+        <Icons.eye class_=" stroke-block-p group-hover:stroke-primary-light" />
+        <Link color="text-block-p" class_="underline group-hover:text-primary-light" href=cert_href>"View"</Link>
+      </div>
+    </td>
   </tr>
 
 
@@ -365,15 +371,16 @@ let release_history ~base_url ~releases () =
           let date = Bundle.get_date_string_from ~prefix:"nightly-" bundle in
           let summary = Format.sprintf "dune %s" date in
           let files = bundle.targets |> List.map (fun (target: Target.t) -> (<release_information base_url bundle target />)) in
-          (<Details summary>
-             <table class_="w-full pb-4">
-                <thead>
+          (<Details summary container_class="">
+             <table class_="w-full pb-4 border-collapse border">
+                <thead class_="font-normal border">
                   <tr>
-                    <th>"File name"</th>
-                    <th class_="hidden lg:table-cell">"OS"</th>
-                    <th class_="hidden lg:table-cell">"Arch"</th>
-                    <th class_="hidden lg:table-cell">"Commit"</th>
-                    <th class_="hidden lg:table-cell">"Certificate"</th>
+                    <th class_="pl-14 py-2.5 border font-normal">"File Name"</th>
+                    <th class_="hidden lg:table-cell pl-2.5 py-2.5 border font-normal">"Kind"</th>
+                    <th class_="hidden lg:table-cell pl-2.5 py-2.5 border font-normal">"OS"</th>
+                    <th class_="hidden lg:table-cell pl-2.5 py-2.5 border font-normal">"Arch"</th>
+                    <th class_="hidden lg:table-cell pl-2.5 py-2.5 border font-normal">"Commit"</th>
+                    <th class_="hidden lg:table-cell pl-2.5 py-2.5 border font-normal">"Certificate"</th>
                   </tr>
                 </thead>
                 <tbody>
