@@ -14,7 +14,7 @@ module Target = struct
   let to_human_readable_string = function
     | Aarch64_apple_darwin -> "Apple macOS (ARM64)"
     | X86_64_apple_darwin -> "Apple macOS (x86-64)"
-    | X86_64_unknown_linux_musl -> "Linux (amd64, MUSL)"
+    | X86_64_unknown_linux_musl -> "Linux (x86-64, musl)"
   ;;
 
   let to_description = function
@@ -24,9 +24,9 @@ module Target = struct
   ;;
 
   let to_triple = function
-    | Aarch64_apple_darwin -> ("aarch64", "apple", "macOS")
-    | X86_64_apple_darwin -> ("x86-64", "apple", "macOS")
-    | X86_64_unknown_linux_musl -> ("x86-64", "unknown", "Linux")
+    | Aarch64_apple_darwin -> "aarch64", "apple", "macOS"
+    | X86_64_apple_darwin -> "x86-64", "apple", "macOS"
+    | X86_64_unknown_linux_musl -> "x86-64", "unknown", "Linux"
   ;;
 
   let defaults = [ Aarch64_apple_darwin; X86_64_apple_darwin; X86_64_unknown_linux_musl ]
@@ -53,9 +53,7 @@ module Bundle = struct
     }
   [@@deriving yojson]
 
-  let create ~date ~commit targets =
-    { date; targets; commit; has_certificate = true}
-  ;;
+  let create ~date ~commit targets = { date; targets; commit; has_certificate = true }
 
   let create_daily targets =
     let date = Unix.time () |> Ptime.of_float_s |> Option.get |> Ptime.to_date in
@@ -76,20 +74,31 @@ module Bundle = struct
     Ptime.equal p1 p2
   ;;
 
-  let (/) = Filename.concat
-  ;;
+  let ( / ) = Filename.concat
 
   let to_url ~base_url ~target t =
-    base_url / (get_date_string_from t) / (Target.to_string target) 
+    base_url / get_date_string_from t / Target.to_string target
   ;;
 
-  let to_certificate_url ~base_url ~target t = 
+  let to_certificate_url ~base_url ~target t =
     to_url ~base_url ~target t / "attestation.jsonl"
   ;;
 
-  let download_file_name = "dune"
-  let to_download_url ~base_url ~target t = 
-    to_url ~base_url ~target  t/ download_file_name 
+  let download_file_name ~date arch =
+    match date with
+    | None -> Format.sprintf "dune-%s.tar.gz" arch
+    | Some date -> Format.sprintf "dune-%s-%s.tar.gz" date arch
+  ;;
+
+  let to_download_url ~base_url ~target t =
+    let date = get_date_string_from t |> Option.some in
+    let arch = Target.to_string target in
+    to_url ~base_url ~target t / download_file_name ~date arch
+  ;;
+
+  let to_download_file target =
+    let arch = Target.to_string target in
+    download_file_name ~date:None arch
   ;;
 end
 

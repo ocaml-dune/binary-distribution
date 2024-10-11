@@ -2,20 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url(https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i|Source+Code+Pro:300,400,500|Source+Sans+Pro:300,300i,400,400i,600,600i|Source+Serif+Pro&subset=latin-ext);
-
-html[lang^=ja] main {
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica Neue, Helvetica, Roboto, Arial, Hiragino Kaku Gothic Pro, ヒラギノ角ゴ Pro W3, Osaka, Meiryo, メイリオ, MS Gothic, ＭＳ ゴシック, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol
-}
-
-html[lang=zh-tw] main {
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica Neue, Helvetica, Roboto, Arial, PingFang TC, Microsoft JhengHei, 微軟正黑, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol
-}
-
-html[lang=zh-cn] main {
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica Neue, Helvetica, Roboto, Arial, PingFang SC, Microsoft YaHei, 微软雅黑, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol
-}
-
 :root {
-  --accent: #D54000;
+  --accent: #d54000;
+}
+
+/* TODO: don't use the CDN, import me */
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
+
+body {
+  font-family: Inter, sans-serif;
+}
+
+h2 {
+  @apply font-bold text-4xl;
+}
+
+h3 {
+  @apply font-bold text-2xl;
+}
+
+h4 {
+  @apply text-base font-bold flex items-center text-block-p mb-1.5;
+}
+
+p {
+  @apply text-base font-normal text-block-p;
+}
+
+code {
+  font-family: "Roboto Mono", monospace;
+  @apply text-base text-white leading-5;
 }
