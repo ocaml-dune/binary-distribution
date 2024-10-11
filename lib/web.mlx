@@ -1,7 +1,7 @@
 module Info = struct
   let title = "Dune Developer Preview"
-  let curl_with_bash url =
-    Format.sprintf "curl -fsSL %s | bash" url  |> JSX.string
+  let curl_with_sh url =
+    Format.sprintf "curl -fsSL %s | sh" url  |> JSX.string
 end
 
 module Link = struct
@@ -186,7 +186,7 @@ let getting_started ~install_url () =
       <span class_="mr-2.5"><Icons.terminal /></span>
       "Copy & Install"
     </h4>
-    <Curl script=(Info.curl_with_bash install_url) />
+    <Curl script=(Info.curl_with_sh install_url) />
     <h3 class_="mt-10 mb-2.5">"Getting Started"</h3>
     <p>"You can create and run your first hello-world program using Dune like this"</p>
     <h4 class_="mt-2.5">
