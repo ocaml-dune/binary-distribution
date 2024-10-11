@@ -1,7 +1,7 @@
 module Info = struct
   let title = "Dune Developer Preview"
-  let curl_with_bash url =
-    Format.sprintf "curl -fsSL %s | bash" url  |> JSX.string
+  let curl_with_sh url =
+    Format.sprintf "curl -fsSL %s | sh" url  |> JSX.string
 end
 
 module Icons = struct
@@ -69,7 +69,7 @@ let getting_started ~install_url () =
     <div class_="flex flex-row gap-4 items-center rounded pt-2 pb-5">
       <div class_="pl-4 bg-gray-100 flex flex-row items-center gap-2">
         <span id="install-cmd" class_="pr-2 font-mono">
-          (Info.curl_with_bash install_url)
+          (Info.curl_with_sh install_url)
         </span>
         <Icons.copy id="copy-btn" class_="rounded-tr rounded-br cursor-pointer" />
         <Icons.ok id="ok-btn" class_="rounded-tr rounded-br cursor-pointer hidden" />
