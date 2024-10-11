@@ -79,16 +79,16 @@ module LinkButton = struct
       </a>
 end
 
-module Faq = struct
-    let make ~question ~answer () =
+module Details = struct
+    let make ~summary ~children () =
       <details class_="w-full flex flex border border-section-faq-background rounded-md list-none [&_svg]:open:rotate-90">
-         <summary class_="w-full flex flex-row items-center w-full p-2.5 bg-black/1">
+         <summary class_="w-full flex flex-row items-center w-full p-2.5 bg-black/1 font-bold">
             <span class_="bg-tertiary/20 rounded-md px-2.5 py-2 mr-2.5">
               <Icons.arrow class_="transition-all duration-200" />
             </span>
-            (JSX.string question)
+            (JSX.string summary)
          </summary>
-         <div class_="px-4 lg:px-14 py-1 border-t border-section-faq-background w-full">answer</div>
+         <div class_="px-4 lg:px-14 py-1 border-t border-section-faq-background w-full">children</div>
       </details>
 end
 
@@ -256,7 +256,7 @@ let faq () =
   <div class_="w-full lg:w-lg flex flex-col gap-2">
     <h2 class_="mb-7"> "Frequently Asked Questions" </h2>
     (List.map
-      (fun (question, answer) -> (<Faq question answer />)) q_and_a |> JSX.list)
+      (fun (question, answer) -> (<Details summary=question>answer</Details>)) q_and_a |> JSX.list)
   </div>
   </section>
 
@@ -333,6 +333,21 @@ $ sudo mv "./dune" "$HOME/.local/bin/dune"|}
   </section>
 
 
+let release_information ~base_url ~bundle ~target () =
+  let open Metadata in
+  let title = Target.to_string target in
+  let cert_href = Bundle.to_certificate_url bundle ~base_url ~target in
+  let tar_href = Bundle.to_download_url bundle ~base_url ~target  in
+  let (arch, _, os) = Target.to_triple target in
+  <tr>
+    <td><Link href=tar_href>(JSX.string ("dune-" ^ title))</Link></td>
+    <td class_="hidden lg:table-cell">(JSX.string os)</td>
+    <td class_="hidden lg:table-cell">(JSX.string arch)</td>
+    <td class_="hidden lg:table-cell">(JSX.string bundle.commit)</td>
+    <td class_="hidden lg:table-cell"><Link href=cert_href>"Certificate"</Link></td>
+  </tr>
+
+
 let release_history ~base_url ~releases () =
   let open Metadata in
   <section id="release-history" class_="w-full flex justify-center py-10 px-5 lg:px-0">
@@ -348,28 +363,10 @@ let release_history ~base_url ~releases () =
       releases
       |> List.map (fun (bundle: Bundle.t) ->
           let date = Bundle.get_date_string_from ~prefix:"nightly-" bundle in
-          let files =
-            bundle.targets
-      |> List.map (fun (target: Target.t) ->
-          let title = Target.to_string target in
-          let cert_href = Bundle.to_certificate_url bundle ~base_url ~target in
-          let tar_href = Bundle.to_download_url bundle ~base_url ~target  in
-          let (arch, _, os) = Target.to_triple target in
-                  (<tr>
-                  <td><Link href=tar_href>(JSX.string ("dune-" ^ title))</Link></td>
-                  <td class_="hidden lg:table-cell">(JSX.string os)</td>
-                  <td class_="hidden lg:table-cell">(JSX.string arch)</td>
-                  <td class_="hidden lg:table-cell">(JSX.string bundle.commit)</td>
-                  <td class_="hidden lg:table-cell"><Link href=cert_href>"Certificate"</Link></td>
-                  </tr>)
-          )
-          in
-
-            (<details class_="flex flex-col gap-2">
-              <summary class_="font-medium text-lg">
-                "dune " (JSX.string date)
-              </summary>
-              <table class_="w-full pb-4">
+          let summary = Format.sprintf "dune %s" date in
+          let files = bundle.targets |> List.map (fun (target: Target.t) -> (<release_information base_url bundle target />)) in
+          (<Details summary>
+             <table class_="w-full pb-4">
                 <thead>
                   <tr>
                     <th>"File name"</th>
@@ -383,14 +380,14 @@ let release_history ~base_url ~releases () =
                   (JSX.list files)
                 </tbody>
               </table>
-            </details>)
-      )
-      |> JSX.list
+          </Details>)
+      ) |> JSX.list
     )
     </div>
   </div>
   </section>
 
+(* FIXME: set the same limit than the top *)
 let footer_info () =
   <footer class_="w-full flex justify-center bg-secondary py-10 text-white/60">
     <div class_="w-lg flex flex-col-reverse lg:flex-row justify-between items-center">
