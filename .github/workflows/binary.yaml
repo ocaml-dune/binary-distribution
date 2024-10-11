@@ -7,7 +7,7 @@ on:
 
 jobs:
   binary:
-    name: Create
+    name: Create the dune binary
     permissions:
       id-token: write
       attestations: write
@@ -30,7 +30,10 @@ jobs:
     outputs:
       git-commit: ${{ steps.git-commit.outputs.hash }}
     steps:
+      - name: Count commits in last 24 hours
+        run: echo "COMMITS_LAST_DAY=$(git log --oneline --since='24 hours ago' -1)" >> $GITHUB_ENV
       - name: Set DATE environment variable
+        if: ${{ env.COMMITS_LAST_DAY != "" }}
         run: echo "DATE=$(date +'%Y-%m-%d')" >> "$GITHUB_ENV"
 
       - name: Set archive environment variables
