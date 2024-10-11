@@ -153,7 +153,7 @@ zsh)
     ;;
 bash)
 
-    command="export PATH=$bin_dir:\$PATH"
+    command="export PATH=\"$bin_dir:\$PATH\""
 
     bash_configs="$HOME/.bashrc $HOME/.bash_profile"
 
