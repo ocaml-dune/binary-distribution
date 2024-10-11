@@ -1094,6 +1094,16 @@ video {
   opacity: 0.4;
 }
 
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.duration-200 {
+  transition-duration: 200ms;
+}
+
 :root {
   --accent: #d54000;
 }
@@ -1217,4 +1227,9 @@ code {
   .lg\:pr-24 {
     padding-right: 6rem;
   }
+}
+
+.\[\&_svg\]\:open\:rotate-90[open] svg {
+  --tw-rotate: 90deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }

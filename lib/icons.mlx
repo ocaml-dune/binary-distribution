@@ -93,14 +93,9 @@ let pencil ~class_ () =
       </svg>
     </div>
 
-let arrow_close ~id ~class_ () =
-  <svg id class_ width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+let arrow ~class_ () =
+  <svg class_ width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M4.8125 2.625L9.1875 7L4.8125 11.375" stroke="#111827" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
-
-let arrow_open ~id ~class_ () =
-  <svg id class_ width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M11.375 4.8125L7 9.1875L2.625 4.8125" stroke="#111827" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
 
 let download ~class_ () =

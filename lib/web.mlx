@@ -80,45 +80,11 @@ module LinkButton = struct
 end
 
 module Faq = struct
-
-    let load_script () =
-    <script>
-    (JSX.unsafe {|
-        function listenOnDetails(idDetails, idArrowOpen, idArrowClose) {
-          const arrowOpen = document.getElementById(idArrowOpen);
-          const arrowClose = document.getElementById(idArrowClose);
-          const details = document.getElementById(idDetails);
-          details.addEventListener("toggle", function () {
-            let isOpened = details.hasAttribute("open");
-            if (isOpened) {
-              arrowOpen.classList.remove("hidden");
-              arrowClose.classList.add("hidden");
-            } else {
-              arrowClose.classList.remove("hidden");
-              arrowOpen.classList.add("hidden");
-            }
-          });
-        }
-     |})
-    </script>
-
-    let make ~question ~answer ~idx () =
-      let idx = string_of_int idx in
-      let details_id = "faq-details-" ^ idx in
-      let arrow_open_id = "faq-arrow-open" ^ idx in
-      let arrow_close_id = "faq-arrow-close-" ^ idx in
-      let toggleScript = Format.sprintf {|
-       document.addEventListener('DOMContentLoaded', () => {
-        listenOnDetails('%s', '%s', '%s');
-      })
-      |} details_id arrow_open_id arrow_close_id
-      in
-      <details id=details_id class_="w-full flex flex border border-section-faq-background rounded-md list-none">
-      <script>(JSX.unsafe toggleScript)</script>
+    let make ~question ~answer () =
+      <details class_="w-full flex flex border border-section-faq-background rounded-md list-none [&_svg]:open:rotate-90">
          <summary class_="w-full flex flex-row items-center w-full p-2.5 bg-black/1">
             <span class_="bg-tertiary/20 rounded-md px-2.5 py-2 mr-2.5">
-              <Icons.arrow_close id=arrow_close_id class_="" />
-              <Icons.arrow_open id=arrow_open_id class_="hidden"/>
+              <Icons.arrow class_="transition-all duration-200" />
             </span>
             (JSX.string question)
          </summary>
@@ -288,10 +254,9 @@ $ export DUNE_CONFIG__LOCK_DEV_TOOL=enabled
 let faq () =
   <section id="faq" class_="w-full flex justify-center py-10 px-5 lg:px-0">
   <div class_="w-full lg:w-lg flex flex-col gap-2">
-    <Faq.load_script />
     <h2 class_="mb-7"> "Frequently Asked Questions" </h2>
-    (List.mapi
-      (fun idx (question, answer) -> (<Faq question answer idx />)) q_and_a |> JSX.list)
+    (List.map
+      (fun (question, answer) -> (<Faq question answer />)) q_and_a |> JSX.list)
   </div>
   </section>
 
