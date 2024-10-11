@@ -26,15 +26,19 @@ error() {
 }
 
 info() {
-     printf "%b%s %b\n" "${White}" "$*" "${Color_Off}"
+     printf "%b%s %b" "${White}" "$*" "${Color_Off}"
 }
 
 info_bold() {
-    printf "%b%s %b\n" "${Bold_White}" "$*" "${Color_Off}"
+    printf "%b%s %b" "${Bold_White}" "$*" "${Color_Off}"
 }
 
 success() {
-    printf "%b%s %b\n" "${Green}" "$*" "${Color_Off}"
+    printf "%b%s %b" "${Green}" "$*" "${Color_Off}"
+}
+
+success_bold() {
+    printf "%b%s %b" "${Bold_Green}" "$*" "${Color_Off}"
 }
 
 tildify() {
@@ -100,9 +104,11 @@ tar -xf "$tmp_tar" -C "$tmp_dir" > /dev/null 2>&1 ||
 mv "$tmp_exe" "$exe" ||
     error "Failed to move executable from $tmp_exe to $exe"
 
-success "dune $target was installed successfully to $Bold_Green$(tildify "$exe")"
-
+success "dune $target was installed successfully to"
+success_bold "$(tildify "$exe")"
 echo
+echo
+
 
 case $(basename "$SHELL") in
 fish)
@@ -115,11 +121,13 @@ fish)
         printf "\n# dune\n%s\n" "$command" >> "$fish_config"
 
         info "Added \"$tilde_bin_dir\" to \$PATH in \"$tilde_fish_config\""
+        echo
 
         refresh_command="source $tilde_fish_config"
     else
         echo "Manually add the directory to $tilde_fish_config (or similar):"
         info_bold "  $command"
+        echo
     fi
     ;;
 zsh)
@@ -133,12 +141,14 @@ zsh)
         printf "\n# dune\n%s\n" "$command" >>"$zsh_config"
 
         info "Added \"$tilde_bin_dir\" to \$PATH in \"$tilde_zsh_config\""
+        echo
 
         refresh_command="exec $SHELL"
     else
         echo "Manually add the directory to $tilde_zsh_config (or similar):"
 
         info_bold "  $command"
+        echo
     fi
     ;;
 bash)
@@ -159,6 +169,7 @@ bash)
             printf "\n# dune\n%s\n" "$command" >> "$bash_config"
 
             info "Added \"$tilde_bin_dir\" to \$PATH in \"$tilde_bash_config\""
+            echo
 
             refresh_command="source $bash_config"
             set_manually=false
@@ -170,11 +181,13 @@ bash)
         echo "Manually add the directory to $tilde_bash_config (or similar):"
 
         info_bold "  $command"
+        echo
     fi
     ;;
 *)
     echo 'Manually add the directory to ~/.bashrc (or similar):'
     info_bold "  export PATH=\"$bin_dir:\$PATH\""
+    echo
     ;;
 esac
 
@@ -184,9 +197,11 @@ echo
 
 if [ -n "${refresh_command+x}" ]; then
     info_bold "  $refresh_command"
+    echo
 fi
 
 info_bold "  dune --help"
+echo
 
 # end of main
 }
