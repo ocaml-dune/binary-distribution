@@ -362,7 +362,7 @@ let release_history ~base_url ~releases () =
     <p>
       "Here is a list of the "
       (JSX.int (List.length releases))
-      " releases of the Dune Developer Preview so far."
+      " latest releases of the Dune Developer Preview."
     </p>
     <div class_="w-full flex flex-col gap-4">
     (
