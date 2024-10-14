@@ -9,7 +9,7 @@ module Common_args = struct
 
   let commit =
     let doc = "The build commit hash." in
-    Arg.(value & opt (some string) None & info ~doc [ "c"; "commit" ])
+    Arg.(required & opt (some string) None & info ~doc [ "c"; "commit" ])
   ;;
 
   let dry_run =
@@ -82,9 +82,7 @@ module Sync = struct
     let+ metadata_file = Common_args.metadata_file
     and+ commit = Common_args.commit
     and+ dry_run = Common_args.dry_run in
-    match commit with
-    | None -> failwith "Commit is mandatory"
-    | Some commit -> synchronise metadata_file commit dry_run
+    synchronise metadata_file commit dry_run
   ;;
 
   let info =
