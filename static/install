@@ -79,7 +79,6 @@ exe="$bin_dir/dune"
 tmp_tar="$tmp_dir/$tar_target"
 tmp_tar_dir="$tmp_dir/$tar_target_name"
 tmp_exe="$tmp_tar_dir/dune"
-tilde_bin_dir=$(tildify "$bin_dir")
 
 command -v tar >/dev/null 2>&1 ||
     error "Failed to find tar. This script needs tar to be able to install dune."
