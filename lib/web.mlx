@@ -5,8 +5,8 @@ module Info = struct
 end
 
 module Link = struct
-  let make ?(class_ = "") ~href ~children () =
-    <a class_=("text-[var(--accent)] " ^ class_) href>children</a>
+  let make ?(class_ = "") ?(color = "text-primary-light") ~href ~children () =
+    <a class_=(color ^ " " ^ class_) href>children</a>
 end
 
 module Code = struct
@@ -79,57 +79,23 @@ module LinkButton = struct
       </a>
 end
 
-module Faq = struct
-
-    let load_script () =
-    <script>
-    (JSX.unsafe {|
-        function listenOnDetails(idDetails, idArrowOpen, idArrowClose) {
-          const arrowOpen = document.getElementById(idArrowOpen);
-          const arrowClose = document.getElementById(idArrowClose);
-          const details = document.getElementById(idDetails);
-          details.addEventListener("toggle", function () {
-            let isOpened = details.hasAttribute("open");
-            if (isOpened) {
-              arrowOpen.classList.remove("hidden");
-              arrowClose.classList.add("hidden");
-            } else {
-              arrowClose.classList.remove("hidden");
-              arrowOpen.classList.add("hidden");
-            }
-          });
-        }
-     |})
-    </script>
-
-    let make ~question ~answer ~idx () =
-      let idx = string_of_int idx in
-      let details_id = "faq-details-" ^ idx in
-      let arrow_open_id = "faq-arrow-open" ^ idx in
-      let arrow_close_id = "faq-arrow-close-" ^ idx in
-      let toggleScript = Format.sprintf {|
-       document.addEventListener('DOMContentLoaded', () => {
-        listenOnDetails('%s', '%s', '%s');
-      })
-      |} details_id arrow_open_id arrow_close_id
-      in
-      <details id=details_id class_="w-full flex flex border border-section-faq-background rounded-md list-none">
-      <script>(JSX.unsafe toggleScript)</script>
-         <summary class_="w-full flex flex-row items-center w-full p-2.5 bg-black/1">
+module Details = struct
+    let make ~summary ~container_class ~children () =
+      <details class_="w-full flex flex border border-section-faq-background rounded-md list-none [&>summary>span>svg]:open:rotate-90">
+         <summary class_="w-full flex flex-row items-center w-full p-2.5 bg-black/1 font-bold">
             <span class_="bg-tertiary/20 rounded-md px-2.5 py-2 mr-2.5">
-              <Icons.arrow_close id=arrow_close_id class_="" />
-              <Icons.arrow_open id=arrow_open_id class_="hidden"/>
+              <Icons.arrow class_="transition-all duration-200" />
             </span>
-            (JSX.string question)
+            (JSX.string summary)
          </summary>
-         <div class_="px-4 lg:px-14 py-1 border-t border-section-faq-background w-full">answer</div>
+         <div class_=("border-t border-section-faq-background w-full " ^ container_class) >children</div>
       </details>
 end
 
 
 
 let navbar () =
-  <nav class_="w-full bg-secondary flex flex-row flex-wrap justify-between items-center align-center lg:pl-24 lg:pr-24 px-5 py-2.5 text-white/60">
+  <nav class_="w-full bg-secondary flex flex-row flex-wrap justify-between items-center align-center lg:px-24 px-5 py-2.5 text-white/60">
     <Icons.logo />
     <div class_="flex flex-row flex-wrap gap-6">
       <a class_="p-2.5 hover:text-primary-light" href="#download">"Download & Install Dune"</a>
@@ -288,10 +254,9 @@ $ export DUNE_CONFIG__LOCK_DEV_TOOL=enabled
 let faq () =
   <section id="faq" class_="w-full flex justify-center py-10 px-5 lg:px-0">
   <div class_="w-full lg:w-lg flex flex-col gap-2">
-    <Faq.load_script />
     <h2 class_="mb-7"> "Frequently Asked Questions" </h2>
-    (List.mapi
-      (fun idx (question, answer) -> (<Faq question answer idx />)) q_and_a |> JSX.list)
+    (List.map
+      (fun (question, answer) -> (<Details container_class="px-4 lg:px-14 py-1" summary=question>answer</Details>)) q_and_a |> JSX.list)
   </div>
   </section>
 
@@ -368,6 +333,27 @@ $ sudo mv "./dune" "$HOME/.local/bin/dune"|}
   </section>
 
 
+let release_information ~base_url ~bundle ~target () =
+  let open Metadata in
+  let targz = Bundle.to_download_file target in
+  let cert_href = Bundle.to_certificate_url bundle ~base_url ~target in
+  let tar_href = Bundle.to_download_url bundle ~base_url ~target  in
+  let (arch, _, os) = Target.to_triple target in
+  <tr class_="odd:bg-tertiary/5">
+    <td class_="pl-14 border"><Link class_="hover:underline" href=tar_href>(JSX.string targz)</Link></td>
+    <td class_="hidden lg:table-cell py-2.5 pl-2.5 border">"Archive"</td>
+    <td class_="hidden lg:table-cell py-2.5 pl-2.5 border">(JSX.string os)</td>
+    <td class_="hidden lg:table-cell py-2.5 pl-2.5 border">(JSX.string arch)</td>
+    <td class_="hidden lg:table-cell py-2.5 pl-2.5 border">(String.sub bundle.commit 0 6 |> JSX.string)</td>
+    <td class_="hidden lg:table-cell py-2.5 pl-2.5 border">
+      <div class_="group w-full flex flex-raw gap-2.5 items-center">
+        <Icons.eye class_=" stroke-block-p group-hover:stroke-primary-light" />
+        <Link color="text-block-p" class_="underline group-hover:text-primary-light" href=cert_href>"View"</Link>
+      </div>
+    </td>
+  </tr>
+
+
 let release_history ~base_url ~releases () =
   let open Metadata in
   <section id="release-history" class_="w-full flex justify-center py-10 px-5 lg:px-0">
@@ -383,52 +369,34 @@ let release_history ~base_url ~releases () =
       releases
       |> List.map (fun (bundle: Bundle.t) ->
           let date = Bundle.get_date_string_from ~prefix:"nightly-" bundle in
-          let files =
-            bundle.targets
-      |> List.map (fun (target: Target.t) ->
-          let title = Target.to_string target in
-          let cert_href = Bundle.to_certificate_url bundle ~base_url ~target in
-          let tar_href = Bundle.to_download_url bundle ~base_url ~target  in
-          let (arch, _, os) = Target.to_triple target in
-                  (<tr>
-                  <td><Link href=tar_href>(JSX.string ("dune-" ^ title))</Link></td>
-                  <td class_="hidden lg:table-cell">(JSX.string os)</td>
-                  <td class_="hidden lg:table-cell">(JSX.string arch)</td>
-                  <td class_="hidden lg:table-cell">(JSX.string bundle.commit)</td>
-                  <td class_="hidden lg:table-cell"><Link href=cert_href>"Certificate"</Link></td>
-                  </tr>)
-          )
-          in
-
-            (<details class_="flex flex-col gap-2">
-              <summary class_="font-medium text-lg">
-                "dune " (JSX.string date)
-              </summary>
-              <table class_="w-full pb-4">
-                <thead>
+          let summary = Format.sprintf "dune %s" date in
+          let files = bundle.targets |> List.map (fun (target: Target.t) -> (<release_information base_url bundle target />)) in
+          (<Details summary container_class="">
+             <table class_="w-full pb-4 border-collapse border">
+                <thead class_="font-normal border">
                   <tr>
-                    <th>"File name"</th>
-                    <th class_="hidden lg:table-cell">"OS"</th>
-                    <th class_="hidden lg:table-cell">"Arch"</th>
-                    <th class_="hidden lg:table-cell">"Commit"</th>
-                    <th class_="hidden lg:table-cell">"Certificate"</th>
+                    <th class_="pl-14 py-2.5 border font-normal">"File Name"</th>
+                    <th class_="hidden lg:table-cell pl-2.5 py-2.5 border font-normal">"Kind"</th>
+                    <th class_="hidden lg:table-cell pl-2.5 py-2.5 border font-normal">"OS"</th>
+                    <th class_="hidden lg:table-cell pl-2.5 py-2.5 border font-normal">"Arch"</th>
+                    <th class_="hidden lg:table-cell pl-2.5 py-2.5 border font-normal">"Commit"</th>
+                    <th class_="hidden lg:table-cell pl-2.5 py-2.5 border font-normal">"Certificate"</th>
                   </tr>
                 </thead>
                 <tbody>
                   (JSX.list files)
                 </tbody>
               </table>
-            </details>)
-      )
-      |> JSX.list
+          </Details>)
+      ) |> JSX.list
     )
     </div>
   </div>
   </section>
 
 let footer_info () =
-  <footer class_="w-full flex justify-center bg-secondary py-10 text-white/60">
-    <div class_="w-lg flex flex-col-reverse lg:flex-row justify-between items-center">
+  <footer class_="w-full flex justify-center px-5 lg:px-24 bg-secondary py-10 text-white/60">
+    <div class_="w-full flex flex-col-reverse lg:flex-row justify-between items-center">
     <div class_="flex flex-col lg:items-start max-w-[263px] mt-10 lg:mt-0 ">
       <Icons.logo />
       <p class_="text-sm text-white text-justify mb-2.5">

@@ -674,6 +674,10 @@ video {
   flex: 1 1 0%;
 }
 
+.border-collapse {
+  border-collapse: collapse;
+}
+
 .transform {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
@@ -881,6 +885,10 @@ video {
   --tw-gradient-to: #0F254F var(--tw-gradient-to-position);
 }
 
+.stroke-block-p {
+  stroke: #555659;
+}
+
 .stroke-primary-light {
   stroke: #C24F1E;
 }
@@ -966,6 +974,14 @@ video {
   padding-bottom: 52px;
 }
 
+.pl-14 {
+  padding-left: 3.5rem;
+}
+
+.pl-2\.5 {
+  padding-left: 0.625rem;
+}
+
 .pl-4 {
   padding-left: 1rem;
 }
@@ -1039,6 +1055,10 @@ video {
   font-weight: 500;
 }
 
+.font-normal {
+  font-weight: 400;
+}
+
 .leading-7 {
   line-height: 1.75rem;
 }
@@ -1094,6 +1114,16 @@ video {
   opacity: 0.4;
 }
 
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.duration-200 {
+  transition-duration: 200ms;
+}
+
 :root {
   --accent: #d54000;
 }
@@ -1143,6 +1173,10 @@ code {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
+.odd\:bg-tertiary\/5:nth-child(odd) {
+  background-color: rgb(56 130 183 / 0.05);
+}
+
 .hover\:border-primary-light:hover {
   --tw-border-opacity: 1;
   border-color: rgb(194 79 30 / var(--tw-border-opacity));
@@ -1154,6 +1188,19 @@ code {
 }
 
 .hover\:text-primary-light:hover {
+  --tw-text-opacity: 1;
+  color: rgb(194 79 30 / var(--tw-text-opacity));
+}
+
+.hover\:underline:hover {
+  text-decoration-line: underline;
+}
+
+.group:hover .group-hover\:stroke-primary-light {
+  stroke: #C24F1E;
+}
+
+.group:hover .group-hover\:text-primary-light {
   --tw-text-opacity: 1;
   color: rgb(194 79 30 / var(--tw-text-opacity));
 }
@@ -1210,11 +1257,13 @@ code {
     padding-right: 3.5rem;
   }
 
-  .lg\:pl-24 {
+  .lg\:px-24 {
     padding-left: 6rem;
-  }
-
-  .lg\:pr-24 {
     padding-right: 6rem;
   }
+}
+
+.\[\&\>summary\>span\>svg\]\:open\:rotate-90[open]>summary>span>svg {
+  --tw-rotate: 90deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
