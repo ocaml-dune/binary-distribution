@@ -174,6 +174,12 @@ jobs:
         shell: bash
         run: opam exec -- dune exec sandworm -- sync --commit "${{ needs.binary.outputs.git-commit }}"
 
+      - name: Set DATE environment variable
+        run: echo "DATE=$(date +'%Y-%m-%d')" >> "$GITHUB_ENV"
+
+      - name: Store the date in a text file
+        run: echo "$DATE" > static/latest.txt
+
       - name: Commit changes to branch
         run: |
           git config --global user.name 'Sandworm'
