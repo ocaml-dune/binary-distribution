@@ -53,7 +53,9 @@ module Sync = struct
     in
     let () =
       let install_bucket_path =
-        Filename.concat Config.Server.rclone_bucket_ref Config.Path.install
+        Filename.concat
+          Config.Server.rclone_bucket_ref
+          (Filename.basename Config.Path.install)
       in
       if dry_run
       then
