@@ -12,7 +12,7 @@ end
 module Code = struct
   let make ~children () =
       <pre class_="w-full bg-section-code md:bg-black px-5 rounded-md">
-        <code class_="w-full h-full py-4 overflow-scroll">
+        <code class_="w-full h-full py-4 ">
         (List.map (fun child -> (<span>child</span>)) children |> JSX.list)
         </code>
       </pre>
@@ -72,8 +72,8 @@ end
 
 module LinkButton = struct
     let make ~children ~href () =
-      <a class_="w-full lg:w-max" href>
-        <div class_="flex flex-row items-center w-full lg:w-max p-2.5 bg-none rounded-md border border-white/87 hover:border-primary-light hover:bg-primary-light">
+      <a class_="w-full sm:w-max" href>
+        <div class_="flex flex-row items-center w-full sm:w-max p-2.5 bg-none rounded-md border border-white/87 hover:border-primary-light hover:bg-primary-light">
           children
         </div>
       </a>
@@ -156,7 +156,7 @@ let header_info () =
 
 let warning () =
   <div class_="w-full flex justify-center relative bg-warning/20 border-y border-warning px-5 lg:px-0">
-    <div class_="w-lg flex items-center justify-between p-4">
+    <div class_="w-full sm:w-lg flex items-center justify-between p-4">
         <Icons.info class_="stroke-warning mr-2" />
         <span class_="flex-1 text-left">
             "This Dune Install is only an "
@@ -170,7 +170,7 @@ let warning () =
 
 let getting_started ~install_url () =
   <section id="download" class_="w-full flex justify-center pt-9 pb-12 px-5 lg:px-0">
-    <div class_="w-lg flex flex-col">
+    <div class_="w-full lg:w-lg flex flex-col">
     <h2 class_="mb-5">"Install Dune"</h2>
     <h4>
       <span class_="mr-2.5"><Icons.terminal /></span>
@@ -202,7 +202,7 @@ let getting_started ~install_url () =
 
 let feedback () =
   <section id="feedback" class_="w-full flex justify-center pt-9 pb-14 text-white/60 bg-gradient-to-r from-gradient-start to-gradient-end px-5 lg:px-0" >
-    <div class_="w-lg">
+    <div class_="w-full lg:w-lg">
     <h2 class_="flex flex-row items-center text-white mb-5">
       <span>
         <Icons.community class_="mr-2"/>
@@ -210,7 +210,7 @@ let feedback () =
       "Share Feedback"
     </h2>
     <p class_="mb-6 text-white/60">"We are excited to learn from your experience with the Dune Developer Preview, so feel encourage to tell us what you think"</p>
-    <div class_="w-full flex flex-col lg:flex-row flex-wrap items-center gap-10">
+    <div class_="w-full flex flex-col sm:flex-row flex-wrap items-center gap-10">
       <LinkButton href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3HaJbskiCLHqLS6Oi1S3-rWYwv0hb_Iz8O9VlspuDdK5qbXYUZDpRRlWfEY1GP8KFy6XY8MFb9">
         <p>
           <Icons.message class_="mr-2.5" />
@@ -359,8 +359,8 @@ let release_information ~base_url ~bundle ~target () =
   let cert_href = Bundle.to_certificate_url bundle ~base_url ~target in
   let tar_href = Bundle.to_download_url bundle ~base_url ~target  in
   let (arch, _, os) = Target.to_triple target in
-  <tr class_="odd:bg-tertiary/5">
-    <td class_="pl-14 border"><Link class_="hover:underline" href=tar_href>(JSX.string targz)</Link></td>
+  <tr class_="lg:odd:bg-tertiary/5">
+    <td class_="table-cell bg-tertiary/15 lg:bg-inherit pl-2.5 lg:pl-14 border"><Link class_="hover:underline" href=tar_href>(JSX.string targz)</Link></td>
     <td class_="hidden lg:table-cell py-2.5 pl-2.5 border">"Archive"</td>
     <td class_="hidden lg:table-cell py-2.5 pl-2.5 border">(JSX.string os)</td>
     <td class_="hidden lg:table-cell py-2.5 pl-2.5 border">(JSX.string arch)</td>
@@ -377,7 +377,7 @@ let release_information ~base_url ~bundle ~target () =
 let release_history ~base_url ~releases () =
   let open Metadata in
   <section id="release-history" class_="w-full flex justify-center py-10 px-5 lg:px-0">
-    <div class_="w-lg flex flex-col gap-2 text-left">
+    <div class_="w-full lg:w-lg flex flex-col gap-2 text-left">
     <h2 class_="mb-4"> "Last Month Release History" </h2>
     <p>
       "Here is a list of the "
