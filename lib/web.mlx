@@ -223,7 +223,7 @@ let q_and_a = [
   ; "Does it support Windows?", <p>"No, not yet. Watch this space for news!"</p>
   ; "Can I build the Developer Preview of Dune from sources?",
     <div class_="flex flex-col gap-2">
-      <p>"Yes. the only difference from a regular build from source is in a few
+      <p>"Yes. The only difference from a regular build from source is in a few
       configuration flags. Please look in the Dune repository for complete instructions
       on how to do a source build of Dune."
       </p>
