@@ -32,5 +32,5 @@ p {
 
 code {
   font-family: "Roboto Mono", monospace;
-  @apply text-base text-white leading-5;
+  @apply flex flex-col overflow-scroll justify-start text-base text-white leading-5;
 }

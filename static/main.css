@@ -1010,10 +1010,6 @@ video {
   padding-right: 0.625rem;
 }
 
-.pr-5 {
-  padding-right: 1.25rem;
-}
-
 .pt-9 {
   padding-top: 2.25rem;
 }
@@ -1165,6 +1161,10 @@ p {
 
 code {
   font-family: "Roboto Mono", monospace;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: scroll;
   font-size: 1rem;
   line-height: 1.25rem;
   --tw-text-opacity: 1;

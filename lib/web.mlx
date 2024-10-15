@@ -11,9 +11,9 @@ end
 
 module Code = struct
   let make ~children () =
-      <pre class_="w-full bg-section-code md:bg-black py-4 px-5 overflow-scroll rounded-md">
-        <code class_="pr-5">
-        children
+      <pre class_="w-full bg-section-code md:bg-black px-5 rounded-md">
+        <code class_="w-full h-full py-4 overflow-scroll">
+        (List.map (fun child -> (<span>child</span>)) children |> JSX.list)
         </code>
       </pre>
 end
@@ -184,11 +184,10 @@ let getting_started ~install_url () =
       "Run"
     </h4>
     <Code>
-"$ dune init proj hello_world
-$ cd hello_world
-$ dune pkg lock
-$ dune exec hello_world
-"
+"$ dune init proj hello_world"
+"$ cd hello_world"
+"$ dune pkg lock"
+"$ dune exec hello_world"
     </Code>
     <Note class_="">
       <p class_="text-secondary">
@@ -253,10 +252,9 @@ let q_and_a = [
       </p>
       <p>"When configuring the build you'll want to enable the following flags:" </p>
       <Code>
-"--enable-toolchains
---enable-pkg-build-progress
---enable-lock-dev-tool
-"
+"--enable-toolchains"
+"--enable-pkg-build-progress"
+"--enable-lock-dev-tool"
 </Code>
     </div>
   ; "Can I access these features from a version of Dune managed by opam?",
@@ -266,11 +264,10 @@ let q_and_a = [
       <p>"To enable these features make sure you are pinning dune to the development version, and export the following environment variables: "
       </p>
       <Code>
-"$ opam pin add dune --dev
-$ export DUNE_CONFIG__TOOLCHAINS=enabled
-$ export DUNE_CONFIG__PKG_BUILD_PROGRESS=enabled
-$ export DUNE_CONFIG__LOCK_DEV_TOOL=enabled
-"
+"$ opam pin add dune --dev"
+"$ export DUNE_CONFIG__TOOLCHAINS=enabled"
+"$ export DUNE_CONFIG__PKG_BUILD_PROGRESS=enabled"
+"$ export DUNE_CONFIG__LOCK_DEV_TOOL=enabled"
 </Code>
     </div>
 ]
@@ -334,16 +331,15 @@ let manual_installation ~base_url ~releases () =
       "Run"
     </h4>
     <Code>
-{|$ tar xzvf dune-<arch>.tar.gz
-dune-<arch>
-$ cd dune-<arch>
-$ sudo mv "./dune" "$HOME/.local/bin/dune"|}
+"$ tar xzvf dune-<arch>.tar.gz"
+"dune-<arch>"
+"$ cd dune-<arch>"
+"$ sudo mv \"./dune\" \"$HOME/.local/bin/dune\""
     </Code>
     <p class_="mt-2.5 mb-2.5">"You can verify your installation by running:"</p>
     <Code>
-{|$ dune --version
+"$ dune --version"
 "Dune Developer Preview: build , git revision cc260345db57ab639db6363b2dc89072a1492832"
-|}
     </Code>
 
     <h3 class_="mt-5 mb-2.5"> "Verifying the Dune binary" </h3>
@@ -352,7 +348,7 @@ $ sudo mv "./dune" "$HOME/.local/bin/dune"|}
       <code class_="font-mono text-block-p">"gh"</code>
       <span>" tool to verify it with the following command: "</span>
     </p>
-    <Code>"$ gh attestation verify ./dune -R ocaml-dune/binary-distribution --bundle attestation.jsonl"</Code>
+    <Code>[JSX.string "$ gh attestation verify ./dune -R ocaml-dune/binary-distribution --bundle attestation.jsonl"]</Code>
   </div>
   </section>
 
