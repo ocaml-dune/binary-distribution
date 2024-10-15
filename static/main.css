@@ -570,6 +570,10 @@ video {
   z-index: 10;
 }
 
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
 .mb-2\.5 {
   margin-bottom: 0.625rem;
 }
@@ -684,6 +688,10 @@ video {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.scroll-pt-20 {
+  scroll-padding-top: 5rem;
 }
 
 .list-none {
@@ -962,16 +970,8 @@ video {
   padding-bottom: 3.5rem;
 }
 
-.pb-2 {
-  padding-bottom: 0.5rem;
-}
-
 .pb-4 {
   padding-bottom: 1rem;
-}
-
-.pb-\[52px\] {
-  padding-bottom: 52px;
 }
 
 .pl-14 {
@@ -994,10 +994,6 @@ video {
   padding-right: 0.625rem;
 }
 
-.pt-6 {
-  padding-top: 1.5rem;
-}
-
 .pt-9 {
   padding-top: 2.25rem;
 }
@@ -1018,16 +1014,6 @@ video {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
-.text-2xl {
-  font-size: 1.5rem;
-  line-height: 2rem;
-}
-
-.text-3xl {
-  font-size: 1.875rem;
-  line-height: 2.25rem;
-}
-
 .text-4xl {
   font-size: 2.25rem;
   line-height: 2.5rem;
@@ -1043,16 +1029,8 @@ video {
   line-height: 1.25rem;
 }
 
-.font-black {
-  font-weight: 900;
-}
-
 .font-bold {
   font-weight: 700;
-}
-
-.font-medium {
-  font-weight: 500;
 }
 
 .font-normal {
@@ -1212,6 +1190,10 @@ code {
 
   .lg\:block {
     display: block;
+  }
+
+  .lg\:flex {
+    display: flex;
   }
 
   .lg\:table-cell {

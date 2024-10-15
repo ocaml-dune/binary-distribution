@@ -93,9 +93,8 @@ module Details = struct
 end
 
 
-
 let navbar () =
-  <nav class_="w-full bg-secondary flex flex-row flex-wrap justify-between items-center align-center lg:px-24 px-5 py-2.5 text-white/60">
+  <nav class_="w-full bg-secondary hidden lg:flex flex-row flex-wrap justify-between items-center align-center lg:px-24 px-5 py-2.5 text-white/60">
     <Icons.logo />
     <div class_="flex flex-row flex-wrap gap-6">
       <a class_="p-2.5 hover:text-primary-light" href="#download">"Download & Install Dune"</a>
@@ -281,10 +280,10 @@ let installation_target ~base_url ~bundle target =
     <a class_="text-black underline" href=cert_href>"Certificate"</a>
   </li>
 
-let manual_installation ~base_url ~releases () =  
-  <section class_="w-full flex justify-center border-t border-b border-black/20 pt-6 pb-[52px] bg-section-manual px-5 lg:px-0">
+let manual_installation ~base_url ~releases () =
+  <section id="manual-installation" class_="w-full flex justify-center border-t border-b border-black/20 py-10  bg-section-manual px-5 lg:px-0">
     <div class_="w-full lg:w-lg flex flex-col gap-2 ">
-    <h2 id="manual-installation" class_="text-3xl font-black pb-2"> "Manual Installation" </h2>
+    <h2 class_="mb-2"> "Manual Installation" </h2>
     <p class_="mb-5">
       "In this section you’ll find instructions to manually install the Dune Developer Review, and verify the installation. This is recommended for advanced users, or if you want s understand where the binaries come from."
     </p>
@@ -358,7 +357,7 @@ let release_history ~base_url ~releases () =
   let open Metadata in
   <section id="release-history" class_="w-full flex justify-center py-10 px-5 lg:px-0">
     <div class_="w-lg flex flex-col gap-2 text-left">
-    <h2 class_="text-2xl font-medium pb-4"> "Last Month Release History" </h2>
+    <h2 class_="mb-4"> "Last Month Release History" </h2>
     <p>
       "Here is a list of the "
       (JSX.int (List.length releases))
@@ -419,7 +418,7 @@ let footer_info () =
 
 let page ~base_url releases =
   let install_url = Filename.concat base_url "install" in
-  <html>
+  <html class_="scroll-pt-20">
     <head>
       <meta charset="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
