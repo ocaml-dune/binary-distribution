@@ -359,13 +359,13 @@ let release_information ~base_url ~bundle ~target () =
   let cert_href = Bundle.to_certificate_url bundle ~base_url ~target in
   let tar_href = Bundle.to_download_url bundle ~base_url ~target  in
   let (arch, _, os) = Target.to_triple target in
-  <tr class_="lg:odd:bg-tertiary/5">
-    <td class_="table-cell bg-tertiary/15 lg:bg-inherit pl-2.5 lg:pl-14 border"><Link class_="hover:underline" href=tar_href>(JSX.string targz)</Link></td>
-    <td class_="hidden lg:table-cell py-2.5 pl-2.5 border">"Archive"</td>
-    <td class_="hidden lg:table-cell py-2.5 pl-2.5 border">(JSX.string os)</td>
-    <td class_="hidden lg:table-cell py-2.5 pl-2.5 border">(JSX.string arch)</td>
-    <td class_="hidden lg:table-cell py-2.5 pl-2.5 border">(String.sub bundle.commit 0 6 |> JSX.string)</td>
-    <td class_="hidden lg:table-cell py-2.5 pl-2.5 border">
+  <tr class_="odd:bg-tertiary/10">
+    <td class_="pl-2.5 lg:pl-14 border"><Link class_="hover:underline" href=tar_href>(JSX.string targz)</Link></td>
+    <td class_="py-2.5 pl-2.5 border">"Archive"</td>
+    <td class_="py-2.5 pl-2.5 border">(JSX.string os)</td>
+    <td class_="py-2.5 pl-2.5 border">(JSX.string arch)</td>
+    <td class_="py-2.5 pl-2.5 border">(String.sub bundle.commit 0 6 |> JSX.string)</td>
+    <td class_="py-2.5 pl-2.5 border">
       <div class_="group w-full flex flex-raw gap-2.5 items-center">
         <Icons.eye class_=" stroke-block-p group-hover:stroke-primary-light" />
         <Link color="text-block-p" class_="underline group-hover:text-primary-light" href=cert_href>"View"</Link>
@@ -391,16 +391,16 @@ let release_history ~base_url ~releases () =
           let date = Bundle.get_date_string_from ~prefix:"nightly-" bundle in
           let summary = Format.sprintf "dune %s" date in
           let files = bundle.targets |> List.map (fun (target: Target.t) -> (<release_information base_url bundle target />)) in
-          (<Details summary container_class="">
+          (<Details summary container_class="w-full overflow-scroll">
              <table class_="w-full pb-4 border-collapse border">
                 <thead class_="font-normal border">
                   <tr>
-                    <th class_="pl-14 py-2.5 border font-normal">"File Name"</th>
-                    <th class_="hidden lg:table-cell pl-2.5 py-2.5 border font-normal">"Kind"</th>
-                    <th class_="hidden lg:table-cell pl-2.5 py-2.5 border font-normal">"OS"</th>
-                    <th class_="hidden lg:table-cell pl-2.5 py-2.5 border font-normal">"Arch"</th>
-                    <th class_="hidden lg:table-cell pl-2.5 py-2.5 border font-normal">"Commit"</th>
-                    <th class_="hidden lg:table-cell pl-2.5 py-2.5 border font-normal">"Certificate"</th>
+                    <th class_="pl-2.5 lg:pl-14 py-2.5 border font-normal">"File Name"</th>
+                    <th class_="pl-2.5 py-2.5 border font-normal">"Kind"</th>
+                    <th class_="pl-2.5 py-2.5 border font-normal">"OS"</th>
+                    <th class_="pl-2.5 py-2.5 border font-normal">"Arch"</th>
+                    <th class_="pl-2.5 py-2.5 border font-normal">"Commit"</th>
+                    <th class_="pl-2.5 py-2.5 border font-normal">"Certificate"</th>
                   </tr>
                 </thead>
                 <tbody>

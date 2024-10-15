@@ -638,10 +638,6 @@ video {
   display: table;
 }
 
-.table-cell {
-  display: table-cell;
-}
-
 .hidden {
   display: none;
 }
@@ -873,10 +869,6 @@ video {
   background-color: rgb(250 248 243 / var(--tw-bg-opacity));
 }
 
-.bg-tertiary\/15 {
-  background-color: rgb(56 130 183 / 0.15);
-}
-
 .bg-tertiary\/20 {
   background-color: rgb(56 130 183 / 0.2);
 }
@@ -996,10 +988,6 @@ video {
 
 .pb-4 {
   padding-bottom: 1rem;
-}
-
-.pl-14 {
-  padding-left: 3.5rem;
 }
 
 .pl-2\.5 {
@@ -1179,6 +1167,10 @@ code {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
+.odd\:bg-tertiary\/10:nth-child(odd) {
+  background-color: rgb(56 130 183 / 0.1);
+}
+
 .hover\:border-primary-light:hover {
   --tw-border-opacity: 1;
   border-color: rgb(194 79 30 / var(--tw-border-opacity));
@@ -1207,7 +1199,7 @@ code {
   color: rgb(194 79 30 / var(--tw-text-opacity));
 }
 
-@media (min-width: 40em) {
+@media (min-width: 60em) {
   .sm\:w-lg {
     width: 1024px;
   }
@@ -1235,10 +1227,6 @@ code {
     display: flex;
   }
 
-  .lg\:table-cell {
-    display: table-cell;
-  }
-
   .lg\:hidden {
     display: none;
   }
@@ -1262,10 +1250,6 @@ code {
 
   .lg\:items-start {
     align-items: flex-start;
-  }
-
-  .lg\:bg-inherit {
-    background-color: inherit;
   }
 
   .lg\:bg-transparent {
@@ -1293,10 +1277,6 @@ code {
 
   .lg\:pl-14 {
     padding-left: 3.5rem;
-  }
-
-  .lg\:odd\:bg-tertiary\/5:nth-child(odd) {
-    background-color: rgb(56 130 183 / 0.05);
   }
 }
 
