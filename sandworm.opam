@@ -2,8 +2,22 @@
 opam-version: "2.0"
 synopsis: "Dune metadata website generator"
 description: "The Dev Preview website generator."
-maintainer: ["Etienne Marais <dev@maiste.fr>"]
-authors: ["Etienne Marais <dev@maiste.fr>"]
+maintainer: [
+  "Etienne Marais <dev@maiste.fr>"
+  "Marek Kubica <marek@tarides.com>"
+  "Stephen Sherratt <stephen@sherra.tt>"
+  "Ambre Austen Suhamy <ambre@tarides.com>"
+  "Leandro Ostera <leandro@abstractmachines.dev>"
+  "Alpha Issiaga DIALLO <alpha@tarides.com>"
+]
+authors: [
+  "Etienne Marais <dev@maiste.fr>"
+  "Marek Kubica <marek@tarides.com>"
+  "Stephen Sherratt <stephen@sherra.tt>"
+  "Ambre Austen Suhamy <ambre@tarides.com>"
+  "Leandro Ostera <leandro@abstractmachines.dev>"
+  "Alpha Issiaga DIALLO <alpha@tarides.com>"
+]
 license: "ISC"
 homepage: "https://github.com/tarides/dune-binary-distribution"
 bug-reports: "https://github.com/tarides/dune-binary-distribution/issues"
