@@ -7,9 +7,21 @@
 (source
  (github tarides/dune-binary-distribution))
 
-(authors "Etienne Marais <dev@maiste.fr>")
+(authors
+  "Etienne Marais <dev@maiste.fr>"
+  "Marek Kubica <marek@tarides.com>"
+  "Stephen Sherratt <stephen@sherra.tt>"
+  "Ambre Austen Suhamy <ambre@tarides.com>"
+  "Leandro Ostera <leandro@abstractmachines.dev>"
+  "Alpha Issiaga DIALLO <alpha@tarides.com>")
 
-(maintainers "Etienne Marais <dev@maiste.fr>")
+(maintainers
+  "Etienne Marais <dev@maiste.fr>"
+  "Marek Kubica <marek@tarides.com>"
+  "Stephen Sherratt <stephen@sherra.tt>"
+  "Ambre Austen Suhamy <ambre@tarides.com>"
+  "Leandro Ostera <leandro@abstractmachines.dev>"
+  "Alpha Issiaga DIALLO <alpha@tarides.com>")
 
 (license ISC)
 
