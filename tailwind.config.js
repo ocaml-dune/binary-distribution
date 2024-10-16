@@ -18,7 +18,7 @@ export default {
   content: ["**/*.mlx"],
   theme: {
     screens: {
-      sm: "40em",
+      sm: "60em",
       lg: "80em",
     },
     extend: {

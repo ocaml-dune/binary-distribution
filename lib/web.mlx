@@ -11,9 +11,9 @@ end
 
 module Code = struct
   let make ~children () =
-      <pre class_="w-full bg-section-code md:bg-black py-4 px-5 rounded-md overflow-scroll">
-        <code>
-        children
+      <pre class_="w-full bg-section-code md:bg-black px-5 rounded-md">
+        <code class_="w-full h-full py-4 ">
+        (List.map (fun child -> (<span>child</span>)) children |> JSX.list)
         </code>
       </pre>
 end
@@ -72,8 +72,8 @@ end
 
 module LinkButton = struct
     let make ~children ~href () =
-      <a class_="w-full lg:w-max" href>
-        <div class_="flex flex-row items-center w-full lg:w-max p-2.5 bg-none rounded-md border border-white/87 hover:border-primary-light hover:bg-primary-light">
+      <a class_="w-full sm:w-max" href>
+        <div class_="flex flex-row items-center w-full sm:w-max p-2.5 bg-none rounded-md border border-white/87 hover:border-primary-light hover:bg-primary-light">
           children
         </div>
       </a>
@@ -92,19 +92,43 @@ module Details = struct
       </details>
 end
 
-
-
 let navbar () =
-  <nav class_="w-full bg-secondary flex flex-row flex-wrap justify-between items-center align-center lg:px-24 px-5 py-2.5 text-white/60">
-    <Icons.logo />
-    <div class_="flex flex-row flex-wrap gap-6">
-      <a class_="p-2.5 hover:text-primary-light" href="#download">"Download & Install Dune"</a>
-      <a class_="p-2.5 hover:text-primary-light" href="#feedback">"Share Feedback"</a>
-      <a class_="p-2.5 hover:text-primary-light" href="#faq">"FAQ'S"</a>
-      <a class_="p-2.5 hover:text-primary-light" href="#manual-installation">"Manual Installation"</a>
-      <a class_="p-2.5 hover:text-primary-light" href="#release-history">"Last Month Release History"</a>
+  <nav class_="w-full sticky top-0 z-50 bg-secondary flex flex-col lg:flex-row flex-wrap justify-between items-center align-center lg:px-24 px-5 py-2.5 text-white/60">
+    <script>
+    (JSX.unsafe {|
+
+      function onMenuClick() {
+        let menu = document.getElementById("menu");
+        if (menu.classList.contains("hidden")) {
+          menu.classList.remove("hidden");
+          menu.classList.add("flex");
+        } else {
+          menu.classList.add("hidden");
+          menu.classList.remove("flex");
+        }
+      }
+
+      function onItemClick(e) {
+        let menuButton = document.getElementById("menu-button");
+        let menuP = menuButton.children[0];
+        menuP.innerText = e.innerText;
+        onMenuClick();
+      }
+    |})
+    </script>
+    <div class_="w-full lg:w-fit flex flex-row items-center justify-between">
+      <Icons.logo />
+      <button id="menu-button" class_="flex lg:hidden items-center gap-2.5" onclick="onMenuClick()"><p class_="text-white">"Download & Install Dune"</p><Icons.menu_arrow class_="stroke-primary-light fill-primary-light" /></button>
+    </div>
+    <div id="menu" class_="lg:flex hidden flex-col lg:flex-row flex-wrap gap-6">
+      <a id="download-menu" class_="p-2.5 hover:text-primary-light" onclick="onItemClick(this)" href="#download">"Download & Install Dune"</a>
+      <a id="share-menu" class_="p-2.5 hover:text-primary-light" onclick="onItemClick(this)" href="#feedback">"Share Feedback"</a>
+      <a id="faq-menu" class_="p-2.5 hover:text-primary-light"  onclick="onItemClick(this)" href="#faq">"FAQ'S"</a>
+      <a id="manual-menu" class_="p-2.5 hover:text-primary-light" onclick="onItemClick(this)" href="#manual-installation">"Manual Installation"</a>
+      <a id="release-menu" class_="p-2.5 hover:text-primary-light" onclick="onItemClick(this)" href="#release-history">"Last Month Release History"</a>
     </div>
   </nav>
+
 
 let header_info () = 
   <section class_="relative flex items-center justify-center overflow-hidden lg:h-96 bg-black lg:bg-transparent px-5 py-10 lg:p-0">
@@ -132,7 +156,7 @@ let header_info () =
 
 let warning () =
   <div class_="w-full flex justify-center relative bg-warning/20 border-y border-warning px-5 lg:px-0">
-    <div class_="w-lg flex items-center justify-between p-4">
+    <div class_="w-full sm:w-lg flex items-center justify-between p-4">
         <Icons.info class_="stroke-warning mr-2" />
         <span class_="flex-1 text-left">
             "This Dune Install is only an "
@@ -146,7 +170,7 @@ let warning () =
 
 let getting_started ~install_url () =
   <section id="download" class_="w-full flex justify-center pt-9 pb-12 px-5 lg:px-0">
-    <div class_="w-lg flex flex-col">
+    <div class_="w-full lg:w-lg flex flex-col">
     <h2 class_="mb-5">"Install Dune"</h2>
     <h4>
       <span class_="mr-2.5"><Icons.terminal /></span>
@@ -160,11 +184,10 @@ let getting_started ~install_url () =
       "Run"
     </h4>
     <Code>
-"$ dune init proj hello_world
-$ cd hello_world
-$ dune pkg lock
-$ dune exec hello_world
-"
+"$ dune init proj hello_world"
+"$ cd hello_world"
+"$ dune pkg lock"
+"$ dune exec hello_world"
     </Code>
     <Note class_="">
       <p class_="text-secondary">
@@ -179,7 +202,7 @@ $ dune exec hello_world
 
 let feedback () =
   <section id="feedback" class_="w-full flex justify-center pt-9 pb-14 text-white/60 bg-gradient-to-r from-gradient-start to-gradient-end px-5 lg:px-0" >
-    <div class_="w-lg">
+    <div class_="w-full lg:w-lg">
     <h2 class_="flex flex-row items-center text-white mb-5">
       <span>
         <Icons.community class_="mr-2"/>
@@ -187,7 +210,7 @@ let feedback () =
       "Share Feedback"
     </h2>
     <p class_="mb-6 text-white/60">"We are excited to learn from your experience with the Dune Developer Preview, so feel encourage to tell us what you think"</p>
-    <div class_="w-full flex flex-col lg:flex-row flex-wrap items-center gap-10">
+    <div class_="w-full flex flex-col sm:flex-row flex-wrap items-center gap-10">
       <LinkButton href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3HaJbskiCLHqLS6Oi1S3-rWYwv0hb_Iz8O9VlspuDdK5qbXYUZDpRRlWfEY1GP8KFy6XY8MFb9">
         <p>
           <Icons.message class_="mr-2.5" />
@@ -229,10 +252,9 @@ let q_and_a = [
       </p>
       <p>"When configuring the build you'll want to enable the following flags:" </p>
       <Code>
-"--enable-toolchains
---enable-pkg-build-progress
---enable-lock-dev-tool
-"
+"--enable-toolchains"
+"--enable-pkg-build-progress"
+"--enable-lock-dev-tool"
 </Code>
     </div>
   ; "Can I access these features from a version of Dune managed by opam?",
@@ -242,11 +264,10 @@ let q_and_a = [
       <p>"To enable these features make sure you are pinning dune to the development version, and export the following environment variables: "
       </p>
       <Code>
-"$ opam pin add dune --dev
-$ export DUNE_CONFIG__TOOLCHAINS=enabled
-$ export DUNE_CONFIG__PKG_BUILD_PROGRESS=enabled
-$ export DUNE_CONFIG__LOCK_DEV_TOOL=enabled
-"
+"$ opam pin add dune --dev"
+"$ export DUNE_CONFIG__TOOLCHAINS=enabled"
+"$ export DUNE_CONFIG__PKG_BUILD_PROGRESS=enabled"
+"$ export DUNE_CONFIG__LOCK_DEV_TOOL=enabled"
 </Code>
     </div>
 ]
@@ -281,10 +302,10 @@ let installation_target ~base_url ~bundle target =
     <a class_="text-black underline" href=cert_href>"Certificate"</a>
   </li>
 
-let manual_installation ~base_url ~releases () =  
-  <section class_="w-full flex justify-center border-t border-b border-black/20 pt-6 pb-[52px] bg-section-manual px-5 lg:px-0">
+let manual_installation ~base_url ~releases () =
+  <section id="manual-installation" class_="w-full flex justify-center border-t border-b border-black/20 py-10  bg-section-manual px-5 lg:px-0">
     <div class_="w-full lg:w-lg flex flex-col gap-2 ">
-    <h2 id="manual-installation" class_="text-3xl font-black pb-2"> "Manual Installation" </h2>
+    <h2 class_="mb-2"> "Manual Installation" </h2>
     <p class_="mb-5">
       "In this section you’ll find instructions to manually install the Dune Developer Review, and verify the installation. This is recommended for advanced users, or if you want s understand where the binaries come from."
     </p>
@@ -310,16 +331,15 @@ let manual_installation ~base_url ~releases () =
       "Run"
     </h4>
     <Code>
-{|$ tar xzvf dune-<arch>.tar.gz
-dune-<arch>
-$ cd dune-<arch>
-$ sudo mv "./dune" "$HOME/.local/bin/dune"|}
+"$ tar xzvf dune-<arch>.tar.gz"
+"dune-<arch>"
+"$ cd dune-<arch>"
+"$ sudo mv \"./dune\" \"$HOME/.local/bin/dune\""
     </Code>
     <p class_="mt-2.5 mb-2.5">"You can verify your installation by running:"</p>
     <Code>
-{|$ dune --version
+"$ dune --version"
 "Dune Developer Preview: build , git revision cc260345db57ab639db6363b2dc89072a1492832"
-|}
     </Code>
 
     <h3 class_="mt-5 mb-2.5"> "Verifying the Dune binary" </h3>
@@ -328,7 +348,7 @@ $ sudo mv "./dune" "$HOME/.local/bin/dune"|}
       <code class_="font-mono text-block-p">"gh"</code>
       <span>" tool to verify it with the following command: "</span>
     </p>
-    <Code>"$ gh attestation verify ./dune -R ocaml-dune/binary-distribution --bundle attestation.jsonl"</Code>
+    <Code>[JSX.string "$ gh attestation verify ./dune -R ocaml-dune/binary-distribution --bundle attestation.jsonl"]</Code>
   </div>
   </section>
 
@@ -339,13 +359,13 @@ let release_information ~base_url ~bundle ~target () =
   let cert_href = Bundle.to_certificate_url bundle ~base_url ~target in
   let tar_href = Bundle.to_download_url bundle ~base_url ~target  in
   let (arch, _, os) = Target.to_triple target in
-  <tr class_="odd:bg-tertiary/5">
-    <td class_="pl-14 border"><Link class_="hover:underline" href=tar_href>(JSX.string targz)</Link></td>
-    <td class_="hidden lg:table-cell py-2.5 pl-2.5 border">"Archive"</td>
-    <td class_="hidden lg:table-cell py-2.5 pl-2.5 border">(JSX.string os)</td>
-    <td class_="hidden lg:table-cell py-2.5 pl-2.5 border">(JSX.string arch)</td>
-    <td class_="hidden lg:table-cell py-2.5 pl-2.5 border">(String.sub bundle.commit 0 6 |> JSX.string)</td>
-    <td class_="hidden lg:table-cell py-2.5 pl-2.5 border">
+  <tr class_="odd:bg-tertiary/10">
+    <td class_="pl-2.5 lg:pl-14 border"><Link class_="hover:underline" href=tar_href>(JSX.string targz)</Link></td>
+    <td class_="py-2.5 pl-2.5 border">"Archive"</td>
+    <td class_="py-2.5 pl-2.5 border">(JSX.string os)</td>
+    <td class_="py-2.5 pl-2.5 border">(JSX.string arch)</td>
+    <td class_="py-2.5 pl-2.5 border">(String.sub bundle.commit 0 6 |> JSX.string)</td>
+    <td class_="py-2.5 pl-2.5 border">
       <div class_="group w-full flex flex-raw gap-2.5 items-center">
         <Icons.eye class_=" stroke-block-p group-hover:stroke-primary-light" />
         <Link color="text-block-p" class_="underline group-hover:text-primary-light" href=cert_href>"View"</Link>
@@ -357,8 +377,8 @@ let release_information ~base_url ~bundle ~target () =
 let release_history ~base_url ~releases () =
   let open Metadata in
   <section id="release-history" class_="w-full flex justify-center py-10 px-5 lg:px-0">
-    <div class_="w-lg flex flex-col gap-2 text-left">
-    <h2 class_="text-2xl font-medium pb-4"> "Last Month Release History" </h2>
+    <div class_="w-full lg:w-lg flex flex-col gap-2 text-left">
+    <h2 class_="mb-4"> "Last Month Release History" </h2>
     <p>
       "Here is a list of the "
       (JSX.int (List.length releases))
@@ -371,16 +391,16 @@ let release_history ~base_url ~releases () =
           let date = Bundle.get_date_string_from ~prefix:"nightly-" bundle in
           let summary = Format.sprintf "dune %s" date in
           let files = bundle.targets |> List.map (fun (target: Target.t) -> (<release_information base_url bundle target />)) in
-          (<Details summary container_class="">
+          (<Details summary container_class="w-full overflow-scroll">
              <table class_="w-full pb-4 border-collapse border">
                 <thead class_="font-normal border">
                   <tr>
-                    <th class_="pl-14 py-2.5 border font-normal">"File Name"</th>
-                    <th class_="hidden lg:table-cell pl-2.5 py-2.5 border font-normal">"Kind"</th>
-                    <th class_="hidden lg:table-cell pl-2.5 py-2.5 border font-normal">"OS"</th>
-                    <th class_="hidden lg:table-cell pl-2.5 py-2.5 border font-normal">"Arch"</th>
-                    <th class_="hidden lg:table-cell pl-2.5 py-2.5 border font-normal">"Commit"</th>
-                    <th class_="hidden lg:table-cell pl-2.5 py-2.5 border font-normal">"Certificate"</th>
+                    <th class_="pl-2.5 lg:pl-14 py-2.5 border font-normal">"File Name"</th>
+                    <th class_="pl-2.5 py-2.5 border font-normal">"Kind"</th>
+                    <th class_="pl-2.5 py-2.5 border font-normal">"OS"</th>
+                    <th class_="pl-2.5 py-2.5 border font-normal">"Arch"</th>
+                    <th class_="pl-2.5 py-2.5 border font-normal">"Commit"</th>
+                    <th class_="pl-2.5 py-2.5 border font-normal">"Certificate"</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -419,7 +439,7 @@ let footer_info () =
 
 let page ~base_url releases =
   let install_url = Filename.concat base_url "install" in
-  <html>
+  <html class_="scroll-pt-20">
     <head>
       <meta charset="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
