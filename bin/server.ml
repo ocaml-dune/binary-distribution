@@ -18,8 +18,8 @@ let latest_route_from_targets ~base_url bundle =
   List.map
     (fun target ->
       let path = Format.sprintf "/%s" (Target.to_string target) in
-      Dream.get path (fun _ ->
-        Dream.html (Bundle.to_download_url ~base_url ~target bundle)))
+      Dream.get path (fun request ->
+        Dream.redirect request (Bundle.to_download_url ~base_url ~target bundle)))
     bundle.targets
 ;;
 
