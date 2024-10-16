@@ -19,8 +19,8 @@ authors: [
   "Alpha Issiaga DIALLO <alpha@tarides.com>"
 ]
 license: "ISC"
-homepage: "https://github.com/tarides/dune-binary-distribution"
-bug-reports: "https://github.com/tarides/dune-binary-distribution/issues"
+homepage: "https://github.com/ocaml-dune/binary-distribution"
+bug-reports: "https://github.com/ocaml-dune/binary-distribution/issues"
 depends: [
   "ocaml"
   "dune" {>= "3.16"}
@@ -53,7 +53,7 @@ build: [
     "@doc" {with-doc}
   ]
 ]
-dev-repo: "git+https://github.com/tarides/dune-binary-distribution.git"
+dev-repo: "git+https://github.com/ocaml-dune/binary-distribution.git"
 pin-depends: [
   ["tailwindcss.dev" "https://github.com/tmattio/opam-tailwindcss/archive/e5bb6361a50c7cc5cad802311e609336583ca08f.tar.gz"]
 ]

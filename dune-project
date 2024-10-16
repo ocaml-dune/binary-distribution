@@ -5,7 +5,7 @@
 (generate_opam_files true)
 
 (source
- (github tarides/dune-binary-distribution))
+ (github ocaml-dune/binary-distribution))
 
 (authors
   "Etienne Marais <dev@maiste.fr>"
