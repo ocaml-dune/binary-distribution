@@ -44,7 +44,7 @@
   dream-encoding
   tailwindcss
   (ocaml-lsp-server :with-dev-setup)
-  (ocamlformat :with-dev-setup)))
+  (ocamlformat (and (= 0.26.2) :with-dev-setup))))
 
 (dialect
  (name mlx)
