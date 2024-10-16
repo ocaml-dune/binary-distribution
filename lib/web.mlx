@@ -121,11 +121,11 @@ let navbar () =
       <button id="menu-button" class_="flex lg:hidden items-center gap-2.5" onclick="onMenuClick()"><p class_="text-white">"Download & Install Dune"</p><Icons.menu_arrow class_="stroke-primary-light fill-primary-light" /></button>
     </div>
     <div id="menu" class_="lg:flex hidden flex-col lg:flex-row flex-wrap gap-6">
-      <a id="download-menu" class_="p-2.5 hover:text-primary-light" onclick="onItemClick(this)" href="#download">"Download & Install Dune"</a>
-      <a id="share-menu" class_="p-2.5 hover:text-primary-light" onclick="onItemClick(this)" href="#feedback">"Share Feedback"</a>
-      <a id="faq-menu" class_="p-2.5 hover:text-primary-light"  onclick="onItemClick(this)" href="#faq">"FAQs"</a>
-      <a id="manual-menu" class_="p-2.5 hover:text-primary-light" onclick="onItemClick(this)" href="#manual-installation">"Manual Installation"</a>
-      <a id="release-menu" class_="p-2.5 hover:text-primary-light" onclick="onItemClick(this)" href="#release-history">"Last Month Release History"</a>
+      <a id="download-menu" class_="p-2.5 hover:text-primary-light" onclick="onItemClick(this)" href="/#download">"Download & Install Dune"</a>
+      <a id="share-menu" class_="p-2.5 hover:text-primary-light" onclick="onItemClick(this)" href="/#feedback">"Share Feedback"</a>
+      <a id="faq-menu" class_="p-2.5 hover:text-primary-light"  onclick="onItemClick(this)" href="/#faq">"FAQs"</a>
+      <a id="manual-menu" class_="p-2.5 hover:text-primary-light" onclick="onItemClick(this)" href="/#manual-installation">"Manual Installation"</a>
+      <a id="release-menu" class_="p-2.5 hover:text-primary-light" onclick="onItemClick(this)" href="/#release-history">"Last Month Release History"</a>
     </div>
   </nav>
 
@@ -441,8 +441,28 @@ let footer_info () =
   </div>
   </footer>
 
-let page ~base_url releases =
+let error ~code ~reason () =
+  <main class_="h-full flex items-center justify-center">
+    <h2 class_="text-primary-light">(Format.sprintf "%d %s" code reason |> JSX.string)</h2>
+  </main>
+
+let main_page ~base_url ~releases () =
   let install_url = Filename.concat base_url "install" in
+  <main class_="flex flex-col w-full">
+    <header_info />
+    <warning />
+    <getting_started install_url />
+    <feedback />
+    <faq />
+    <manual_installation base_url releases />
+    <release_history base_url releases />
+  </main>
+
+let page ~base_url content =
+  let content = match content with
+  | Error (code, reason) -> <error code reason />
+  | Ok releases -> <main_page base_url releases />
+  in
   <html class_="scroll-pt-20">
     <head>
       <meta charset="utf-8" />
@@ -454,34 +474,21 @@ let page ~base_url releases =
         dataDomain="preview.dune.build" defer=true
         src="https://plausible.ci.dev/js/script.file-downloads.js"></script>
     </head>
-    <body class_="w-full flex flex-col overflow-scroll justify-center items-center">
-      <div class_="w-full flex flex-col justify-center items-center py-4 bg-yellow-200 text-black px-5 lg:px-0">
-        <p>"🏗️ This page is under " <strong class_="underline">"heavy development"</strong>". It may change or be broken at any moment until it is stable."</p>
-      </div>
+    <body class_="min-h-dvh w-full flex flex-col overflow-scroll justify-between items-center">
       <navbar />
-      <main class_="flex flex-col w-full">
-        <header_info />
-        <warning />
-        <getting_started install_url />
-        <feedback />
-        <faq />
-        <manual_installation base_url releases />
-        <release_history base_url releases />
-      </main>
+      content
       <footer_info />
     </body>
   </html>
 
-let export_bundle_to_string ~base_url releases =
-  let releases =
-    releases
-    |> Core.List.take 30
-  in page ~base_url releases |> JSX.render
+let export_bundle_to_string ~base_url content =
+  let content = Result.map  (Core.List.take 30) content
+  in page ~base_url content |> JSX.render
 
-let export_bundle_to_file ~base_url ~file releases =
+let export_bundle_to_file ~base_url ~file content =
   let file_handle = open_out file in
   let fmt = Format.formatter_of_out_channel file_handle in
-  let page = export_bundle_to_string ~base_url releases in
+  let page = export_bundle_to_string ~base_url content in
   Format.fprintf fmt "%s" page;
   close_out file_handle
 ;;

@@ -23,13 +23,25 @@ let latest_route_from_targets ~base_url bundle =
     bundle.targets
 ;;
 
+let error_template ~base_url _error _debug_info suggested_response =
+  let status = Dream.status suggested_response in
+  let code = Dream.status_to_int status in
+  let reason = Dream.status_to_string status in
+  Dream.set_header suggested_response "Content-Type" Dream.text_html;
+  Dream.set_body
+    suggested_response
+    (Sandworm.Web.export_bundle_to_string ~base_url (Result.error (code, reason)));
+  Lwt.return suggested_response
+;;
+
 let serve ~dev ~base_url site port bundle =
   let interface = if dev then "127.0.0.1" else "0.0.0.0" in
+  let error_handler = Dream.error_template (error_template ~base_url) in
   Dream.log
     "Server is up and running with mode %s and with css %s"
     (if dev then "dev" else "production")
     Css.hash;
-  Dream.run ~interface ~port
+  Dream.run ~interface ~port ~error_handler
   @@ Dream.logger
   @@ Dream_encoding.compress
   @@ reload_script_middleware ~dev
