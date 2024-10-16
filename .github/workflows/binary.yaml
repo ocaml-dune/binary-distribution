@@ -7,7 +7,7 @@ on:
 
 jobs:
   binary:
-    name: Create the dune binary
+    name: Create the artifact
     permissions:
       id-token: write
       attestations: write
@@ -27,7 +27,7 @@ jobs:
             installable: .#dune-static-experimental
 
     # If the latest commit is the same as latest run, don't re-run.
-    if: (git log --format=%H -1) != (jq -r ".|sort_by(.date)|last|.commit" < metadata.json)
+    if: (git rev-parse HEAD) != (jq -r ".|sort_by(.date)|last|.commit" < metadata.json)
 
     runs-on: ${{ matrix.os }}
     outputs:
