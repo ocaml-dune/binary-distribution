@@ -16,14 +16,13 @@ jobs:
         with:
           repository: ocaml/dune
           ref: main
-          fetch-depth: 1 
+          fetch-depth: 1
+      - name: Export HEAD
+        run: echo "GIT_HEAD=$(git rev-parse HEAD)" > "$GITHUB_ENV"
       - name: Checkout
         uses: actions/checkout@v4
       - id: verify
         run: |
-          cd "$GITHUB_WORKSPACE/dune" 
-          GIT_HEAD=$(git rev-parse HEAD)
-          cd "$GITHUB_WORKSPACE/binary-distribution"
           LAST_COMMIT=$((jq -r ".|sort_by(.date)|last|.commit" < metadata.json))
           if [ "$GIT_HEAD" = "$LAST_COMMIT" ] ; then
             echo "action=SKIP" >> "$GITHUB_OUTPUT"
