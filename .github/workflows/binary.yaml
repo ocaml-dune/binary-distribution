@@ -6,8 +6,33 @@ on:
     - cron: "0 1 * * *" # Triggers the build at 1:00 UTC time
 
 jobs:
+  check_build:
+    name: Check if we need to run the pipeline or not
+    runs-on: ubuntu-latest
+    outputs:
+      action: ${{ steps.verify.outputs.action }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: ocaml/dune
+          ref: main
+          fetch-depth: 1
+      - name: Export HEAD
+        run: echo "GIT_HEAD=$(git rev-parse HEAD)" > "$GITHUB_ENV"
+      - name: Checkout
+        uses: actions/checkout@v4
+      - id: verify
+        run: |
+          LAST_COMMIT=$(jq -r ".|sort_by(.date)|last|.commit" < metadata.json)
+          if [ "$GIT_HEAD" = "$LAST_COMMIT" ] ; then
+            echo "action=SKIP" >> "$GITHUB_OUTPUT"
+          else
+            echo "action=BUILD" >> "$GITHUB_OUTPUT"
+          fi
+
   binary:
     name: Create the artifact
+    needs: check_build
     permissions:
       id-token: write
       attestations: write
@@ -27,8 +52,7 @@ jobs:
             installable: .#dune-static-experimental
 
     # If the latest commit is the same as latest run, don't re-run.
-    if: (git rev-parse HEAD) != (jq -r ".|sort_by(.date)|last|.commit" < metadata.json)
-
+    if: ${{ needs.check_build.outputs.action == 'BUILD' }}
     runs-on: ${{ matrix.os }}
     outputs:
       git-commit: ${{ steps.git-commit.outputs.hash }}
