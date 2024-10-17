@@ -420,13 +420,13 @@ let footer_info () =
     <div class_="flex flex-col lg:items-start max-w-[263px] mt-10 lg:mt-0 ">
       <Icons.logo />
       <p class_="text-sm text-white text-justify mb-2.5">
-        "Dune is a build system for OCaml, simplifying project management and streaminlining comppilation."
+        "Dune is a build system for OCaml, simplifying project management and streamlining compilation."
       </p>
       <div class_="flex justify-center">
-        <Icons.github class_="py-2.5 pr-2.5" />
-        <Icons.discourse class_="p-2.5" />
-        <Icons.discord class_="p-2.5" />
-        <Icons.twitter class_="p-2.5" />
+        <a href="https://github.com/ocaml/dune"><Icons.github class_="py-2.5 pr-2.5" /></a>
+        <a href="https://discuss.ocaml.org/tag/dune"><Icons.discourse class_="p-2.5" /></a>
+        <a href="https://discord.gg/cCYQbqN"><Icons.discord class_="p-2.5" /></a>
+        <a href="https://twitter.com/ocaml_org"><Icons.twitter class_="p-2.5" /></a>
       </div>
     </div>
     <a href="#download">"Download & Install Dune"</a>
