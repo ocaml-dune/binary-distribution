@@ -192,7 +192,11 @@ let getting_started ~install_url () =
     <Note class_="">
       <p class_="text-secondary">
         "For more information on Dune and Package Management, check "
-        <Link class_="text-primary-light" href="https://dune.readthedocs.io/en/latest">"the latest Dune docs."</Link>
+        <Link class_="text-primary-light" href="https://dune.readthedocs.io/en/latest">"the Dune docs"</Link>
+	", in particular the "
+        <Link class_="text-primary-light" href="https://dune.readthedocs.io/en/latest/tutorials/dune-package-management/index.html">"the package management tutorial"</Link>
+        " and the "
+	<Link class_="text-primary-light" href="https://dune.readthedocs.io/en/latest/explanation/package-management.html">"the explanation how it works"</Link>"."
       </p>
     </Note>
   </div>
