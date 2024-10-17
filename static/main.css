@@ -738,6 +738,10 @@ video {
   align-items: center;
 }
 
+.justify-start {
+  justify-content: flex-start;
+}
+
 .justify-center {
   justify-content: center;
 }
@@ -768,6 +772,14 @@ video {
 
 .gap-6 {
   gap: 1.5rem;
+}
+
+.gap-7 {
+  gap: 1.75rem;
+}
+
+.gap-8 {
+  gap: 2rem;
 }
 
 .gap-y-2\.5 {
@@ -856,6 +868,10 @@ video {
 .bg-primary-light {
   --tw-bg-opacity: 1;
   background-color: rgb(194 79 30 / var(--tw-bg-opacity));
+}
+
+.bg-primary-light\/20 {
+  background-color: rgb(194 79 30 / 0.2);
 }
 
 .bg-secondary {
@@ -1210,6 +1226,18 @@ code {
 
   .sm\:flex-row {
     flex-direction: row;
+  }
+
+  .sm\:gap-0 {
+    gap: 0px;
+  }
+
+  .sm\:gap-10 {
+    gap: 2.5rem;
+  }
+
+  .sm\:gap-20 {
+    gap: 5rem;
   }
 }
 
