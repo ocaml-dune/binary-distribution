@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@v4
       - id: verify
         run: |
-          LAST_COMMIT=$((jq -r ".|sort_by(.date)|last|.commit" < metadata.json))
+          LAST_COMMIT=$(jq -r ".|sort_by(.date)|last|.commit" < metadata.json)
           if [ "$GIT_HEAD" = "$LAST_COMMIT" ] ; then
             echo "action=SKIP" >> "$GITHUB_OUTPUT"
           else
