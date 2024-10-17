@@ -422,11 +422,11 @@ let footer_info () =
       <p class_="text-sm text-white text-justify mb-2.5">
         "Dune is a build system for OCaml, simplifying project management and streamlining compilation."
       </p>
-      <div class_="flex justify-center">
+      <div class_="flex justify-center items-center">
         <a href="https://github.com/ocaml/dune"><Icons.github class_="py-2.5 pr-2.5" /></a>
         <a href="https://discuss.ocaml.org/tag/dune"><Icons.discourse class_="p-2.5" /></a>
+        <a href="https://x.com/ocaml_org"><Icons.x class_="p-2.5" /></a>
         <a href="https://discord.gg/cCYQbqN"><Icons.discord class_="p-2.5" /></a>
-        <a href="https://twitter.com/ocaml_org"><Icons.twitter class_="p-2.5" /></a>
       </div>
     </div>
     <a href="#download">"Download & Install Dune"</a>
