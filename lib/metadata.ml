@@ -111,4 +111,8 @@ let insert_unique bundle = function
 ;;
 
 let import_from_json file : t = Yojson.Safe.from_file file |> of_yojson |> Result.get_ok
-let export_to_json file t = to_yojson t |> Yojson.Safe.to_file file
+
+let export_to_json file t =
+  Out_channel.with_open_bin file (fun oc ->
+    t |> to_yojson |> Yojson.Safe.pretty_to_channel oc)
+;;
