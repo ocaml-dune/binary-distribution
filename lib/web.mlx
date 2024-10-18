@@ -123,7 +123,7 @@ let navbar () =
     <div id="menu" class_="lg:flex hidden flex-col lg:flex-row flex-wrap gap-6">
       <a id="download-menu" class_="p-2.5 hover:text-primary-light" onclick="onItemClick(this)" href="#download">"Download & Install Dune"</a>
       <a id="share-menu" class_="p-2.5 hover:text-primary-light" onclick="onItemClick(this)" href="#feedback">"Share Feedback"</a>
-      <a id="faq-menu" class_="p-2.5 hover:text-primary-light"  onclick="onItemClick(this)" href="#faq">"FAQ'S"</a>
+      <a id="faq-menu" class_="p-2.5 hover:text-primary-light"  onclick="onItemClick(this)" href="#faq">"FAQs"</a>
       <a id="manual-menu" class_="p-2.5 hover:text-primary-light" onclick="onItemClick(this)" href="#manual-installation">"Manual Installation"</a>
       <a id="release-menu" class_="p-2.5 hover:text-primary-light" onclick="onItemClick(this)" href="#release-history">"Last Month Release History"</a>
     </div>
@@ -435,7 +435,7 @@ let footer_info () =
     </div>
     <a href="#download">"Download & Install Dune"</a>
     <a href="#feedback">"Share Feedback"</a>
-    <a href="#faq">"FAQ'S"</a>
+    <a href="#faq">"FAQs"</a>
     <a href="#manual-installation">"Manual Installation"</a>
     <a href="#release-history">"Last Month Release History"</a>
   </div>
