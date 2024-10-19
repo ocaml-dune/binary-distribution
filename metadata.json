@@ -1,1 +1,754 @@
-[{"date":1729209600.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"ed871baa4b321a9b4d51b8399590089a1e156989"},{"date":1729123200.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"ed871baa4b321a9b4d51b8399590089a1e156989"},{"date":1729036800.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"ed871baa4b321a9b4d51b8399590089a1e156989"},{"date":1728950400.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"1becc6e03c8c39b478cf42fe87add71fbbd5c772"},{"date":1728864000.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"1becc6e03c8c39b478cf42fe87add71fbbd5c772"},{"date":1728777600.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"1becc6e03c8c39b478cf42fe87add71fbbd5c772"},{"date":1728691200.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"1becc6e03c8c39b478cf42fe87add71fbbd5c772"},{"date":1728432000.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"412a0f5054e6018f724fd6179f8bf53eacc121bf"},{"date":1728345600.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"f388e5b90381dc73f51ff8c79297cbae57eaa49e"},{"date":1728259200.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"015b0fe3e56eba619386114b8b188dcf2679e88e"},{"date":1728172800.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"5c752b8a149ab106462011e2b275185e52ec4e73"},{"date":1728086400.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"5286edcb988ae31b7da01a4a8592e8aac142139b"},{"date":1728000000.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"57f435d02f2c01568fea9c3a7b11f74642a33322"},{"date":1727913600.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"8ff0a8998cec369c2e37fb17b08b84da0872bf0c"},{"date":1727827200.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"451e5b4463c4fe5b4f5427c0a40a5962c38ccc0f"},{"date":1727740800.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"63fac22cfeabeb665f714361f8da1dcd7281f300"},{"date":1727654400.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"9f3cda70d29982105171e1435bf4caafce07866d"},{"date":1727568000.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"71db2d47fad82865c8035ef3553e0136cb08e337"},{"date":1727481600.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"17071ec30d10390badcb6cb1f6a43984b1be54a6"},{"date":1727395200.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"17071ec30d10390badcb6cb1f6a43984b1be54a6"},{"date":1727308800.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"17071ec30d10390badcb6cb1f6a43984b1be54a6"},{"date":1727222400.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"1a8b43f449cf00996281b5c73b2a0f3400817a00"},{"date":1727136000.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"d17070390c992e0aa584efde072bd9f0442cf855"},{"date":1727049600.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"1db1f45f9d6c111665a8af110dfa10606732cffe"},{"date":1726963200.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"d6f1a2740ac584127105773a43283829ae7a39e7"},{"date":1726876800.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"d6f1a2740ac584127105773a43283829ae7a39e7"},{"date":1726790400.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"3f31387ec20b3d6f920999bdae35cdcfdd16667a"},{"date":1726704000.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"3f31387ec20b3d6f920999bdae35cdcfdd16667a"},{"date":1726617600.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"4f86203f77eb7ead7a07286b7728cbf42a386990"},{"date":1726531200.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"cc260345db57ab639db6363b2dc89072a1492832"},{"date":1726444800.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"cc260345db57ab639db6363b2dc89072a1492832"},{"date":1726358400.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"ec309e638d723d67b54b4c9de3ec202201e0bd10"},{"date":1726272000.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"ec309e638d723d67b54b4c9de3ec202201e0bd10"},{"date":1726185600.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"ec309e638d723d67b54b4c9de3ec202201e0bd10"},{"date":1726099200.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"18b66c5c9386df860deffd3c1ebeab7af7a18d53"},{"date":1726012800.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"fa67187ad40332733dddee6868e81d7f4fdacc47"},{"date":1725926400.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"24983555722a240a57dfc0c7c8e7850c8a43099d"},{"date":1725840000.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"7ec38ff9a3d9716538de5e94cd3e4b436b5f9390"},{"date":1725580800.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"783a9134de6df3642eec28d8db0ede7e20d93b92"},{"date":1725494400.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"7d50c4bc1913cda452023194897c9483d9c9a07f"},{"date":1725408000.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"7d50c4bc1913cda452023194897c9483d9c9a07f"},{"date":1725321600.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":""},{"date":1725235200.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"126cc4fb2c83f245815b1b476b7723d1167b68da"},{"date":1725148800.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"12e38d1fd0968faaaed054e8fa35efcc329fb1cc"},{"date":1725062400.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"ef5c09ab183a398e35a945e343886c54bf361bac"},{"date":1724976000.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"8dabbe0dd4c61b7b304531ed00f258e92286ebe0"},{"date":1724889600.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"38cb882e9b1f3d1e471fdbf9ba94346c6bd72bc1"},{"date":1724803200.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"26b866a52efe941b4bf920a6e3c71b290491c48a"},{"date":1724716800.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"2f7dd8c6a85d7f0ecb543aa075ce53c9ed22dc51"},{"date":1724630400.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"a25591789890fda90c3bdedb04c6dca571760974"},{"date":1724544000.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"5d0517127f1d28a7905471fde09cc2ff0fd9e53f"},{"date":1724457600.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"5d0517127f1d28a7905471fde09cc2ff0fd9e53f"},{"date":1724371200.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"106274889463610b8588cf94ad471512857408ba"},{"date":1724284800.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"b962278235507cd2fc5bfa8768e24c5340ee488c"},{"date":1724198400.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]],"has_certificate":true,"commit":"b962278235507cd2fc5bfa8768e24c5340ee488c"},{"date":1724112000.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]]},{"date":1724025600.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]]},{"date":1724025600.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]]},{"date":1723939200.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]]},{"date":1723852800.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]]},{"date":1723766400.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]]},{"date":1723680000.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]]},{"date":1723593600.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]]},{"date":1723507200.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]]},{"date":1723420800.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]]},{"date":1723334400.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]]},{"date":1723248000.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]]},{"date":1723161600.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]]},{"date":1723075200.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]]},{"date":1722988800.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]]},{"date":1722902400.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]]},{"date":1722816000.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]]},{"date":1722729600.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]]},{"date":1722643200.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]]},{"date":1722556800.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]]},{"date":1722470400.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]]},{"date":1722384000.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]]},{"date":1722297600.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]]},{"date":1722211200.0,"targets":[["Aarch64_apple_darwin"],["X86_64_apple_darwin"],["X86_64_unknown_linux_musl"]]}]
+[
+  {
+    "date": 1729296000.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "82537f6c01fe4e82a4e3a64ee1ec194cde7296e0"
+  },
+  {
+    "date": 1729209600.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "ed871baa4b321a9b4d51b8399590089a1e156989"
+  },
+  {
+    "date": 1729123200.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "ed871baa4b321a9b4d51b8399590089a1e156989"
+  },
+  {
+    "date": 1729036800.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "ed871baa4b321a9b4d51b8399590089a1e156989"
+  },
+  {
+    "date": 1728950400.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "1becc6e03c8c39b478cf42fe87add71fbbd5c772"
+  },
+  {
+    "date": 1728864000.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "1becc6e03c8c39b478cf42fe87add71fbbd5c772"
+  },
+  {
+    "date": 1728777600.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "1becc6e03c8c39b478cf42fe87add71fbbd5c772"
+  },
+  {
+    "date": 1728691200.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "1becc6e03c8c39b478cf42fe87add71fbbd5c772"
+  },
+  {
+    "date": 1728432000.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "412a0f5054e6018f724fd6179f8bf53eacc121bf"
+  },
+  {
+    "date": 1728345600.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "f388e5b90381dc73f51ff8c79297cbae57eaa49e"
+  },
+  {
+    "date": 1728259200.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "015b0fe3e56eba619386114b8b188dcf2679e88e"
+  },
+  {
+    "date": 1728172800.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "5c752b8a149ab106462011e2b275185e52ec4e73"
+  },
+  {
+    "date": 1728086400.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "5286edcb988ae31b7da01a4a8592e8aac142139b"
+  },
+  {
+    "date": 1728000000.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "57f435d02f2c01568fea9c3a7b11f74642a33322"
+  },
+  {
+    "date": 1727913600.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "8ff0a8998cec369c2e37fb17b08b84da0872bf0c"
+  },
+  {
+    "date": 1727827200.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "451e5b4463c4fe5b4f5427c0a40a5962c38ccc0f"
+  },
+  {
+    "date": 1727740800.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "63fac22cfeabeb665f714361f8da1dcd7281f300"
+  },
+  {
+    "date": 1727654400.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "9f3cda70d29982105171e1435bf4caafce07866d"
+  },
+  {
+    "date": 1727568000.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "71db2d47fad82865c8035ef3553e0136cb08e337"
+  },
+  {
+    "date": 1727481600.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "17071ec30d10390badcb6cb1f6a43984b1be54a6"
+  },
+  {
+    "date": 1727395200.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "17071ec30d10390badcb6cb1f6a43984b1be54a6"
+  },
+  {
+    "date": 1727308800.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "17071ec30d10390badcb6cb1f6a43984b1be54a6"
+  },
+  {
+    "date": 1727222400.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "1a8b43f449cf00996281b5c73b2a0f3400817a00"
+  },
+  {
+    "date": 1727136000.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "d17070390c992e0aa584efde072bd9f0442cf855"
+  },
+  {
+    "date": 1727049600.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "1db1f45f9d6c111665a8af110dfa10606732cffe"
+  },
+  {
+    "date": 1726963200.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "d6f1a2740ac584127105773a43283829ae7a39e7"
+  },
+  {
+    "date": 1726876800.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "d6f1a2740ac584127105773a43283829ae7a39e7"
+  },
+  {
+    "date": 1726790400.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "3f31387ec20b3d6f920999bdae35cdcfdd16667a"
+  },
+  {
+    "date": 1726704000.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "3f31387ec20b3d6f920999bdae35cdcfdd16667a"
+  },
+  {
+    "date": 1726617600.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "4f86203f77eb7ead7a07286b7728cbf42a386990"
+  },
+  {
+    "date": 1726531200.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "cc260345db57ab639db6363b2dc89072a1492832"
+  },
+  {
+    "date": 1726444800.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "cc260345db57ab639db6363b2dc89072a1492832"
+  },
+  {
+    "date": 1726358400.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "ec309e638d723d67b54b4c9de3ec202201e0bd10"
+  },
+  {
+    "date": 1726272000.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "ec309e638d723d67b54b4c9de3ec202201e0bd10"
+  },
+  {
+    "date": 1726185600.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "ec309e638d723d67b54b4c9de3ec202201e0bd10"
+  },
+  {
+    "date": 1726099200.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "18b66c5c9386df860deffd3c1ebeab7af7a18d53"
+  },
+  {
+    "date": 1726012800.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "fa67187ad40332733dddee6868e81d7f4fdacc47"
+  },
+  {
+    "date": 1725926400.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "24983555722a240a57dfc0c7c8e7850c8a43099d"
+  },
+  {
+    "date": 1725840000.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "7ec38ff9a3d9716538de5e94cd3e4b436b5f9390"
+  },
+  {
+    "date": 1725580800.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "783a9134de6df3642eec28d8db0ede7e20d93b92"
+  },
+  {
+    "date": 1725494400.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "7d50c4bc1913cda452023194897c9483d9c9a07f"
+  },
+  {
+    "date": 1725408000.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "7d50c4bc1913cda452023194897c9483d9c9a07f"
+  },
+  {
+    "date": 1725321600.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": ""
+  },
+  {
+    "date": 1725235200.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "126cc4fb2c83f245815b1b476b7723d1167b68da"
+  },
+  {
+    "date": 1725148800.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "12e38d1fd0968faaaed054e8fa35efcc329fb1cc"
+  },
+  {
+    "date": 1725062400.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "ef5c09ab183a398e35a945e343886c54bf361bac"
+  },
+  {
+    "date": 1724976000.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "8dabbe0dd4c61b7b304531ed00f258e92286ebe0"
+  },
+  {
+    "date": 1724889600.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "38cb882e9b1f3d1e471fdbf9ba94346c6bd72bc1"
+  },
+  {
+    "date": 1724803200.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "26b866a52efe941b4bf920a6e3c71b290491c48a"
+  },
+  {
+    "date": 1724716800.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "2f7dd8c6a85d7f0ecb543aa075ce53c9ed22dc51"
+  },
+  {
+    "date": 1724630400.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "a25591789890fda90c3bdedb04c6dca571760974"
+  },
+  {
+    "date": 1724544000.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "5d0517127f1d28a7905471fde09cc2ff0fd9e53f"
+  },
+  {
+    "date": 1724457600.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "5d0517127f1d28a7905471fde09cc2ff0fd9e53f"
+  },
+  {
+    "date": 1724371200.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "106274889463610b8588cf94ad471512857408ba"
+  },
+  {
+    "date": 1724284800.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "b962278235507cd2fc5bfa8768e24c5340ee488c"
+  },
+  {
+    "date": 1724198400.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "b962278235507cd2fc5bfa8768e24c5340ee488c"
+  },
+  {
+    "date": 1724112000.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ]
+  },
+  {
+    "date": 1724025600.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ]
+  },
+  {
+    "date": 1724025600.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ]
+  },
+  {
+    "date": 1723939200.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ]
+  },
+  {
+    "date": 1723852800.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ]
+  },
+  {
+    "date": 1723766400.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ]
+  },
+  {
+    "date": 1723680000.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ]
+  },
+  {
+    "date": 1723593600.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ]
+  },
+  {
+    "date": 1723507200.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ]
+  },
+  {
+    "date": 1723420800.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ]
+  },
+  {
+    "date": 1723334400.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ]
+  },
+  {
+    "date": 1723248000.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ]
+  },
+  {
+    "date": 1723161600.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ]
+  },
+  {
+    "date": 1723075200.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ]
+  },
+  {
+    "date": 1722988800.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ]
+  },
+  {
+    "date": 1722902400.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ]
+  },
+  {
+    "date": 1722816000.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ]
+  },
+  {
+    "date": 1722729600.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ]
+  },
+  {
+    "date": 1722643200.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ]
+  },
+  {
+    "date": 1722556800.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ]
+  },
+  {
+    "date": 1722470400.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ]
+  },
+  {
+    "date": 1722384000.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ]
+  },
+  {
+    "date": 1722297600.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ]
+  },
+  {
+    "date": 1722211200.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ]
+  }
+]
