@@ -57,14 +57,11 @@ jobs:
     outputs:
       git-commit: ${{ steps.git-commit.outputs.hash }}
     steps:
-      - name: Set DATE environment variable
-        run: echo "DATE=$(date +'%Y-%m-%d')" >> "$GITHUB_ENV"
-
       - name: Set archive environment variables
         run: |
-          echo "ARCHIVE_DIR=dune-$DATE-${{ matrix.name }}" >> $GITHUB_ENV
-          echo "ARCHIVE_TAR=dune-$DATE-${{ matrix.name }}.tar" >> $GITHUB_ENV
-          echo "ARCHIVE_TARGZ=dune-$DATE-${{ matrix.name }}.tar.gz" >> $GITHUB_ENV
+          echo "ARCHIVE_DIR=dune-${{ matrix.name }}" >> $GITHUB_ENV
+          echo "ARCHIVE_TAR=dune-${{ matrix.name }}.tar" >> $GITHUB_ENV
+          echo "ARCHIVE_TARGZ=dune-${{ matrix.name }}.tar.gz" >> $GITHUB_ENV
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -130,8 +127,8 @@ jobs:
 
       - name: Set archive environment variables
         run: |
-          echo "ARCHIVE_TARGZ=dune-$DATE-${{ matrix.name }}.tar.gz" >> $GITHUB_ENV
-          echo "ARCHIVE_DIR=dune-$DATE-${{ matrix.name }}" >> $GITHUB_ENV
+          echo "ARCHIVE_TARGZ=dune-${{ matrix.name }}.tar.gz" >> $GITHUB_ENV
+          echo "ARCHIVE_DIR=dune-${{ matrix.name }}" >> $GITHUB_ENV
 
       - name: Checkout
         uses: actions/checkout@v4
