@@ -84,21 +84,16 @@ module Bundle = struct
     to_url ~base_url ~target t / "attestation.jsonl"
   ;;
 
-  let download_file_name ~date arch =
-    match date with
-    | None -> Format.sprintf "dune-%s.tar.gz" arch
-    | Some date -> Format.sprintf "dune-%s-%s.tar.gz" date arch
-  ;;
+  let download_file_name arch = Format.sprintf "dune-%s.tar.gz" arch
 
   let to_download_url ~base_url ~target t =
-    let date = get_date_string_from t |> Option.some in
     let arch = Target.to_string target in
-    to_url ~base_url ~target t / download_file_name ~date arch
+    to_url ~base_url ~target t / download_file_name arch
   ;;
 
   let to_download_file target =
     let arch = Target.to_string target in
-    download_file_name ~date:None arch
+    download_file_name arch
   ;;
 end
 
