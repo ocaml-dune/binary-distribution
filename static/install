@@ -53,6 +53,11 @@ tildify() {
     esac
 }
 
+ensure_command() {
+    command -v "$1" >/dev/null 2>&1 ||
+        error "Failed to find \"$1\". This script needs \"$1\" to be able to install dune."
+}
+
 case $(uname -ms) in
 'Darwin x86_64')
     target=x86_64-apple-darwin
@@ -78,8 +83,10 @@ exe="$bin_dir/dune"
 tmp_tar="$tmp_dir/$tar_target"
 tilde_bin_dir=$(tildify "$bin_dir")
 
-command -v tar >/dev/null 2>&1 ||
-    error "Failed to find tar. This script needs tar to be able to install dune."
+ensure_command "tar"
+# technically gunzip probably but they will both exist
+ensure_command "gzip"
+ensure_command "curl"
 
 if [ ! -d "$bin_dir" ]; then
     mkdir -p "$bin_dir" ||
@@ -94,6 +101,7 @@ fi
 
 curl --fail --location --progress-bar --output "$tmp_tar" "$dune_tar_uri" ||
     error "Failed to download dune tar from \"$dune_tar_uri\""
+
 
 tar -xf "$tmp_tar" -C "$tmp_dir" > /dev/null 2>&1 ||
     error "Failed to extract dune archive content from \"$tmp_tar\""
