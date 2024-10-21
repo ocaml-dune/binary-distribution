@@ -73,7 +73,13 @@ dune_tar_uri="https://preview.dune.build/latest/$target"
 
 install_dir="$HOME/.dune"
 bin_dir="$install_dir/bin"
-tmp_dir="$install_dir/tmp"
+
+tmp_dir="$(mktemp -d --tmpdir dune-install.XXXXXXXXXX)"
+if [ ! $? ]; then
+    error "Failed to create temporary directory \"$tmp_dir\""
+fi
+trap 'rm -r "$tmp_dir"' EXIT
+
 exe="$bin_dir/dune"
 tmp_tar="$tmp_dir/$tar_target"
 tilde_bin_dir=$(tildify "$bin_dir")
@@ -84,12 +90,6 @@ command -v tar >/dev/null 2>&1 ||
 if [ ! -d "$bin_dir" ]; then
     mkdir -p "$bin_dir" ||
         error "Failed to create install directory \"$bin_dir\""
-fi
-
-if [ ! -d "$tmp_dir" ]; then
-    mkdir -p "$tmp_dir" ||
-        error "Failed to create temporary directory \"$tmp_dir\""
-    trap 'rm -r "$tmp_dir"' EXIT
 fi
 
 curl --fail --location --progress-bar --output "$tmp_tar" "$dune_tar_uri" ||
