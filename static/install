@@ -67,8 +67,7 @@ case $(uname -ms) in
     error "The Dune Developer Preview does not currently support $(uname -ms)."
 esac
 
-today=$(date +"%Y-%m-%d")
-tar_target_name="dune-$today-$target"
+tar_target_name="dune-$target"
 tar_target="$tar_target_name.tar.gz"
 dune_tar_uri="https://preview.dune.build/latest/$target"
 
@@ -77,8 +76,6 @@ bin_dir="$install_dir/bin"
 tmp_dir="$install_dir/tmp"
 exe="$bin_dir/dune"
 tmp_tar="$tmp_dir/$tar_target"
-tmp_tar_dir="$tmp_dir/$tar_target_name"
-tmp_exe="$tmp_tar_dir/dune"
 tilde_bin_dir=$(tildify "$bin_dir")
 
 command -v tar >/dev/null 2>&1 ||
@@ -100,6 +97,11 @@ curl --fail --location --progress-bar --output "$tmp_tar" "$dune_tar_uri" ||
 
 tar -xf "$tmp_tar" -C "$tmp_dir" > /dev/null 2>&1 ||
     error "Failed to extract dune archive content from \"$tmp_tar\""
+
+# locate the name of the directory that was unpacked in the tarball
+tmp_tar_dir="$(find "$tmp_dir" -mindepth 1 -maxdepth 1 -type d)"
+
+tmp_exe="$tmp_tar_dir/dune"
 
 mv "$tmp_exe" "$exe" ||
     error "Failed to move executable from $tmp_exe to $exe"
