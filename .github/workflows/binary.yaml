@@ -184,6 +184,14 @@ jobs:
           ocaml-compiler: "5.2"
           dune-cache: true
 
+      - name: Update config on test
+        if: ${{ github.ref == 'refs/heads/staging' }}
+        run: |
+          sed -i 's#let bucket_dir = .*#let bucket_dir = "/dune/test"#g' ./bin/config.ml
+          sed -i 's#let url = .*#let url = "https://get.dune.build/test"#g' ./bin/config.ml
+          git add --ignore-errors ./bin/config.ml
+          cat ./bin/config.ml
+
       - name: Install Sandworm deps && build
         run: opam install -y . --deps-only && opam exec -- dune build
 
