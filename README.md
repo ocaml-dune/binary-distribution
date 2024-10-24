@@ -94,9 +94,26 @@ website.
 
 The flag `--dev` has two actions. To protect the users, it only exposes the
 server to `localhost` instead of `0.0.0.0`. Also, it injects a script in the
-page to ensure the page is reloaded when you restart the server. 
+page to ensure the page is reloaded when you restart the server.
 
 ## Deploying
+
+### Deploying on staging environment
+
+If you need to test your work, you can push on the staging environment. This
+environment is available at https://staging-preview.dune.build. If you just need
+to test the website view, you need to reset the HEAD of the `staging` branch
+and push force on it:
+```sh
+ $ git switch staging
+ $ git reset --hard <mybranch>
+ $ git push origin staging --force-with-lease # Ensure nobody is not testing in the same time
+```
+If you want to test this installation script, go to the ["binaries"
+actions](https://github.com/ocaml-dune/binary-distribution/actions/workflows/binary.yaml)
+page and run the `Run workflow` on the `staging` branch. 
+
+### Deploying in production
 
 The deployment are automatically done through GitHub Actions. No need to add
 extra work to deploy it.
