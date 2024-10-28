@@ -6,6 +6,25 @@ on:
     - cron: "0 1 * * *" # Triggers the build at 1:00 UTC time
 
 jobs:
+  check_build:
+    name: Check if we need to run the pipeline or not
+    runs-on: ubuntu-latest
+    outputs:
+      action: ${{ steps.verify.outputs.action }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: ocaml/dune
+          ref: main
+          fetch-depth: 1
+      - name: Export HEAD
+        run: echo "GIT_HEAD=$(git rev-parse HEAD)" > "$GITHUB_ENV"
+      - name: Checkout
+        uses: actions/checkout@v4
+      - id: verify
+        run: |
+          echo "action=BUILD" >> "$GITHUB_OUTPUT"
+
   binary:
     name: Create the artifact
     needs: check_build
