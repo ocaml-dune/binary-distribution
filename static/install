@@ -74,11 +74,11 @@ dune_tar_uri="https://preview.dune.build/latest/$target"
 install_dir="$HOME/.dune"
 bin_dir="$install_dir/bin"
 
-tmp_dir="$(mktemp -d -p dune-install.XXXXXXXXXX)"
+tmp_dir="$(mktemp -d -t dune-install.XXXXXXXXXX)"
 if [ ! $? ]; then
     error "Failed to create temporary directory \"$tmp_dir\""
 fi
-trap 'rm -r "$tmp_dir"' EXIT
+trap 'rm -rf "${tmp_dir}"' EXIT
 
 exe="$bin_dir/dune"
 tmp_tar="$tmp_dir/$tar_target"
