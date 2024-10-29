@@ -924,6 +924,10 @@ video {
   fill: #C24F1E;
 }
 
+.fill-white {
+  fill: #fff;
+}
+
 .stroke-block-p {
   stroke: #555659;
 }
@@ -1194,6 +1198,10 @@ code {
 .hover\:bg-primary-light:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(194 79 30 / var(--tw-bg-opacity));
+}
+
+.hover\:fill-primary-light:hover {
+  fill: #C24F1E;
 }
 
 .hover\:text-primary-light:hover {
