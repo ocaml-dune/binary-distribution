@@ -53,8 +53,12 @@ tildify() {
     esac
 }
 
+command_exists() {
+    command -v "$1" >/dev/null 2>&1
+}
+
 ensure_command() {
-    command -v "$1" >/dev/null 2>&1 ||
+    command_exists "$1" ||
         error "Failed to find \"$1\". This script needs \"$1\" to be able to install dune."
 }
 
@@ -129,6 +133,60 @@ success "dune $target was installed successfully to"
 success_bold "$(tildify "$exe")"
 echo
 echo
+
+# populate rev-store
+cache_dir="${XDG_CACHE_HOME:-$HOME/.cache/dune}"
+rev_store_dir="${cache_dir}/git-repo"
+
+unpack_tar() {
+    tar xf "$1" -C "${tmp_dir}"
+}
+
+unpack_tar_zstd() {
+    filename="$1"
+    zstd --decompress --rm --quiet "${filename}"
+    tarball="${filename%%.zst}"
+    unpack_tar "$tarball"
+}
+
+opam_repo_tarball_url() {
+    release="$1"
+    archive="$2"
+    repo="ocaml-dune/opam-repository-snapshots"
+    printf "https://github.com/%s/releases/download/%s/%s" "${repo}" "${release}" "${archive}"
+}
+
+if [ ! -d "${rev_store_dir}" ] ; then
+    release="opam-repository-924ed6223cc22c606b7d5e7bb9793eaa1519e708"
+    if command_exists "zstd"; then
+        # if we have zstd download the zstd compressed tarball
+	opam_repo_tarball=$(opam_repo_tarball_url "${release}" "git-repo.tar.zst")
+	opam_repo_filename="${tmp_dir}/git-repo.tar.zst"
+	extract_command="unpack_tar_zstd"
+    else
+	# why not .gz? decompressing gz takes ~4x as long as zstd, thus the meager
+	# savings of 6.5% in size is not worth the additional time it takes to
+	# decompress. zstd wins on both size and decompression speed
+	opam_repo_tarball=$(opam_repo_tarball_url "${release}" "git-repo.tar")
+	opam_repo_filename="${tmp_dir}/git-repo.tar"
+	extract_command="unpack_tar"
+    fi
+
+    curl --fail --location --progress-bar \
+        --output "${opam_repo_filename}" \
+        "${opam_repo_tarball}" ||
+	    error "Failed to download opam-repository snapshot from \"$opam_repo_tarball}\""
+
+    # extract_command creates a folder called `git-repo`
+    "${extract_command}" "${opam_repo_filename}"
+
+    mkdir -p "${cache_dir}"
+    mv "${tmp_dir}/git-repo" "${cache_dir}" ||
+        error "Failed to move revision cache to cache location ${cache_dir}"
+
+    success "Revision cache was populated successfully"
+    echo
+fi
 
 already_installed=false
 
