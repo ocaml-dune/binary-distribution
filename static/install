@@ -157,7 +157,7 @@ opam_repo_tarball_url() {
 }
 
 if [ ! -d "${rev_store_dir}" ] ; then
-    release="opam-repository-924ed6223cc22c606b7d5e7bb9793eaa1519e708"
+    release="opam-repository-d910b0617a51ea90e4547db13a509962fc504f70"
     if command_exists "zstd"; then
         # if we have zstd download the zstd compressed tarball
 	opam_repo_tarball=$(opam_repo_tarball_url "${release}" "git-repo.tar.zst")
