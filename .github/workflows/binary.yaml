@@ -50,6 +50,9 @@ jobs:
           - os: ubuntu-22.04
             name: x86_64-unknown-linux-musl
             installable: .#dune-static-experimental
+          - os: linux-arm64-debian
+            name: aarch64-unknown-linux-musl
+            installable: .#dune-static-experimental
 
     # If the latest commit is the same as latest run, don't re-run.
     if: ${{ needs.check_build.outputs.action == 'BUILD' || github.event_name == 'workflow_dispatch' }}
@@ -126,6 +129,9 @@ jobs:
             name: aarch64-apple-darwin
           - os: ubuntu-22.04
             name: x86_64-unknown-linux-musl
+          - os: linux-arm64-debian
+            name: aarch64-unknown-linux-musl
+            installable: .#dune-static-experimental
 
     runs-on: ${{ matrix.os }}
     needs: binary
