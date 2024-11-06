@@ -147,7 +147,7 @@ let header_info () =
            "Setup OCaml with Dune in "
            <span style="color: rgb(194, 79, 30);">"Under a Minute"</span>
        </h1>
-       <p class_="max-w-banner text-lg leading-7 mt-4">
+       <p class_="max-w-banner text-lg text-white leading-7 mt-4">
           "The Dune Developer Preview is an ongoing program that provides early access to new and experimental features in Dune and the broader OCaml Platform with an "
            <span class_="text-primary-light">"experimental nightly release"</span>
        </p>
@@ -231,7 +231,7 @@ let feedback () =
 
       <LinkButton href="https://github.com/ocaml/dune/issues/new/choose">
         <p>
-          <Icons.github class_="mr-2.5" />
+          <Icons.github class_="fill-white mr-2.5" />
           "Open a GitHub Issue"
         </p>
       </LinkButton>
@@ -300,10 +300,10 @@ let installation_target ~base_url ~bundle target =
         <span class_="mr-2.5">
           <Icons.download class_="stroke-primary-light" />
         </span>
-        <Link href=tar_href>(JSX.string targz)</Link>
+        <Link class_="hover:underline" href=tar_href>(JSX.string targz)</Link>
       </div>
     </div>
-    <a class_="text-black underline" href=cert_href>"Certificate"</a>
+    <a class_="text-black underline hover:text-primary-light" href=cert_href>"Certificate"</a>
   </li>
 
 let manual_installation ~base_url ~releases () =
@@ -427,25 +427,25 @@ let footer_info () =
           "Dune is a build system for OCaml, simplifying project management and streamlining compilation."
         </p>
         <div class_="flex justify-center items-center">
-          <a href="https://github.com/ocaml/dune"><Icons.github class_="py-2.5 pr-2.5" /></a>
-          <a href="https://discuss.ocaml.org/tag/dune"><Icons.discourse class_="p-2.5" /></a>
-          <a href="https://x.com/ocaml_org"><Icons.x class_="p-2.5" /></a>
-          <a href="https://discord.gg/cCYQbqN"><Icons.discord class_="p-2.5" /></a>
+          <a href="https://github.com/ocaml/dune"><Icons.github class_="fill-white hover:fill-primary-light py-2.5 pr-2.5" /></a>
+          <a href="https://discuss.ocaml.org/tag/dune"><Icons.discourse class_="fill-white hover:fill-primary-light p-2.5" /></a>
+          <a href="https://x.com/ocaml_org"><Icons.x class_="fill-white hover:fill-primary-light p-2.5" /></a>
+          <a href="https://discord.gg/cCYQbqN"><Icons.discord class_="fill-white hover:fill-primary-light p-2.5" /></a>
         </div>
       </div>
     <div class_="w-full flex flex-col gap-8 sm:gap-10">
       <div class_="w-full flex flex-col sm:flex-row justify-between items-center gap-7 sm:gap-0">
-        <a href="/#download">"Download & Install Dune"</a>
-        <a href="/#feedback">"Share Feedback"</a>
-        <a href="/#faq">"FAQs"</a>
-        <a href="/#manual-installation">"Manual Installation"</a>
-        <a href="/#release-history">"Last Month Release History"</a>
+        <a class_="hover:text-primary-light" href="/#download">"Download & Install Dune"</a>
+        <a class_="hover:text-primary-light" href="/#feedback">"Share Feedback"</a>
+        <a class_="hover:text-primary-light" href="/#faq">"FAQs"</a>
+        <a class_="hover:text-primary-light" href="/#manual-installation">"Manual Installation"</a>
+        <a class_="hover:text-primary-light" href="/#release-history">"Last Month Release History"</a>
       </div>
       <div class_="bg-primary-light/20 rounded-md border border-primary-light flex justify-start items-center px-5 py-2 gap-4">
         <Icons.github class_="fill-primary-light" />
         <p class_="text-white">
           "You can contribute to this page at "
-          <Link color="text-white" class_="underline" href="github.com/ocaml-dune/binary-distribution">
+          <Link color="text-white" class_="underline hover:text-primary-light" href="github.com/ocaml-dune/binary-distribution">
             "github.com/ocaml-dune/binary-distribution"
           </Link>"."
         </p>
