@@ -129,7 +129,7 @@ fi
 mv "$tmp_tar_dir/completions" "$install_dir" ||
     error "Failed to move completions from $tmp_tar_dir to $install_dir"
 
-mv "$tmp_tar_dir/tool-wrappers/*" "$bin_dir" ||
+mv "$tmp_tar_dir"/tool-wrappers/* "$bin_dir" ||
     error "Failed to move tool wrapper scripts from $tmp_tar_dir to $install_dir"
 
 success "dune $target was installed successfully to"
