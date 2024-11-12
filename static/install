@@ -97,6 +97,15 @@ ensure_command "tar"
 ensure_command "gzip"
 ensure_command "curl"
 
+# determine whether we can use --no-same-owner to force tar to extract with user permissions
+touch "${tmp_dir}/tar-detect"
+tar cf "${tmp_dir}/tar-detect.tar" -C "${tmp_dir}" tar-detect
+if tar -C "${tmp_dir}" -xf "${tmp_dir}/tar-detect.tar" --no-same-owner; then
+  tar_owner="--no-same-owner"
+else
+  tar_owner=""
+fi
+
 if [ ! -d "$bin_dir" ]; then
     mkdir -p "$bin_dir" ||
         error "Failed to create install directory \"$bin_dir\""
@@ -106,7 +115,7 @@ curl --fail --location --progress-bar --output "$tmp_tar" "$dune_tar_uri" ||
     error "Failed to download dune tar from \"$dune_tar_uri\""
 
 
-tar -xf "$tmp_tar" -C "$tmp_dir" > /dev/null 2>&1 ||
+tar -xf "$tmp_tar" -C "$tmp_dir" "${tar_owner}" > /dev/null 2>&1 ||
     error "Failed to extract dune archive content from \"$tmp_tar\""
 
 # locate the name of the directory that was unpacked in the tarball
@@ -142,7 +151,7 @@ cache_dir="${XDG_CACHE_HOME:-$HOME/.cache/dune}"
 rev_store_dir="${cache_dir}/git-repo"
 
 unpack_tar() {
-    tar xf "$1" -C "${tmp_dir}"
+    tar xf "$1" -C "${tmp_dir}" "${tar_owner}"
 }
 
 unpack_tar_zstd() {
