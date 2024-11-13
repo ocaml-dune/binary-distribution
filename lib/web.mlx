@@ -1,7 +1,8 @@
 module Info = struct
   let title = "Dune Developer Preview"
   let curl_with_sh url =
-    Format.sprintf "curl -fsSL %s | sh" url  |> JSX.string
+    Format.sprintf "curl --proto '=https' --tlsv1.2 -fsSL %s | sh" url
+    |> JSX.string
 end
 
 module Link = struct
