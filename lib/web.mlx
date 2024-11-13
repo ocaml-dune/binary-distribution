@@ -349,7 +349,7 @@ let manual_installation ~base_url ~releases () =
     <h3 class_="mt-5 mb-2.5"> "Verifying the Dune binary" </h3>
     <p class_="mb-2.5">
       <span>"To ensure trust in the binary distribution, we generate a build certificate associated with the Github Actions pipeline where the binaries are built. Once you download this certificate, you can use the "</span>
-      <code class_="font-mono text-block-p">"gh"</code>
+      <span class_="font-mono text-block-p">"gh"</span>
       <span>" tool to verify it with the following command: "</span>
     </p>
     <Code>[JSX.string "$ gh attestation verify ./dune -R ocaml-dune/binary-distribution --bundle attestation.jsonl"]</Code>
