@@ -189,6 +189,89 @@ let getting_started ~install_url () =
 "$ dune pkg lock"
 "$ dune exec hello_world"
     </Code>
+    <h3 class_="mt-10 mb-2.5">"Editor Configuration"</h3>
+    <p>
+        "Here's how to configure some popular editors for OCaml using the Dune Developer Preview. Note that it is unnecessary to install "
+        <span class_="font-mono text-block-p">"ocaml-lsp-server"</span>
+        " as Dune will install it automatically."
+    </p>
+
+    <div class_="mt-4">
+        <Details summary="Visual Studio Code" container_class="px-4 lg:px-14 py-1">
+            <div>
+                <p class_="mb-2.5">
+                    "Install the latest version of the "
+                    <Link class_="hover:underline" href="https://marketplace.visualstudio.com/items?itemName=ocamllabs.ocaml-platform">"vscode-ocaml-platform"</Link>
+                    " plugin for Visual Studio Code. By default it assumes that you'll be using Opam to install "
+                    <span class_="font-mono text-block-p">"ocamllsp"</span>
+                    ". To configure it to work with the Dune Developer Preview, add the following to your settings.json file:"
+                </p>
+                <Code>
+"// settings.json"
+"{"
+"  \"ocaml.sandbox\": {"
+"    \"kind\": \"custom\","
+"    \"template\": \"$prog $args\""
+"  }"
+"}"
+                </Code>
+            </div>
+        </Details>
+    </div>
+    <div class_="mt-4">
+        <Details summary="Neovim" container_class="px-4 lg:px-14 py-1">
+            <div>
+                <p class_="mb-2.5">
+                    "The easiest way to configure Neovim for OCaml is by installing the "
+                    <Link class_="hover:underline" href="https://github.com/neovim/nvim-lspconfig">"lspconfig"</Link>
+                    " package. The default configuration will work with the Dune Developer Preview, so just enable it with:"
+                </p>
+                <Code>
+"-- init.lua"
+"require'lspconfig'.ocamllsp.setup{}"
+                </Code>
+            </div>
+        </Details>
+    </div>
+    <div class_="mt-4">
+        <Details summary="Emacs" container_class="px-4 lg:px-14 py-1">
+            <div>
+                <p class_="mb-2.5">
+                    "Emacs users will need to add the Dune Developer Preview's bin directory to their "
+                    <span class_="font-mono text-block-p">"exec-path"</span>
+                    " and "
+                    <span class_="font-mono text-block-p">"PATH"</span>
+                    " variables. The rest of the configuration is the same as for regular OCaml. Here's a minimal example configuration for Emacs that uses "
+                    <Link class_="hover:underline" href="https://www.gnu.org/software/emacs/manual/html_mono/use-package.html">"use-package"</Link>
+                    " to install packages:"
+                </p>
+                <Code>
+"; init.el"
+"; add the dune developer preview bin path to exec-path and PATH"
+"(add-to-list 'exec-path \"~/.dune/bin\" t)"
+"(setenv \"PATH\" (concat (expand-file-name \"~/.dune/bin\") \":\" (getenv \"PATH\")))"
+" "
+"; mode for editing ocaml files"
+"(use-package tuareg)"
+" "
+"; lsp client mode"
+"(use-package lsp-mode"
+"  :init"
+"  ; start ocamllsp automatically for ocaml files"
+"  :hook ((tuareg-mode . lsp)))"
+                </Code>
+            </div>
+        </Details>
+    </div>
+    <div class_="mt-4">
+        <Details summary="Zed" container_class="px-4 lg:px-14 py-1">
+            <div>
+                <p class_="mb-2.5">
+                    "No manual configuration is necessary! Just install the OCaml extensions for Zed (you should get a pop-up the first time you edit an OCaml file)."
+                </p>
+            </div>
+        </Details>
+    </div>
     <Note class_="">
       <p class_="text-secondary">
         "For more information on Dune and Package Management, check "
