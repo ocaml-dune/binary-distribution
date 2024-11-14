@@ -62,7 +62,7 @@ module Curl = struct
 end
 
 module Note = struct
-    let make ~class_ ~children () = 
+    let make ~class_ ~children () =
       <div class_=("w-full px-5 py-2.5 mt-5 flex flex-row items-center border border-tertiary rounded-md bg-tertiary/20 " ^ class_)>
         <Icons.info class_="stroke-tertiary mr-2" />
         children
@@ -130,7 +130,7 @@ let navbar () =
   </nav>
 
 
-let header_info () = 
+let header_info () =
   <section class_="relative flex items-center justify-center overflow-hidden lg:h-96 bg-black lg:bg-transparent px-5 py-10 lg:p-0">
     <img src="/static/img_camel_hero_banner.png"
          alt="Hero Image"
@@ -520,7 +520,7 @@ let footer_info () =
         <Icons.github class_="fill-primary-light" />
         <p class_="text-white">
           "You can contribute to this page at "
-          <Link color="text-white" class_="underline hover:text-primary-light" href="github.com/ocaml-dune/binary-distribution">
+          <Link color="text-white" class_="underline hover:text-primary-light" href="https://github.com/ocaml-dune/binary-distribution">
             "github.com/ocaml-dune/binary-distribution"
           </Link>"."
         </p>
@@ -558,7 +558,7 @@ let page ~base_url content =
       <title> (JSX.string Info.title) </title>
       <link rel="stylesheet" href="/static/main.css" />
       <link rel="shortcut icon" href="/static/dune_favicon.png" />
-      <script 
+      <script
         dataDomain="preview.dune.build" defer=true
         src="https://plausible.ci.dev/js/script.file-downloads.js"></script>
     </head>
