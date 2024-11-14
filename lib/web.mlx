@@ -331,7 +331,6 @@ let q_and_a = [
       </p>
       <p>"When configuring the build you'll want to enable the following flags:" </p>
       <Code>
-"--enable-toolchains"
 "--enable-pkg-build-progress"
 "--enable-lock-dev-tool"
 </Code>
@@ -344,7 +343,6 @@ let q_and_a = [
       </p>
       <Code>
 "$ opam pin add dune --dev"
-"$ export DUNE_CONFIG__TOOLCHAINS=enabled"
 "$ export DUNE_CONFIG__PKG_BUILD_PROGRESS=enabled"
 "$ export DUNE_CONFIG__LOCK_DEV_TOOL=enabled"
 </Code>
