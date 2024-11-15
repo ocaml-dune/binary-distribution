@@ -56,6 +56,6 @@
 
 (pin
  (url
-  "git+https://github.com/tmattio/opam-tailwindcss/archive/e5bb6361a50c7cc5cad802311e609336583ca08f.tar.gz")
+  "git+https://github.com/tmattio/opam-tailwindcss#e5bb6361a50c7cc5cad802311e609336583ca08f")
  (package
   (name tailwindcss)))
