@@ -199,7 +199,7 @@ let getting_started ~install_url () =
     <Details summary="Visual Studio Code" extend_class="mt-4" container_class="px-4 lg:px-14 py-1">
         <div>
             <p class_="mb-2.5">
-                "Install the latest version of the "
+                "Install version 1.21.0 or higher of the "
                 <Link class_="hover:underline" href="https://marketplace.visualstudio.com/items?itemName=ocamllabs.ocaml-platform">"vscode-ocaml-platform"</Link>
                 " plugin for Visual Studio Code. By default it assumes that you'll be using Opam to install "
                 <span class_="font-mono text-block-p">"ocamllsp"</span>
