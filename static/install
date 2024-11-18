@@ -111,8 +111,10 @@ if [ ! -d "$bin_dir" ]; then
         error "Failed to create install directory \"$bin_dir\""
 fi
 
-curl --fail --location --progress-bar --output "$tmp_tar" "$dune_tar_uri" ||
-    error "Failed to download dune tar from \"$dune_tar_uri\""
+curl --fail --location --progress-bar \
+    --proto '=https' --tlsv1.2 \
+    --output "$tmp_tar" "$dune_tar_uri" ||
+        error "Failed to download dune tar from \"$dune_tar_uri\""
 
 
 tar -xf "$tmp_tar" -C "$tmp_dir" "${tar_owner}" > /dev/null 2>&1 ||
@@ -185,6 +187,7 @@ if [ ! -d "${rev_store_dir}" ] ; then
     fi
 
     curl --fail --location --progress-bar \
+        --proto '=https' --tlsv1.2 \
         --output "${opam_repo_filename}" \
         "${opam_repo_tarball}" ||
 	    error "Failed to download opam-repository snapshot from \"$opam_repo_tarball}\""
