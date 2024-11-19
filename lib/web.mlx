@@ -189,10 +189,11 @@ let getting_started ~install_url () =
       "Run"
     </h4>
     <Code>
-"$ dune init proj hello_world"
-"$ cd hello_world"
+"$ PROJECT=hello_world"
+"$ dune init proj \"$PROJECT\""
+"$ cd \"$PROJECT\""
 "$ dune pkg lock"
-"$ dune exec hello_world"
+"$ dune exec \"$PROJECT\""
     </Code>
     <h3 class_="mt-10 mb-2.5">"Editor Configuration"</h3>
     <p>
