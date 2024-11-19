@@ -1,10 +1,4 @@
-{ pkgs ? import <nixpkgs> {} }:
+{ pkgs ? import <nixpkgs> { } }:
 pkgs.mkShell {
-  nativeBuildInputs = with pkgs; [
-    opam
-    pkg-config
-    gmp
-    openssl
-    libev
-  ];
+  nativeBuildInputs = with pkgs; [ pkg-config gmp libffi libev sqlite openssl ];
 }
