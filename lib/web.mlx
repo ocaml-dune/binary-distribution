@@ -249,8 +249,8 @@ let getting_started ~install_url () =
             <Code>
 "; init.el"
 "; add the dune developer preview bin path to exec-path and PATH"
-"(add-to-list 'exec-path \"~/.dune/bin\" t)"
-"(setenv \"PATH\" (concat (expand-file-name \"~/.dune/bin\") \":\" (getenv \"PATH\")))"
+"(add-to-list 'exec-path \"~/.local/bin\" t)"
+"(setenv \"PATH\" (concat (expand-file-name \"~/.local/bin\") \":\" (getenv \"PATH\")))"
 " "
 "; mode for editing ocaml files"
 "(use-package tuareg)"
@@ -407,10 +407,8 @@ let manual_installation ~base_url ~releases () =
       "Run"
     </h4>
     <Code>
-"$ tar xzvf dune-<arch>.tar.gz"
-"dune-<arch>"
-"$ cd dune-<arch>"
-"$ sudo mv \"./dune\" \"$HOME/.local/bin/dune\""
+"$ tar xzf dune-<arch>.tar.gz"
+"$ mv dune-<arch>/dune ~/.local/bin/"
     </Code>
     <p class_="mt-2.5 mb-2.5">"You can verify your installation by running:"</p>
     <Code>
