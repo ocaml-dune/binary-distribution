@@ -1,2 +1,2 @@
 #!/usr/bin/env fish
-set --export PATH $HOME/.dune/bin $PATH
+fish_add_path --prepend --path $HOME/.loca/bin

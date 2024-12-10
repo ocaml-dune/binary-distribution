@@ -80,8 +80,11 @@ tar_target_name="dune-$target"
 tar_target="$tar_target_name.tar.gz"
 dune_tar_uri="https://preview.dune.build/latest/$target"
 
-install_dir="$HOME/.dune"
-bin_dir="$install_dir/bin"
+install_dir="$HOME/.local"
+bin_dir="${install_dir}/bin"
+share_dir="${install_dir}/share/dune"
+completions_dir="${share_dir}/completions"
+env_dir="${share_dir}/env"
 
 tmp_dir="$(mktemp -d -t dune-install.XXXXXXXXXX)"
 if [ ! $? ]; then
@@ -128,20 +131,23 @@ tmp_exe="$tmp_tar_dir/dune"
 mv "$tmp_exe" "$exe" ||
     error "Failed to move executable from $tmp_exe to $exe"
 
-if [ -d "$install_dir/env" ]; then
-    rm -r "$install_dir/env"
-fi
-mv "$tmp_tar_dir/env" "$install_dir" ||
-    error "Failed to move env from $tmp_tar_dir to $install_dir"
+mkdir -p "${share_dir}"
 
-if [ -d "$install_dir/completions" ]; then
-    rm -r "$install_dir/completions"
+if [ -d "${env_dir}" ]; then
+    rm -r "${env_dir}"
 fi
-mv "$tmp_tar_dir/completions" "$install_dir" ||
-    error "Failed to move completions from $tmp_tar_dir to $install_dir"
+
+mv "$tmp_tar_dir/env" "${share_dir}" ||
+    error "Failed to move env from \"$tmp_tar_dir\" to \"$share_dir\""
+
+if [ -d "${completions_dir}" ]; then
+    rm -r "${completions_dir}"
+fi
+mv "$tmp_tar_dir/completions" "${share_dir}" ||
+    error "Failed to move completions from \"$tmp_tar_dir\" to \"$share_dir\""
 
 mv "$tmp_tar_dir"/tool-wrappers/* "$bin_dir" ||
-    error "Failed to move tool wrapper scripts from $tmp_tar_dir to $install_dir"
+    error "Failed to move tool wrapper scripts from \"$tmp_tar_dir\" to \"$bin_dir\""
 
 success "dune $target was installed successfully to"
 success_bold "$(tildify "$exe")"
@@ -205,15 +211,24 @@ fi
 
 already_installed=false
 
-case $(basename "$SHELL") in
+unsubst_home() {
+    echo "$1" | sed -e "s#^$HOME#\$HOME#"
+}
+
+remove_home() {
+    echo "$1" | sed -e "s#^$HOME/##" | sed -e 's#^/##'
+}
+
+case $(basename "${SHELL:-*}") in
 fish)
-    env_file="\$HOME/.dune/env/env.fish"
+    env="${env_dir}/env.fish"
+    env_file=$(unsubst_home "${env}")
 
     fish_config=$HOME/.config/fish/config.fish
     tilde_fish_config=$(tildify "$fish_config")
 
     # deliberately omit the home directory from the pattern so "~" and "$HOME" can be used interchangeably
-    if [ -f "$fish_config" ] && match=$(grep -n ".dune/env/env.fish" "$fish_config"); then
+    if [ -f "$fish_config" ] && match=$(grep -n "$(remove_home "${env}")" "$fish_config"); then
         echo "Shell configuration for dune appears to already exist in \"$fish_config\":"
         echo "$match"
         already_installed=true
@@ -230,15 +245,16 @@ fish)
         echo
     fi
     ;;
-zsh)
 
-    env_file="\$HOME/.dune/env/env.zsh"
+zsh)
+    env="${env_dir}/env.zsh"
+    env_file=$(unsubst_home "${env}")
 
     zsh_config=$HOME/.zshrc
     tilde_zsh_config=$(tildify "$zsh_config")
 
     # deliberately omit the home directory from the pattern so "~" and "$HOME" can be used interchangeably
-    if [ -f "$zsh_config" ] && match=$(grep -n ".dune/env/env.zsh" "$zsh_config"); then
+    if [ -f "$zsh_config" ] && match=$(grep -n "$(remove_home "${env}")" "$zsh_config"); then
         echo "Shell configuration for dune appears to already exist in \"$zsh_config\":"
         echo "$match"
         already_installed=true
@@ -255,9 +271,10 @@ zsh)
         echo
     fi
     ;;
-bash)
 
-    env_file="\$HOME/.dune/env/env.bash"
+bash)
+    env="${env_dir}/env.bash"
+    env_file=$(unsubst_home "${env}")
 
     bash_configs="$HOME/.bashrc $HOME/.bash_profile"
 
@@ -267,7 +284,7 @@ bash)
 
     for bash_config in $bash_configs; do
         # deliberately omit the home directory from the pattern so "~" and "$HOME" can be used interchangeably
-        if [ -f "$bash_config" ] && match=$(grep -n ".dune/env/env.bash" "$bash_config"); then
+	if [ -f "$bash_config" ] && match=$(grep -n "$(remove_home "${env}")" "$bash_config"); then
             echo "Shell configuration for dune appears to already exist in \"$bash_config\":"
             echo "$match"
             refresh_command="source $bash_config"
@@ -299,8 +316,11 @@ bash)
         fi
     fi
     ;;
-*)
-    env_file="\$HOME/.dune/env/env.bash"
+
+*|unset)
+    env="${env_dir}/env.bash"
+    env_file=$(unsubst_home "${env}")
+
     echo "To use dune you will need to source the file \"$env_file\" (or similar as appropriate for your shell)"
     info_bold "  export PATH=\"$bin_dir:\$PATH\""
     echo
