@@ -1,0 +1,4 @@
+let page ~code ~reason () =
+  <main class_="h-full flex items-center justify-center">
+    <h2 class_="text-primary-light">(Format.sprintf "%d %s" code reason |> JSX.string)</h2>
+  </main>

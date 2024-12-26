@@ -97,12 +97,17 @@ end
 
 module Http = struct
   let serve dev metadata_file port =
+    let title = "Dune Developer Preview" in
     let base_url = Config.Server.url in
     let bundles = Metadata.import_from_json metadata_file in
-    let main_page = Web.export_bundle_to_string ~base_url (Result.ok bundles) in
-    let site = [ "/", main_page; "/index.html", main_page ] in
+    let routes =
+      let main_page = Web.generate_main_page ~title ~base_url bundles in
+      Web.Route.empty
+      |> Web.Route.add ~path:"/" main_page
+      |> Web.Route.add ~path:"/index.html" main_page
+    in
     let latest = List.hd bundles in
-    Server.serve ~dev ~base_url site port latest
+    Server.serve ~dev ~base_url routes port latest
   ;;
 
   let term =

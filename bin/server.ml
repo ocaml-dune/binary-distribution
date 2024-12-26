@@ -23,24 +23,25 @@ let latest_route_from_targets ~base_url bundle =
     bundle.targets
 ;;
 
-let error_template ~base_url _error _debug_info suggested_response =
+let error_template _error _debug_info suggested_response =
+  let open Sandworm in
   let status = Dream.status suggested_response in
   let code = Dream.status_to_int status in
   let reason = Dream.status_to_string status in
   Dream.set_header suggested_response "Content-Type" Dream.text_html;
   Dream.set_body
     suggested_response
-    (Sandworm.Web.export_bundle_to_string ~base_url (Result.error (code, reason)));
+    (Web.generate_error_page ~title:"Dune - Error 404" ~code reason);
   Lwt.return suggested_response
 ;;
 
-let from_webpage_to_route page =
+let from_tuple_to_dream page =
   List.map (fun (path, content) -> Dream.get path (fun _ -> Dream.html content)) page
 ;;
 
-let serve ~dev ~base_url site port bundle =
+let serve ~dev ~base_url routes port bundle =
   let interface = if dev then "127.0.0.1" else "0.0.0.0" in
-  let error_handler = Dream.error_template (error_template ~base_url) in
+  let error_handler = Dream.error_template error_template in
   Dream.log
     "Server is up and running with mode %s and with css %s"
     (if dev then "dev" else "production")
@@ -51,7 +52,7 @@ let serve ~dev ~base_url site port bundle =
   @@ reload_script_middleware ~dev
   @@ cache_middleware ~dev
   @@ Dream.router
-       (from_webpage_to_route site
+       (from_tuple_to_dream routes
         @ [ Dream.get "/health" (fun _ -> Dream.html "OK")
           ; Dream.get "/install" (fun request -> Dream.redirect request "/static/install")
           ; Dream.get "/static/**" @@ Dream.static "static"
