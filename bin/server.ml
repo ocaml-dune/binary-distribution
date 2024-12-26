@@ -34,6 +34,10 @@ let error_template ~base_url _error _debug_info suggested_response =
   Lwt.return suggested_response
 ;;
 
+let from_webpage_to_route page =
+  List.map (fun (path, content) -> Dream.get path (fun _ -> Dream.html content)) page
+;;
+
 let serve ~dev ~base_url site port bundle =
   let interface = if dev then "127.0.0.1" else "0.0.0.0" in
   let error_handler = Dream.error_template (error_template ~base_url) in
@@ -47,11 +51,10 @@ let serve ~dev ~base_url site port bundle =
   @@ reload_script_middleware ~dev
   @@ cache_middleware ~dev
   @@ Dream.router
-       [ Dream.get "/health" (fun _ -> Dream.html "OK")
-       ; Dream.get "/" (fun _ -> Dream.html site)
-       ; Dream.get "/index.html" (fun _ -> Dream.html site)
-       ; Dream.get "/install" (fun request -> Dream.redirect request "/static/install")
-       ; Dream.get "/static/**" @@ Dream.static "static"
-       ; Dream.scope "/latest" [] (latest_route_from_targets ~base_url bundle)
-       ]
+       (from_webpage_to_route site
+        @ [ Dream.get "/health" (fun _ -> Dream.html "OK")
+          ; Dream.get "/install" (fun request -> Dream.redirect request "/static/install")
+          ; Dream.get "/static/**" @@ Dream.static "static"
+          ; Dream.scope "/latest" [] (latest_route_from_targets ~base_url bundle)
+          ])
 ;;

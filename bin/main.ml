@@ -99,9 +99,10 @@ module Http = struct
   let serve dev metadata_file port =
     let base_url = Config.Server.url in
     let bundles = Metadata.import_from_json metadata_file in
-    let content = Web.export_bundle_to_string ~base_url (Result.ok bundles) in
+    let main_page = Web.export_bundle_to_string ~base_url (Result.ok bundles) in
+    let site = [ "/", main_page; "/index.html", main_page ] in
     let latest = List.hd bundles in
-    Server.serve ~dev ~base_url content port latest
+    Server.serve ~dev ~base_url site port latest
   ;;
 
   let term =
