@@ -1,0 +1,93 @@
+open Component
+
+let navbar () =
+  <nav class_="w-full sticky top-0 z-50 bg-secondary flex flex-col lg:flex-row flex-wrap justify-between items-center align-center lg:px-24 px-5 py-2.5 text-white/60">
+    <script>
+    (JSX.unsafe {|
+
+      function onMenuClick() {
+        let menu = document.getElementById("menu");
+        if (menu.classList.contains("hidden")) {
+          menu.classList.remove("hidden");
+          menu.classList.add("flex");
+        } else {
+          menu.classList.add("hidden");
+          menu.classList.remove("flex");
+        }
+      }
+
+      function onItemClick(e) {
+        let menuButton = document.getElementById("menu-button");
+        let menuP = menuButton.children[0];
+        menuP.innerText = e.innerText;
+        onMenuClick();
+      }
+    |})
+    </script>
+    <div class_="w-full lg:w-fit flex flex-row items-center justify-between">
+      <Icons.logo />
+      <button id="menu-button" class_="flex lg:hidden items-center gap-2.5" onclick="onMenuClick()"><p class_="text-white">"Download & Install Dune"</p><Icons.menu_arrow class_="stroke-primary-light fill-primary-light" /></button>
+    </div>
+    <div id="menu" class_="lg:flex hidden flex-col lg:flex-row flex-wrap gap-6">
+      <a id="download-menu" class_="p-2.5 hover:text-primary-light" onclick="onItemClick(this)" href="/#download">"Download & Install Dune"</a>
+      <a id="share-menu" class_="p-2.5 hover:text-primary-light" onclick="onItemClick(this)" href="/#feedback">"Share Feedback"</a>
+      <a id="faq-menu" class_="p-2.5 hover:text-primary-light"  onclick="onItemClick(this)" href="/#faq">"FAQs"</a>
+      <a id="manual-menu" class_="p-2.5 hover:text-primary-light" onclick="onItemClick(this)" href="/#manual-installation">"Manual Installation"</a>
+      <a id="release-menu" class_="p-2.5 hover:text-primary-light" onclick="onItemClick(this)" href="/#release-history">"Last Month Release History"</a>
+    </div>
+  </nav>
+
+let footer_info () =
+  <footer class_="w-full flex justify-center px-5 lg:px-24 bg-secondary py-10 text-white/60">
+    <div class_="w-full flex flex-col-reverse lg:flex-row justify-between items-center gap-8 sm:gap-20">
+      <div class_="flex flex-col lg:items-start max-w-[263px] mt-10 lg:mt-0 ">
+        <Icons.logo />
+        <p class_="text-sm text-white text-justify mb-2.5">
+          "Dune is a build system for OCaml, simplifying project management and streamlining compilation."
+        </p>
+        <div class_="flex justify-center items-center">
+          <a href="https://github.com/ocaml/dune"><Icons.github class_="fill-white hover:fill-primary-light py-2.5 pr-2.5" /></a>
+          <a href="https://discuss.ocaml.org/tag/dune"><Icons.discourse class_="fill-white hover:fill-primary-light p-2.5" /></a>
+          <a href="https://x.com/ocaml_org"><Icons.x class_="fill-white hover:fill-primary-light p-2.5" /></a>
+          <a href="https://discord.gg/cCYQbqN"><Icons.discord class_="fill-white hover:fill-primary-light p-2.5" /></a>
+        </div>
+      </div>
+    <div class_="w-full flex flex-col gap-8 sm:gap-10">
+      <div class_="w-full flex flex-col sm:flex-row justify-between items-center gap-7 sm:gap-0">
+        <a class_="hover:text-primary-light" href="/#download">"Download & Install Dune"</a>
+        <a class_="hover:text-primary-light" href="/#feedback">"Share Feedback"</a>
+        <a class_="hover:text-primary-light" href="/#faq">"FAQs"</a>
+        <a class_="hover:text-primary-light" href="/#manual-installation">"Manual Installation"</a>
+        <a class_="hover:text-primary-light" href="/#release-history">"Last Month Release History"</a>
+      </div>
+      <div class_="bg-primary-light/20 rounded-md border border-primary-light flex justify-start items-center px-5 py-2 gap-4">
+        <Icons.github class_="fill-primary-light" />
+        <p class_="text-white">
+          "You can contribute to this page at "
+          <Link color="text-white" class_="underline hover:text-primary-light" href="https://github.com/ocaml-dune/binary-distribution">
+            "github.com/ocaml-dune/binary-distribution"
+          </Link>"."
+        </p>
+      </div>
+    </div>
+  </div>
+  </footer>
+
+let page ~title content =
+  <html class_="scroll-pt-20">
+    <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title> (JSX.string title) </title>
+      <link rel="stylesheet" href="/static/main.css" />
+      <link rel="shortcut icon" href="/static/dune_favicon.png" />
+      <script
+        dataDomain="preview.dune.build" defer=true
+        src="https://plausible.ci.dev/js/script.file-downloads.js"></script>
+    </head>
+    <body class_="min-h-dvh w-full flex flex-col overflow-scroll justify-between items-center">
+      <navbar />
+      content
+      <footer_info />
+    </body>
+  </html>

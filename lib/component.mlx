@@ -1,0 +1,98 @@
+module Info = struct
+  let curl_with_sh url =
+    Format.sprintf "curl -fsSL %s | sh" url  |> JSX.string
+end
+
+module Link = struct
+  let make ?(class_ = "") ?(color = "text-primary-light") ~href ~children () =
+    <a class_=(color ^ " " ^ class_) href>children</a>
+end
+
+module Code = struct
+  let make ~children () =
+      <pre class_="w-full bg-section-code px-5 rounded-md">
+        <code class_="w-full h-full py-4 ">
+        (List.map (fun child -> (
+            (* Note that the <br/> below is necessary as otherwise the
+               codeblock will lack line breaks and copy/pasting it will remove
+               all newlines. *)
+            <span>child<br/></span>
+        )) children |> JSX.list)
+        </code>
+      </pre>
+end
+
+module Curl = struct
+  let make ~script () =
+        <div class_="w-full pl-4 bg-secondary text-white flex flex-row items-center justify-between rounded-md">
+          <span id="install-cmd" class_="pr-2 font-mono">
+            script
+          </span>
+          <Icons.copy id="copy-btn" class_="rounded-tr-md rounded-br-md cursor-pointer bg-copy" />
+          <Icons.ok id="copy-btn-active" class_="h-[52px] w-[52px] flex items-center justify-center hidden rounded-tr-md rounded-br-md cursor-pointer bg-primary-light" />
+          <script>
+            (JSX.unsafe {|
+              function activeButton(active) {
+                const copyBtn = document.querySelector('#copy-btn');
+                const copyBtnActive = document.querySelector('#copy-btn-active');
+                if (active) {
+                    copyBtn.classList.add("hidden")
+                    copyBtnClicked.classList.remove("hidden")
+                } else {
+                    copyBtnClciked.classList.add("hidden")
+                    copyBtn.classList.remove("hidden")
+                }
+              }
+
+              document.addEventListener('DOMContentLoaded', () => {
+                const installCmd = document.querySelector('#install-cmd');
+                const copyBtn = document.querySelector('#copy-btn');
+                const copyBtnActive = document.querySelector('#copy-btn-active');
+                copyBtn.addEventListener('click', () => {
+                  navigator.clipboard.writeText(installCmd.innerText)
+                    copyBtn.classList.add("hidden")
+                    copyBtnActive.classList.remove("hidden")
+                    setTimeout(() => {
+                      copyBtnActive.classList.add("hidden")
+                      copyBtn.classList.remove("hidden")
+                    }, 2000);
+                  }, function(err) {
+                    console.error('Async: Could not copy text: ', err);
+                  });
+                });
+              |})
+          </script>
+        </div>
+end
+
+module Note = struct
+    let make ~class_ ~children () =
+      <div class_=("w-full px-5 py-2.5 mt-5 flex flex-row items-center border border-tertiary rounded-md bg-tertiary/20 " ^ class_)>
+        <Icons.info class_="stroke-tertiary mr-2" />
+        children
+      </div>
+
+end
+
+module LinkButton = struct
+    let make ~children ~href () =
+      <a class_="w-full sm:w-max" href>
+        <div class_="flex flex-row items-center w-full sm:w-max p-2.5 bg-none rounded-md border border-white/87 hover:border-primary-light hover:bg-primary-light">
+          children
+        </div>
+      </a>
+end
+
+module Details = struct
+    let make ?(extend_class = "")~summary ~container_class ~children () =
+      <details class_=("w-full flex flex border border-section-faq-background rounded-md list-none [&>summary>span>svg]:open:rotate-90 " ^ extend_class)>
+         <summary class_="w-full flex flex-row items-center w-full p-2.5 bg-black/1 font-bold">
+            <span class_="bg-tertiary/20 rounded-md px-2.5 py-2 mr-2.5">
+              <Icons.arrow class_="transition-all duration-200" />
+            </span>
+            (JSX.string summary)
+         </summary>
+         <div class_=("border-t border-section-faq-background w-full " ^ container_class) >children</div>
+      </details>
+end
+
