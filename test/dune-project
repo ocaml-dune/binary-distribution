@@ -9,4 +9,4 @@
 (package
  (name dune_test)
  (allow_empty)
- (depends ocaml dune sqlite3))
+ (depends ocaml sqlite3))
