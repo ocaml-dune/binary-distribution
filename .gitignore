@@ -13,5 +13,4 @@ _build/
 
 # Local OPAM switch
 _opam/
-dune.lock
 dev-tools.locks
