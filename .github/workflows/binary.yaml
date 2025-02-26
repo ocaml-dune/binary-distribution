@@ -156,30 +156,33 @@ jobs:
           dune build
 
   build_with_dune_experimental:
-    needs: binary
+    needs: check-artifacts
     runs-on: ubuntu-latest
     steps:
+      - name: Set DATE environment variable
+        run: echo "DATE=$(date +'%Y-%m-%d')" >> "$GITHUB_ENV"
+
+      - name: Set archive environment variables
+        run: |
+          echo "ARCHIVE_TARGZ=dune-$DATE-x86_64-unknown-linux-musl.tar.gz" >> $GITHUB_ENV
+          echo "ARCHIVE_DIR=dune-$DATE-x86_64-unknown-linux-musl" >> $GITHUB_ENV
+
       - name: Checkout
         uses: actions/checkout@v4
 
       - uses: actions/download-artifact@v4
-        with:
-          path: /home/runner/artifacts
 
-      - name: Add Dune to path
+      - name: Get dune accessible
         run: |
-          mkdir -p $HOME/.local/bin
-          cp $HOME/artifacts/x86_64-unknown-linux-musl/dune $HOME/.local/bin/
-          chmod u+x $HOME/.local/bin/dune
+          mv "x86_64-unknown-linux-musl/$ARCHIVE_TARGZ" .
+          tar -xvf "$ARCHIVE_TARGZ"
+          mv "./$ARCHIVE_DIR/dune" ./dune
 
       - name: Check Dune version
-        run: dune --version
-
-      - name: Move artifacts to scope
-        run: mv "/home/runner/artifacts" "."
+        run: ./dune --version
 
       - name: Building the project
-        run: cd sandworm && dune build
+        run: ./dune build
 
   deploy-s3:
     runs-on: ubuntu-latest
