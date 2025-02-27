@@ -83,7 +83,7 @@ let page ~title content =
       <link rel="shortcut icon" href="/static/dune_favicon.png" />
       <script
         dataDomain="preview.dune.build" defer=true
-        src="https://plausible.ci.dev/js/script.file-downloads.js"></script>
+        src="https://plausible.ci.dev/js/script.js"></script>
     </head>
     <body class_="min-h-dvh w-full flex flex-col overflow-scroll justify-between items-center">
       <navbar />
