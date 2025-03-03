@@ -180,7 +180,7 @@ jobs:
 
       - name: Install external deps
         run: |
-          sudo apt-get install $(dune show depexts)
+          sudo apt-get install $(dune show depexts) libev-dev
 
       - name: Building the project
         run: dune build
