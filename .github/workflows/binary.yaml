@@ -179,11 +179,14 @@ jobs:
           echo "===="
           # mv "x86_64-unknown-linux-musl/$ARCHIVE_TARGZ" .
           tar -xvf "x86_64-unknown-linux-musl/$ARCHIVE_TARGZ"
-          echo "x86_64-unknown-linux-musl/$ARCHIVE_DIR" >> "$GITHUB_PATH"
+          echo "$PWD/x86_64-unknown-linux-musl/$ARCHIVE_DIR" >> "$GITHUB_PATH"
+          echo "PATH is $GITHUB_PATH"
           # mv "./$ARCHIVE_DIR/dune" ./dune.exe
 
       - name: Check Dune version
-        run: dune --version
+        run: |
+          echo "GITHUB PATH is $GITHUB_PATH"
+          dune --version
 
       - name: Building the project
         run: dune build
