@@ -173,19 +173,13 @@ jobs:
 
       - name: Get dune accessible
         run: |
-          ls -l
-          echo "===="
-          ls -l ../
-          echo "===="
-          # mv "x86_64-unknown-linux-musl/$ARCHIVE_TARGZ" .
-          tar -xvf "x86_64-unknown-linux-musl/$ARCHIVE_TARGZ"
-          echo "$PWD/x86_64-unknown-linux-musl/$ARCHIVE_DIR" >> "$GITHUB_PATH"
-          echo "PATH is $PATH"
-          # mv "./$ARCHIVE_DIR/dune" ./dune.exe
+          mv "x86_64-unknown-linux-musl/$ARCHIVE_TARGZ" .
+          tar -xvf $ARCHIVE_TARGZ
+          mv ./$ARCHIVE_DIR/dune "$HOME/.local/bin"
+          ls -l "$HOME/.local/bin"
 
       - name: Check Dune version
         run: |
-          echo "PATH is $PATH"
           dune --version
 
       - name: Building the project
