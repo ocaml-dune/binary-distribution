@@ -180,7 +180,7 @@ jobs:
 
       - name: Install external deps
         run: |
-          apt install $(dune show depexts)
+          sudo apt-get install $(dune show depexts)
 
       - name: Building the project
         run: dune build
