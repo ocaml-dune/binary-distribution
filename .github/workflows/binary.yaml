@@ -175,6 +175,8 @@ jobs:
         run: |
           mv "x86_64-unknown-linux-musl/$ARCHIVE_TARGZ" .
           tar -xvf $ARCHIVE_TARGZ
+          echo "PATH is $PATH"
+          mkdir -p "$HOME/.local/bin"
           mv ./$ARCHIVE_DIR/dune "$HOME/.local/bin"
           ls -l "$HOME/.local/bin"
 
