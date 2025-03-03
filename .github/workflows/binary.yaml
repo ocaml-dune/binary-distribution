@@ -96,7 +96,6 @@ jobs:
           subject-path: "result/bin/dune"
           show-summary: false
 
-      # TODO: remove the extra Dune file when the complete move to tar is done.
       - name: Extract artifact and attestation
         run: |
           mkdir -p ~/build/$ARCHIVE_DIR/
@@ -176,13 +175,13 @@ jobs:
         run: |
           mv "x86_64-unknown-linux-musl/$ARCHIVE_TARGZ" .
           tar -xvf "$ARCHIVE_TARGZ"
-          mv "./$ARCHIVE_DIR/dune" ./dune
+          mv "./$ARCHIVE_DIR/dune" ./dune.exe
 
       - name: Check Dune version
-        run: ./dune --version
+        run: ./dune.exe --version
 
       - name: Building the project
-        run: ./dune build
+        run: ./dune.exe build
 
   deploy-s3:
     runs-on: ubuntu-latest
