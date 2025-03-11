@@ -183,9 +183,12 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SSH_PUBLIC_KEY: ${{ secrets.SSH_PUBLIC_KEY }}
 
+      - name: Set up Date environment variable
+        run: echo "DATE=$(date +'%Y-%m-%d')" >> "$GITHUB_ENV"
+
+
       - name: Set binary environment variables
         run: |
-          echo "DATE=$(date +'%Y-%m-%d')" >> "$GITHUB_ENV"
           echo "ARCHIVE_TARGZ=dune-$DATE-x86_64-unknown-linux-musl.tar.gz" >> $GITHUB_ENV
           echo "ARCHIVE_DIR=dune-$DATE-x86_64-unknown-linux-musl" >> $GITHUB_ENV
 
