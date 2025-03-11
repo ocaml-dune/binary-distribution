@@ -165,6 +165,10 @@ jobs:
         run: |
           sudo -v ; curl https://rclone.org/install.sh | sudo bash
 
+      - name: Install sandworm external deps
+        run: |
+          sudo apt-get install $(dune show depexts) libev-dev
+
       - name: Prepare SSH env
         shell: bash
         run: |
@@ -179,14 +183,28 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SSH_PUBLIC_KEY: ${{ secrets.SSH_PUBLIC_KEY }}
 
+      - name: Set up date environment variables
+        run: echo "DATE=$(date +'%Y-%m-%d')" >> "$GITHUB_ENV"
+
+      - name: Set binary environment variables
+        run: |
+          echo "ARCHIVE_TARGZ=dune-$DATE-x86_64-unknown-linux-musl.tar.gz" >> $GITHUB_ENV
+          echo "ARCHIVE_DIR=dune-$DATE-x86_64-unknown-linux-musl" >> $GITHUB_ENV
+
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup OCaml with cache
-        uses: ocaml/setup-ocaml@v3
+      - uses: actions/download-artifact@v4
         with:
-          ocaml-compiler: "5.2"
-          dune-cache: true
+          path: /home/runner/artifacts
+
+      - name: Get dune accessible
+        run: |
+          cp "/home/runner/artifacts/x86_64-unknown-linux-musl/$ARCHIVE_TARGZ" .
+          tar -xvf "$ARCHIVE_TARGZ"
+          mkdir -p "$HOME/.local/bin"
+          mv "./$ARCHIVE_DIR/dune" "$HOME/.local/bin"
+          rm -rf "./$ARCHIVE_DIR"
 
       - name: Update config on test
         if: ${{ github.ref == 'refs/heads/staging' }}
@@ -197,11 +215,7 @@ jobs:
           cat ./bin/config.ml
 
       - name: Install Sandworm deps && build
-        run: opam install -y . --deps-only && opam exec -- dune build
-
-      - uses: actions/download-artifact@v4
-        with:
-          path: /home/runner/artifacts
+        run: dune build
 
       - name: Move artifacts to scope
         run: mv "/home/runner/artifacts" "."
@@ -211,7 +225,7 @@ jobs:
 
       - name: Export executables and generate html
         shell: bash
-        run: opam exec -- dune exec sandworm -- sync --commit "${{ needs.binary.outputs.git-commit }}"
+        run: ./_build/install/default/bin/sandworm sync --commit "${{ needs.binary.outputs.git-commit }}"
 
       - name: Commit changes to branch
         run: |
