@@ -1,0 +1,11 @@
+(version dev)
+
+(install
+ (run cp bin/tailwindcss-linux-x64 %{bin}/tailwindcss))
+
+(source
+ (fetch
+  (url
+   git+https://github.com/tmattio/opam-tailwindcss#e5bb6361a50c7cc5cad802311e609336583ca08f)))
+
+(dev)

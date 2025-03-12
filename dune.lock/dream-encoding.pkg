@@ -1,0 +1,17 @@
+(version 0.3.0)
+
+(build
+ (progn
+  (when
+   %{pkg-self:dev}
+   (run dune subst))
+  (run dune build -p %{pkg-self:name} -j %{jobs} @install)))
+
+(depends dune ocaml dream decompress lwt_ppx)
+
+(source
+ (fetch
+  (url
+   https://github.com/tmattio/dream-encoding/releases/download/0.3.0/dream-encoding-0.3.0.tbz)
+  (checksum
+   sha256=5778442d5d1e2cede3657151242fd2aac12176546fb76fc4d0a5181bd32605ef)))
