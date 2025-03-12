@@ -96,7 +96,6 @@ jobs:
           subject-path: "result/bin/dune"
           show-summary: false
 
-      # TODO: remove the extra Dune file when the complete move to tar is done.
       - name: Extract artifact and attestation
         run: |
           mkdir -p ~/build/$ARCHIVE_DIR/
