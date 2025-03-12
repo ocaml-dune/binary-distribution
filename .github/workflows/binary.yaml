@@ -226,7 +226,7 @@ jobs:
 
       - name: Export executables and generate html
         shell: bash
-        run: opam exec -- dune exec sandworm -- sync --commit "${{ needs.binary.outputs.git-commit }}"
+        run: ./_build/install/default/bin/sandworm sync --commit "${{ needs.binary.outputs.git-commit }}"
 
       - name: Commit changes to branch
         run: |
