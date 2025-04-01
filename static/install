@@ -196,7 +196,7 @@ if [ ! -d "${rev_store_dir}" ] ; then
         --proto '=https' --tlsv1.2 \
         --output "${opam_repo_filename}" \
         "${opam_repo_tarball}" ||
-	    error "Failed to download opam-repository snapshot from \"$opam_repo_tarball}\""
+	    error "Failed to download opam-repository snapshot from \"${opam_repo_tarball}\""
 
     # extract_command creates a folder called `git-repo`
     "${extract_command}" "${opam_repo_filename}"
