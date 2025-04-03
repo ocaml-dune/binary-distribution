@@ -10,13 +10,12 @@
   ((source
     https://github.com/ocaml-dune/opam-overlays.git#a538aecc5f1c4a775c41ea156d96bfd173caa43b))
   ((source
-    https://github.com/ocaml/opam-repository.git#8f63148a9025a7b775a069a6c0b0385c22ad51d3))))
+    https://github.com/ocaml/opam-repository.git#4d8fa0fb8fce3b6c8b06f29ebcfa844c292d4f3e))))
 
 (expanded_solver_variable_bindings
  (variable_values
   (with-doc false)
   (with-dev-setup false)
-  (sys-ocaml-version 5.2.0)
   (post true)
   (os-distribution arch)
   (os linux)
@@ -24,9 +23,8 @@
   (arch x86_64))
  (unset_variables
   with-test
+  sys-ocaml-version
   sys-ocaml-libc
-  sys-ocaml-cc
-  sys-ocaml-arch
   enable-ocaml-beta-repository
   dev
   build))
