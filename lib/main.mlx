@@ -195,9 +195,9 @@ let q_and_a = [
       </p>
       <p>"When configuring the build you'll want to enable the following flags:" </p>
       <Code>
-"--enable-pkg-build-progress"
-"--enable-lock-dev-tool"
-"--enable-bin-dev-tools"
+"--pkg-build-progress enable"
+"--lock-dev-tool enable"
+"--bin-dev-tools enable"
 </Code>
     </div>
   ; "Can I access these features from a version of Dune managed by opam?",
