@@ -197,6 +197,7 @@ let q_and_a = [
       <Code>
 "--enable-pkg-build-progress"
 "--enable-lock-dev-tool"
+"--enable-bin-dev-tools"
 </Code>
     </div>
   ; "Can I access these features from a version of Dune managed by opam?",
