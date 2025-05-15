@@ -1,4 +1,4 @@
-FROM ocaml/opam:alpine-3.20-ocaml-5.2 AS build
+FROM ocaml/opam:alpine-ocaml-5.2 AS build
 
 RUN sudo apk update && \
   sudo apk add curl git curl-dev libev-dev openssl-dev gmp-dev && \
