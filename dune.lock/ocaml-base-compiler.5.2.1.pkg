@@ -1,0 +1,171 @@
+(version 5.2.1)
+
+(install
+ (all_platforms
+  (run %{make} install)))
+
+(build
+ (choice
+  ((((arch x86_64)
+     (os linux)
+     (os-distribution ubuntu)
+     (os-family debian))
+    ((arch arm64)
+     (os linux)
+     (os-distribution ubuntu)
+     (os-family debian))
+    ((arch x86_64)
+     (os linux)
+     (os-distribution alpine)
+     (os-family alpine))
+    ((arch arm64)
+     (os linux)
+     (os-distribution alpine)
+     (os-family alpine)))
+   ((action
+     (progn
+      (run ./configure --prefix=%{prefix} --docdir=%{doc}/ocaml -C)
+      (run %{make} -j%{jobs})))))
+  ((((arch x86_64)
+     (os linux))
+    ((arch arm64)
+     (os linux)))
+   ((action
+     (progn
+      (run
+       ./configure
+       (when
+        (catch_undefined_var
+         (and_absorb_undefined_var
+          (= %{os_distribution} cygwin)
+          %{pkg:system-mingw:installed}
+          %{pkg:arch-x86_64:installed})
+         false)
+        --host=x86_64-w64-mingw32)
+       (when
+        (catch_undefined_var
+         (and_absorb_undefined_var
+          (= %{os_distribution} cygwin)
+          %{pkg:system-mingw:installed}
+          %{pkg:arch-x86_32:installed})
+         false)
+        --host=i686-w64-mingw32)
+       --prefix=%{prefix}
+       --docdir=%{doc}/ocaml
+       -C)
+      (run %{make} -j%{jobs})))))
+  ((((arch x86_64)
+     (os macos)
+     (os-distribution homebrew)
+     (os-family homebrew))
+    ((arch arm64)
+     (os macos)
+     (os-distribution homebrew)
+     (os-family homebrew)))
+   ((action
+     (progn
+      (run
+       ./configure
+       --prefix=%{prefix}
+       --docdir=%{doc}/ocaml
+       -C
+       CC=cc
+       "ASPP=cc -c")
+      (run %{make} -j%{jobs})))))
+  ((((arch x86_64)
+     (os win32)
+     (os-distribution cygwin)
+     (os-family windows))
+    ((arch arm64)
+     (os win32)
+     (os-distribution cygwin)
+     (os-family windows)))
+   ((action
+     (progn
+      (run
+       ./configure
+       (when
+        (catch_undefined_var
+         (and_absorb_undefined_var
+          true
+          %{pkg:system-mingw:installed}
+          %{pkg:arch-x86_64:installed})
+         false)
+        --host=x86_64-w64-mingw32)
+       (when
+        (catch_undefined_var
+         (and_absorb_undefined_var
+          true
+          %{pkg:system-mingw:installed}
+          %{pkg:arch-x86_32:installed})
+         false)
+        --host=i686-w64-mingw32)
+       --prefix=%{prefix}
+       --docdir=%{doc}/ocaml
+       (when
+        (catch_undefined_var
+         (and_absorb_undefined_var true %{pkg:flexdll:installed})
+         false)
+        --with-flexdll=%{pkg:flexdll:share})
+       -C)
+      (run %{make} -j%{jobs})))))))
+
+(depends
+ (choice
+  ((((arch x86_64)
+     (os linux)
+     (os-distribution ubuntu)
+     (os-family debian))
+    ((arch arm64)
+     (os linux)
+     (os-distribution ubuntu)
+     (os-family debian))
+    ((arch x86_64)
+     (os linux)
+     (os-distribution alpine)
+     (os-family alpine))
+    ((arch arm64)
+     (os linux)
+     (os-distribution alpine)
+     (os-family alpine))
+    ((arch x86_64)
+     (os linux))
+    ((arch arm64)
+     (os linux))
+    ((arch x86_64)
+     (os macos)
+     (os-distribution homebrew)
+     (os-family homebrew))
+    ((arch arm64)
+     (os macos)
+     (os-distribution homebrew)
+     (os-family homebrew)))
+   ())
+  ((((arch x86_64)
+     (os win32)
+     (os-distribution cygwin)
+     (os-family windows)))
+   (arch-x86_64 system-mingw mingw-w64-shims flexdll))
+  ((((arch arm64)
+     (os win32)
+     (os-distribution cygwin)
+     (os-family windows)))
+   (system-mingw mingw-w64-shims flexdll))))
+
+(source
+ (fetch
+  (url
+   https://github.com/ocaml/ocaml/releases/download/5.2.1/ocaml-5.2.1.tar.gz)
+  (checksum
+   sha256=2d0f8090951a97a2c0e5b8a11e90096c0e1791d2e471e4a67f87e3b974044cd0)))
+
+(exported_env
+ (= CAML_LD_LIBRARY_PATH "\%{lib}%/stublibs"))
+
+(extra_sources
+ (ocaml-base-compiler.install
+  (fetch
+   (url
+    https://raw.githubusercontent.com/ocaml/opam-source-archives/main/patches/ocaml-base-compiler/ocaml-base-compiler.install)
+   (checksum
+    sha256=79f2a1a5044a91350a0eb6ce12e261a72a2855c094c425cddf3860e58c486678))))
