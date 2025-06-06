@@ -8,23 +8,44 @@
  (complete true)
  (used
   ((source
-    https://github.com/ocaml-dune/opam-overlays.git#a538aecc5f1c4a775c41ea156d96bfd173caa43b))
+    https://github.com/ocaml-dune/opam-overlays.git#2a9543286ff0e0656058fee5c0da7abc16b8717d))
   ((source
-    https://github.com/ocaml/opam-repository.git#4d8fa0fb8fce3b6c8b06f29ebcfa844c292d4f3e))))
+    https://github.com/ocaml/opam-repository.git#bc726805e36ba923501178d17bb69e6822269249))))
 
-(expanded_solver_variable_bindings
- (variable_values
-  (with-doc false)
-  (with-dev-setup false)
-  (post true)
-  (os-distribution arch)
+(solved_for_platforms
+ ((arch x86_64)
   (os linux)
-  (opam-version 2.2.0~alpha-vendored)
-  (arch x86_64))
- (unset_variables
-  with-test
-  sys-ocaml-version
-  sys-ocaml-libc
-  enable-ocaml-beta-repository
-  dev
-  build))
+  (os-distribution ubuntu)
+  (os-family debian))
+ ((arch arm64)
+  (os linux)
+  (os-distribution ubuntu)
+  (os-family debian))
+ ((arch x86_64)
+  (os linux)
+  (os-distribution alpine)
+  (os-family alpine))
+ ((arch arm64)
+  (os linux)
+  (os-distribution alpine)
+  (os-family alpine))
+ ((arch x86_64)
+  (os linux))
+ ((arch arm64)
+  (os linux))
+ ((arch x86_64)
+  (os macos)
+  (os-distribution homebrew)
+  (os-family homebrew))
+ ((arch arm64)
+  (os macos)
+  (os-distribution homebrew)
+  (os-family homebrew))
+ ((arch x86_64)
+  (os win32)
+  (os-distribution cygwin)
+  (os-family windows))
+ ((arch arm64)
+  (os win32)
+  (os-distribution cygwin)
+  (os-family windows)))
