@@ -11,7 +11,7 @@ RUN opam install . --deps-only -y
 COPY --chown=opam:opam . .
 RUN opam exec -- dune build --release
 
-FROM alpine:3.20 AS run
+FROM alpine:3.6 AS run
 RUN apk update && apk add --update libev gmp git
 WORKDIR /app
 COPY --from=build /home/opam/static static
