@@ -61,12 +61,14 @@ let getting_started ~install_url () =
 "$ dune exec \"$PROJECT\""
     </Code>
 
-    <h3 class_="mt-10 mb-2.5">"Platform Tools"</h3>
+    <h3 class_="mt-10 mb-2.5">"Development Tools"</h3>
 
-<p>"OCaml Platform tools are supported out of the box without opam.
+<p>"Certain development tools are supported out of the box without opam.
     They are automatically installed as dev dependencies, but for this to work
     you need to first run "<span class_="font-mono text-block-p">"dune pkg lock"</span>" on your project so that dune knows how to
-    build the appropriate tools."
+    build the appropriate tools. Currently supported devtools are listed "
+    <Link class_="hover:underline" href="https://github.com/ocaml/dune/blob/main/src/dune_pkg/dev_tool.ml#L3">"here"</Link>"."
+    <br/>
     <br/>
 </p>
 
@@ -89,8 +91,8 @@ let getting_started ~install_url () =
             <tr class_="odd:bg-tertiary/10">
                 <td class_="pl-2.5 lg:pl-14 py-2.5 border"><span class_="font-mono text-block-p">"OCaml-LSP"</span></td>
                 <td class_="pl-2.5 py-2.5 border"><span class_="supported">"✅"</span></td>
-                <td class_="pl-2.5 py-2.5 border"><span class_="font-mono text-block-p">"dune tools exec ocamllsp"</span></td>
-                <td class_="pl-2.5 py-2.5 border">"Runs automatically (just configure your editor)"</td>
+                <td class_="pl-2.5 py-2.5 border"><span class_="font-mono text-block-p">"ocamllsp"</span></td>
+                <td class_="pl-2.5 py-2.5 border">"Runs automatically (just configure your editor). "<Link class_="hover:underline" href="https://github.com/ocaml-dune/binary-distribution/blob/main/tool-wrappers/ocamllsp">"Wraps"</Link>" "<span class_="font-mono text-block-p">"dune tools exec ocamlformat"</span>"."</td>
             </tr>
             <tr class_="odd:bg-tertiary/10">
                 <td class_="pl-2.5 lg:pl-14 py-2.5 border"><span class_="font-mono text-block-p">"Odoc"</span></td>
@@ -99,21 +101,27 @@ let getting_started ~install_url () =
                 <td class_="pl-2.5 py-2.5 border">"After first run "<span class_="font-mono text-block-p">"dune build @doc"</span>" will also work"</td>
             </tr>
             <tr class_="odd:bg-tertiary/10">
-                <td class_="pl-2.5 lg:pl-14 py-2.5 border"><span class_="font-mono text-block-p">"utop"</span></td>
+                <td class_="pl-2.5 lg:pl-14 py-2.5 border"><span class_="font-mono text-block-p">"repl (ocaml, utop)"</span></td>
                 <td class_="pl-2.5 py-2.5 border"><span class_="not-supported">"❌"</span></td>
-                <td class_="pl-2.5 py-2.5 border"><span class_="font-mono text-block-p">"dune utop"</span></td>
+                <td class_="pl-2.5 py-2.5 border"><span class_="font-mono text-block-p">"dune repl"</span></td>
+                <td class_="pl-2.5 py-2.5 border"></td>
+            </tr>
+            <tr class_="odd:bg-tertiary/10">
+                <td class_="pl-2.5 lg:pl-14 py-2.5 border"><span class_="font-mono text-block-p">"debugger (ocamldebug, ocamlearlybird)"</span></td>
+                <td class_="pl-2.5 py-2.5 border"><span class_="not-supported">"❌"</span></td>
+                <td class_="pl-2.5 py-2.5 border"><span class_="font-mono text-block-p">"dune debug"</span></td>
+                <td class_="pl-2.5 py-2.5 border"></td>
+            </tr>
+            <tr class_="odd:bg-tertiary/10">
+                <td class_="pl-2.5 lg:pl-14 py-2.5 border"><span class_="font-mono text-block-p">"toolchain (ocamlfind, ocamlobjinfo, ocamlc)"</span></td>
+                <td class_="pl-2.5 py-2.5 border"><span class_="not-supported">"❌"</span></td>
+                <td class_="pl-2.5 py-2.5 border">"?"</td>
                 <td class_="pl-2.5 py-2.5 border"></td>
             </tr>
             <tr class_="odd:bg-tertiary/10">
                 <td class_="pl-2.5 lg:pl-14 py-2.5 border"><span class_="font-mono text-block-p">"dune-release"</span></td>
                 <td class_="pl-2.5 py-2.5 border"><span class_="not-supported">"❌"</span></td>
                 <td class_="pl-2.5 py-2.5 border"><span class_="font-mono text-block-p">"dune release"</span></td>
-                <td class_="pl-2.5 py-2.5 border"></td>
-            </tr>
-            <tr class_="odd:bg-tertiary/10">
-                <td class_="pl-2.5 lg:pl-14 py-2.5 border"><span class_="font-mono text-block-p">"ocamlfind"</span></td>
-                <td class_="pl-2.5 py-2.5 border"><span class_="not-supported">"❌"</span></td>
-                <td class_="pl-2.5 py-2.5 border"></td>
                 <td class_="pl-2.5 py-2.5 border"></td>
             </tr>
         </tbody>
