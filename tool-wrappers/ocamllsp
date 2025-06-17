@@ -32,7 +32,7 @@ else
     script_dir="$(dirname "$0")"
 
     # Remove the directory containing this script from PATH so it doesn't call itself
-    path_without_script_dir=$(echo "$PATH" | tr ':' '\n' | grep -v "^$script_dir$" | paste -sd ':')
+    path_without_script_dir=$(echo "$PATH" | tr ':' '\n' | grep -v "^$script_dir$" | paste -sd ':' -)
     export PATH="$path_without_script_dir"
 
     if type opam 2> /dev/null > /dev/null; then
