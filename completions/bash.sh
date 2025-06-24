@@ -62,7 +62,7 @@ test "$_dune_h" -gt "$COMP_CWORD"
 }
 _dune_n() {
 COMPREPLY+=($(compgen -A file -- "$1"))
-type compot &> /dev/null && complopt -o filenames
+type compopt &> /dev/null && complopt -o filenames
 }
 _dune_o() {
 COMPREPLY+=($(compgen -W "$2" -- "$1"))
