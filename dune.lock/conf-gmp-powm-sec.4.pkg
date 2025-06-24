@@ -1,0 +1,75 @@
+(version 4)
+
+(build
+ (choice
+  ((((arch x86_64)
+     (os linux))
+    ((arch arm64)
+     (os linux))
+    ((arch x86_64)
+     (os macos))
+    ((arch arm64)
+     (os macos)))
+   ((action
+     (run
+      sh
+      -c
+      "pkg-config --print-errors --exists gmp || cc -c $CFLAGS -I/usr/local/include test.c"))))
+  ((((arch x86_64)
+     (os win32))
+    ((arch arm64)
+     (os win32)))
+   ((action
+     (progn
+      (when
+       (and_absorb_undefined_var
+        true
+        (= %{os_distribution} cygwinports))
+       (run
+        sh
+        -exc
+        "$(ocamlc -config-var c_compiler) -c $CFLAGS -I/usr/local/include test.c"))
+      (when
+       (and_absorb_undefined_var
+        true
+        (<> %{os_distribution} cygwinports))
+       (run
+        sh
+        -exc
+        (concat
+         (if
+          (catch_undefined_var %{pkg:host-arch-x86_64:installed} false)
+          x86_64
+          "")
+         ""
+         (if
+          (catch_undefined_var %{pkg:host-arch-x86_32:installed} false)
+          i686
+          "")
+         "-w64-mingw32-gcc -c $CFLAGS test.c")))))))))
+
+(depends
+ (choice
+  ((((arch x86_64)
+     (os linux))
+    ((arch arm64)
+     (os linux))
+    ((arch x86_64)
+     (os macos))
+    ((arch arm64)
+     (os macos)))
+   (conf-gmp))
+  ((((arch x86_64)
+     (os win32)))
+   (conf-gmp host-arch-x86_64))
+  ((((arch arm64)
+     (os win32)))
+   (conf-gmp host-arch-x86_32))))
+
+(extra_sources
+ (test.c
+  (fetch
+   (url
+    https://raw.githubusercontent.com/ocaml/opam-source-archives/main/patches/conf-gmp-powm-sec/test.c.3)
+   (checksum
+    sha256=388b3879530257a7e6e59b68208ee2a52de7be30e40eb4d3a54419708fdad490))))
