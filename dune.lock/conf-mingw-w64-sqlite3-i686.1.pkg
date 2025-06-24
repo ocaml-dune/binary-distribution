@@ -2,25 +2,26 @@
 
 (build
  (choice
-  ((((arch arm64) (os win32) (os-distribution cygwin) (os-family windows)))
+  ((((arch arm64) (os win32)))
    ((action (run pkgconf --personality=i686-w64-mingw32 sqlite3))))))
 
 (depends
  (choice
   ((((arch arm64)
-     (os win32)
-     (os-distribution cygwin)
-     (os-family windows)))
+     (os win32)))
    (conf-pkg-config conf-mingw-w64-gcc-i686))))
 
 (depexts
- (choice
-  ((((arch arm64) (os win32) (os-distribution cygwin) (os-family windows)))
-   (mingw64-i686-sqlite3))))
+ ((mingw64-i686-sqlite3)
+  (and_absorb_undefined_var
+   (= %{os} win32)
+   (= %{os_distribution} cygwin)))
+ ((mingw-w64-i686-sqlite3)
+  (and_absorb_undefined_var
+   (= %{os} win32)
+   (= %{os_distribution} msys2))))
 
 (enabled_on_platforms
  (only
   ((arch arm64)
-   (os win32)
-   (os-distribution cygwin)
-   (os-family windows))))
+   (os win32))))

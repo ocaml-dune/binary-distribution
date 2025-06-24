@@ -1,4 +1,4 @@
-(version 0.12.0)
+(version 0.13.0)
 
 (build
  (all_platforms
@@ -9,11 +9,11 @@
 
 (depends
  (all_platforms
-  (dune ocaml h2 lwt gluten-lwt)))
+  (dune ocaml angstrom faraday)))
 
 (source
  (fetch
   (url
-   https://github.com/anmonteiro/ocaml-h2/releases/download/0.12.0/h2-0.12.0.tbz)
+   https://github.com/anmonteiro/ocaml-h2/releases/download/0.13.0/h2-0.13.0.tbz)
   (checksum
-   sha256=36e40b113d90ea383619a8c7bd993f866131c3c5d957619b6849eb32af8c53c6)))
+   sha256=0d89b6f178175294e7a207223be81d5b83fc31b97549bec34f0432a3b2a8070f)))

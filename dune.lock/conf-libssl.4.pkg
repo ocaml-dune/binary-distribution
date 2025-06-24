@@ -1,54 +1,23 @@
 (version 4)
 
 (install
- (choice
-  ((((arch x86_64)
-     (os linux))
-    ((arch arm64)
-     (os linux)))
-   (withenv
-    ((= HOMEBREW_NO_AUTO_UPDATE 1))
-    (when
-     (= %{os_distribution} homebrew)
-     (run sh -ex ./homebrew.sh install %{lib}))))
-  ((((arch x86_64)
-     (os macos)
-     (os-distribution homebrew)
-     (os-family homebrew))
-    ((arch arm64)
-     (os macos)
-     (os-distribution homebrew)
-     (os-family homebrew)))
-   (withenv
-    ((= HOMEBREW_NO_AUTO_UPDATE 1))
+ (all_platforms
+  (withenv
+   ((= HOMEBREW_NO_AUTO_UPDATE 1))
+   (when
+    (= %{os_distribution} homebrew)
     (run sh -ex ./homebrew.sh install %{lib})))))
 
 (build
  (choice
   ((((arch x86_64)
-     (os linux)
-     (os-distribution ubuntu)
-     (os-family debian))
-    ((arch arm64)
-     (os linux)
-     (os-distribution ubuntu)
-     (os-family debian))
-    ((arch x86_64)
-     (os linux)
-     (os-distribution alpine)
-     (os-family alpine))
-    ((arch arm64)
-     (os linux)
-     (os-distribution alpine)
-     (os-family alpine)))
-   ((action
-     (withenv
-      ((= HOMEBREW_NO_AUTO_UPDATE 1))
-      (run pkg-config --print-errors --exists openssl)))))
-  ((((arch x86_64)
      (os linux))
     ((arch arm64)
-     (os linux)))
+     (os linux))
+    ((arch x86_64)
+     (os macos))
+    ((arch arm64)
+     (os macos)))
    ((action
      (withenv
       ((= HOMEBREW_NO_AUTO_UPDATE 1))
@@ -62,115 +31,104 @@
         (= %{os_distribution} homebrew)
         (run sh -ex ./homebrew.sh check)))))))
   ((((arch x86_64)
-     (os macos)
-     (os-distribution homebrew)
-     (os-family homebrew))
+     (os win32))
     ((arch arm64)
-     (os macos)
-     (os-distribution homebrew)
-     (os-family homebrew)))
+     (os win32)))
    ((action
      (withenv
       ((= HOMEBREW_NO_AUTO_UPDATE 1))
-      (run sh -ex ./homebrew.sh check)))))
-  ((((arch x86_64)
-     (os win32)
-     (os-distribution cygwin)
-     (os-family windows))
-    ((arch arm64)
-     (os win32)
-     (os-distribution cygwin)
-     (os-family windows)))
-   ((action
-     (withenv
-      ((= HOMEBREW_NO_AUTO_UPDATE 1))
-      (run
-       pkgconf
+      (progn
        (when
-        (catch_undefined_var
-         (and_absorb_undefined_var true %{pkg:host-arch-x86_32:installed})
-         false)
-        --personality=i686-w64-mingw32)
+        (and_absorb_undefined_var
+         true
+         (<> %{os_distribution} homebrew))
+        (run
+         (when
+          (catch_undefined_var
+           (and_absorb_undefined_var
+            true
+            (= %{os_distribution} cygwin))
+           false)
+          pkgconf)
+         (when
+          (catch_undefined_var
+           (and_absorb_undefined_var
+            true
+            (= %{os_distribution} cygwin)
+            %{pkg:host-arch-x86_32:installed})
+           false)
+          --personality=i686-w64-mingw32)
+         (when
+          (catch_undefined_var
+           (and_absorb_undefined_var
+            true
+            (= %{os_distribution} cygwin)
+            %{pkg:host-arch-x86_64:installed})
+           false)
+          --personality=x86_64-w64-mingw32)
+         (when
+          (catch_undefined_var
+           (or_absorb_undefined_var
+            false
+            (<> %{os_distribution} cygwin))
+           false)
+          pkg-config)
+         --print-errors
+         --exists
+         openssl))
        (when
-        (catch_undefined_var
-         (and_absorb_undefined_var true %{pkg:host-arch-x86_64:installed})
-         false)
-        --personality=x86_64-w64-mingw32)
-       --print-errors
-       --exists
-       openssl)))))))
+        (= %{os_distribution} homebrew)
+        (run sh -ex ./homebrew.sh check)))))))))
 
 (depends
  (choice
   ((((arch x86_64)
-     (os linux)
-     (os-distribution ubuntu)
-     (os-family debian))
-    ((arch arm64)
-     (os linux)
-     (os-distribution ubuntu)
-     (os-family debian))
-    ((arch x86_64)
-     (os linux)
-     (os-distribution alpine)
-     (os-family alpine))
-    ((arch arm64)
-     (os linux)
-     (os-distribution alpine)
-     (os-family alpine))
-    ((arch x86_64)
      (os linux))
     ((arch arm64)
      (os linux))
     ((arch x86_64)
-     (os macos)
-     (os-distribution homebrew)
-     (os-family homebrew))
+     (os macos))
     ((arch arm64)
-     (os macos)
-     (os-distribution homebrew)
-     (os-family homebrew)))
+     (os macos)))
    (conf-pkg-config))
   ((((arch x86_64)
-     (os win32)
-     (os-distribution cygwin)
-     (os-family windows)))
+     (os win32)))
    (conf-pkg-config host-arch-x86_64 conf-mingw-w64-openssl-x86_64))
   ((((arch arm64)
-     (os win32)
-     (os-distribution cygwin)
-     (os-family windows)))
+     (os win32)))
    (conf-pkg-config host-arch-x86_32 conf-mingw-w64-openssl-i686))))
 
 (depexts
- (choice
-  ((((arch x86_64)
-     (os linux)
-     (os-distribution ubuntu)
-     (os-family debian))
-    ((arch arm64)
-     (os linux)
-     (os-distribution ubuntu)
-     (os-family debian)))
-   (libssl-dev))
-  ((((arch x86_64)
-     (os linux)
-     (os-distribution alpine)
-     (os-family alpine))
-    ((arch arm64)
-     (os linux)
-     (os-distribution alpine)
-     (os-family alpine)))
-   (openssl-dev))
-  ((((arch x86_64)
-     (os macos)
-     (os-distribution homebrew)
-     (os-family homebrew))
-    ((arch arm64)
-     (os macos)
-     (os-distribution homebrew)
-     (os-family homebrew)))
-   (openssl))))
+ ((libssl-dev)
+  (= %{os_family} debian))
+ ((libssl-dev)
+  (= %{os_family} ubuntu))
+ ((openssl-devel)
+  (= %{os_distribution} centos))
+ ((openssl-devel)
+  (= %{os_distribution} ol))
+ ((openssl-devel)
+  (or_absorb_undefined_var
+   (= %{os_family} fedora)
+   (= %{os_family} fedora)))
+ ((libopenssl-devel)
+  (or_absorb_undefined_var
+   (= %{os_family} suse)
+   (= %{os_family} opensuse)))
+ ((openssl-dev)
+  (= %{os_family} alpine))
+ ((openssl)
+  (= %{os_family} arch))
+ ((openssl)
+  (= %{os_distribution} homebrew))
+ ((openssl)
+  (= %{os_distribution} macports))
+ ((openssl)
+  (= %{os_distribution} nixos))
+ ((openssl)
+  (and_absorb_undefined_var
+   (= %{os} win32)
+   (= %{os_distribution} cygwinports))))
 
 (extra_sources
  (homebrew.sh
