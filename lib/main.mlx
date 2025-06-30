@@ -60,6 +60,78 @@ let getting_started ~install_url () =
 "$ dune pkg lock"
 "$ dune exec \"$PROJECT\""
     </Code>
+
+    <h3 class_="mt-10 mb-2.5">"Development Tools"</h3>
+
+<p>"Certain development tools are supported out of the box without opam.
+    They are automatically installed as dev dependencies, but for this to work
+    you need to first run "<span class_="font-mono text-block-p">"dune pkg lock"</span>" on your project so that dune knows how to
+    build the appropriate tools. Currently supported devtools are listed "
+    <Link class_="hover:underline" href="https://github.com/ocaml/dune/blob/main/src/dune_pkg/dev_tool.ml#L3">"here"</Link>"."
+    <br/>
+    <br/>
+</p>
+
+    <table class_="w-full pb-4 border-collapse border">
+        <thead class_="font-normal border">
+            <tr>
+                <th class_="pl-2.5 lg:pl-14 py-2.5 border font-normal">"Tool"</th>
+                <th class_="pl-2.5 py-2.5 border font-normal">"Status"</th>
+                <th class_="pl-2.5 py-2.5 border font-normal">"Call"</th>
+                <th class_="pl-2.5 py-2.5 border font-normal">"Notes"</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class_="odd:bg-tertiary/10">
+                <td class_="pl-2.5 lg:pl-14 py-2.5 border"><span class_="font-mono text-block-p">"OCamlFormat"</span></td>
+                <td class_="pl-2.5 py-2.5 border"><span class_="supported">"✅"</span></td>
+                <td class_="pl-2.5 py-2.5 border"><span class_="font-mono text-block-p">"dune fmt"</span></td>
+                <td class_="pl-2.5 py-2.5 border">"Use "<span class_="font-mono text-block-p">"dune tools exec ocamlformat"</span>" to call OCamlFormat directly"</td>
+            </tr>
+            <tr class_="odd:bg-tertiary/10">
+                <td class_="pl-2.5 lg:pl-14 py-2.5 border"><span class_="font-mono text-block-p">"OCaml-LSP"</span></td>
+                <td class_="pl-2.5 py-2.5 border"><span class_="supported">"✅"</span></td>
+                <td class_="pl-2.5 py-2.5 border"><span class_="font-mono text-block-p">"ocamllsp"</span></td>
+                <td class_="pl-2.5 py-2.5 border">"Runs automatically (just configure your editor). "<Link class_="hover:underline" href="https://github.com/ocaml-dune/binary-distribution/blob/main/tool-wrappers/ocamllsp">"Wraps"</Link>" "<span class_="font-mono text-block-p">"dune tools exec ocamlformat"</span>"."</td>
+            </tr>
+            <tr class_="odd:bg-tertiary/10">
+                <td class_="pl-2.5 lg:pl-14 py-2.5 border"><span class_="font-mono text-block-p">"Odoc"</span></td>
+                <td class_="pl-2.5 py-2.5 border"><span class_="supported">"✅"</span></td>
+                <td class_="pl-2.5 py-2.5 border"><span class_="font-mono text-block-p">"dune ocaml doc"</span></td>
+                <td class_="pl-2.5 py-2.5 border">"After first run "<span class_="font-mono text-block-p">"dune build @doc"</span>" will also work"</td>
+            </tr>
+            <tr class_="odd:bg-tertiary/10">
+                <td class_="pl-2.5 lg:pl-14 py-2.5 border"><span class_="font-mono text-block-p">"repl (ocaml, utop)"</span></td>
+                <td class_="pl-2.5 py-2.5 border"><span class_="not-supported">"❌"</span></td>
+                <td class_="pl-2.5 py-2.5 border"><span class_="font-mono text-block-p">"dune repl"</span></td>
+                <td class_="pl-2.5 py-2.5 border"></td>
+            </tr>
+            <tr class_="odd:bg-tertiary/10">
+                <td class_="pl-2.5 lg:pl-14 py-2.5 border"><span class_="font-mono text-block-p">"debugger (ocamldebug, ocamlearlybird)"</span></td>
+                <td class_="pl-2.5 py-2.5 border"><span class_="not-supported">"❌"</span></td>
+                <td class_="pl-2.5 py-2.5 border"><span class_="font-mono text-block-p">"dune debug"</span></td>
+                <td class_="pl-2.5 py-2.5 border"></td>
+            </tr>
+            <tr class_="odd:bg-tertiary/10">
+                <td class_="pl-2.5 lg:pl-14 py-2.5 border"><span class_="font-mono text-block-p">"toolchain (ocamlfind, ocamlobjinfo, ocamlc)"</span></td>
+                <td class_="pl-2.5 py-2.5 border"><span class_="not-supported">"❌"</span></td>
+                <td class_="pl-2.5 py-2.5 border">"?"</td>
+                <td class_="pl-2.5 py-2.5 border"></td>
+            </tr>
+            <tr class_="odd:bg-tertiary/10">
+                <td class_="pl-2.5 lg:pl-14 py-2.5 border"><span class_="font-mono text-block-p">"dune-release"</span></td>
+                <td class_="pl-2.5 py-2.5 border"><span class_="not-supported">"❌"</span></td>
+                <td class_="pl-2.5 py-2.5 border"><span class_="font-mono text-block-p">"dune release"</span></td>
+                <td class_="pl-2.5 py-2.5 border"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>
+    <br/>"A global opam switch may interfere with the functioning of the developer preview.
+    To clean the environment, you may want to create an empty global switch and work from it.
+    This you can do with "<span class_="font-mono text-block-p">"opam switch create my-empty-switch --empty && eval $(opam env --switch=my-empty-switch --set-switch)"</span>"."</p>
+
     <h3 class_="mt-10 mb-2.5">"Editor Configuration"</h3>
     <p>
         "Here is how to configure some popular editors for OCaml using the Dune Developer Preview. Note that it is unnecessary to install "
