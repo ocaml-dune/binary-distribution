@@ -1,5 +1,15 @@
 [
   {
+    "date": 1752105600.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
+    "commit": "7a29368a9fbab75b659f25422025741f416b5493"
+  },
+  {
     "date": 1752019200.0,
     "targets": [
       [ "Aarch64_apple_darwin" ],
