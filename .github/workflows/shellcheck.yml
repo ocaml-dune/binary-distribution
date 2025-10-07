@@ -1,0 +1,17 @@
+name: shellcheck
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'static/install'
+jobs:
+  shellcheck:
+    name: "Run Shellchek on the install script"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: "Install shellcheck"
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+      - name: "Run shellcheck on the install script"
+        run: shellcheck "static/install.sh"
+
