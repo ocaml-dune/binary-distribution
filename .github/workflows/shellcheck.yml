@@ -6,12 +6,11 @@ on:
       - 'static/install'
 jobs:
   shellcheck:
-    name: "Run Shellchek on the install script"
+    name: "Run Shellcheck on the install script"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: "Install shellcheck"
         run: sudo apt-get update && sudo apt-get install -y shellcheck
       - name: "Run shellcheck on the install script"
-        run: shellcheck "static/install.sh"
-
+        run: shellcheck "static/install"
