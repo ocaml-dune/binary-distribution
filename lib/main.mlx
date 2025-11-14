@@ -18,8 +18,8 @@ let header_info () =
            <span style="color: rgb(194, 79, 30);">"Under a Minute"</span>
        </h1>
        <p class_="max-w-banner text-lg text-white leading-7 mt-4">
-          "The Dune Developer Preview is an ongoing program that provides early access to new and experimental features in Dune and the broader OCaml Platform with an "
-           <span class_="text-primary-light">"experimental nightly release"</span>
+          "The Dune nightly is a binary preview of the latest features of Dune development branch with a "
+           <span class_="text-primary-light">"nightly release"</span>
        </p>
     </div>
   </section>
@@ -29,7 +29,7 @@ let warning () =
     <div class_="w-full sm:w-lg flex items-center justify-between p-4">
         <Icons.info class_="stroke-warning mr-2" />
         <span class_="flex-1 text-left">
-            "This Dune Install is only an "
+            "This Dune installation is only an "
             <span class_="font-bold text-warning">
             "EXPERIMENTAL NIGHTLY RELEASE"
             </span>" of Dune"
@@ -54,15 +54,15 @@ let getting_started ~install_url () =
       "Run"
     </h4>
     <Code>
-"$ PROJECT=hello_world"
-"$ dune init proj \"$PROJECT\""
-"$ cd \"$PROJECT\""
-"$ dune pkg lock"
-"$ dune exec \"$PROJECT\""
+{|$ PROJECT=hello_world|}
+{|$ dune init proj "$PROJECT"|}
+{|$ cd "$PROJECT"|}
+{|$ echo "(dune-lang 3.21)\n(pkg enabled)" > dune-workspace|}
+{|$ dune exec "$PROJECT"|}
     </Code>
     <h3 class_="mt-10 mb-2.5">"Editor Configuration"</h3>
     <p>
-        "Here is how to configure some popular editors for OCaml using the Dune Developer Preview. Note that it is unnecessary to install "
+        "Here is how to configure some popular editors for OCaml using the Dune nightly. Note that it is unnecessary to install "
         <span class_="font-mono text-block-p">"ocaml-lsp-server"</span>
         " as Dune will install it automatically."
     </p>
@@ -74,7 +74,7 @@ let getting_started ~install_url () =
                 <Link class_="hover:underline" href="https://marketplace.visualstudio.com/items?itemName=ocamllabs.ocaml-platform">"vscode-ocaml-platform"</Link>
                 " plugin for Visual Studio Code. By default it assumes that you'll be using Opam to install "
                 <span class_="font-mono text-block-p">"ocamllsp"</span>
-                ". To configure it to work with the Dune Developer Preview, add the following to your settings.json file:"
+                ". To configure it to work with the Dune nightly, add the following to your settings.json file:"
             </p>
             <Code>
 "// settings.json"
@@ -92,7 +92,7 @@ let getting_started ~install_url () =
             <p class_="mb-2.5">
                 "The easiest way to configure Neovim for OCaml is by installing the "
                 <Link class_="hover:underline" href="https://github.com/neovim/nvim-lspconfig">"lspconfig"</Link>
-                " package. The default configuration will work with the Dune Developer Preview, so just enable it with:"
+                " package. The default configuration will work with the Dune nightly, so just enable it with:"
             </p>
             <Code>
 "-- init.lua"
@@ -103,7 +103,7 @@ let getting_started ~install_url () =
     <Details summary="Emacs" extend_class="mt-4" container_class="px-4 lg:px-14 py-1">
         <div>
             <p class_="mb-2.5">
-                "Emacs users will need to add the Dune Developer Preview's bin directory to their "
+                "Emacs users will need to add the Dune nightly's bin directory to their "
                 <span class_="font-mono text-block-p">"exec-path"</span>
                 " and "
                 <span class_="font-mono text-block-p">"PATH"</span>
@@ -113,7 +113,7 @@ let getting_started ~install_url () =
             </p>
             <Code>
 "; init.el"
-"; add the dune developer preview bin path to exec-path and PATH"
+"; add the dune nightly bin path to exec-path and PATH"
 "(add-to-list 'exec-path \"~/.local/bin\" t)"
 "(setenv \"PATH\" (concat (expand-file-name \"~/.local/bin\") \":\" (getenv \"PATH\")))"
 " "
@@ -159,15 +159,8 @@ let feedback () =
       </span>
       "Share Feedback"
     </h2>
-    <p class_="mb-6 text-white/60">"We are excited to learn from your experience with the Dune Developer Preview, so feel encourage to tell us what you think"</p>
+    <p class_="mb-6 text-white/60">"We are excited to learn from your experience with the Dune nightly, so feel encourage to tell us what you think"</p>
     <div class_="w-full flex flex-col sm:flex-row flex-wrap items-center gap-10">
-      <LinkButton href="https://docs.google.com/forms/u/2/d/e/1FAIpQLSda-mOTHIdATTt_e9dFmNgUCy-fD55Qzr3bGGsxpfY_Ecfyxw/viewform?usp=send_form">
-        <p>
-          <Icons.pencil class_="mr-2.5" />
-          "Submit Feedback"
-        </p>
-      </LinkButton>
-
       <LinkButton href="https://github.com/ocaml/dune/issues/new/choose">
         <p>
           <Icons.github class_="fill-white mr-2.5" />
@@ -179,38 +172,30 @@ let feedback () =
   </section>
 
 let q_and_a = [
-    "What is the Dune Developer Preview?",
+    "What is the Dune nightly?",
     <div class_="flex flex-col gap-2">
-      <p>"The Dune Developer Preview is an ongoing program that provides early access to new and experimental features in Dune and the broader OCaml Platform. It's not limited to a single feature or time period – instead, it's a continuous initiative to involve the community in testing and refining upcoming developments."</p>
-      <p>"While it currently showcases Dune's new package management capabilities, the Developer Preview will continue to introduce and iterate on various features even after the package management system is fully integrated into stable releases."</p>
-      <p>"By participating in the Developer Preview, you'll have the opportunity to try out cutting-edge functionality, provide valuable feedback, and help shape the future of Dune and the OCaml ecosystem. We encourage users to think of the Developer Preview as a persistent \"beta channel\" for Dune and related tools, always offering a glimpse into what's coming next."</p>
+      <p>"The Dune nightly is an ongoing program that provides early access to new features in Dune without having to wait for a stable release. It's a continuous initiative to involve the community in testing and refining upcoming developments."</p>
+      <p>"While it currently showcases Dune's new package management capabilities, the nightly will continue to introduce and iterate on various features even after the package management system is fully integrated into stable releases."</p>
+      <p>"By using the nightly, you'll have the opportunity to try out cutting-edge functionality, provide valuable feedback, and help shape the future of Dune and the OCaml ecosystem. We encourage users to think of the nightly as a persistent \"beta channel\" for Dune and related tools, always offering a glimpse into what's coming next."</p>
     </div>
-  ;  "Is it stable?", (<p>"No. For a stable release of OCaml, please follow the installation guide on "<Link href="https://ocaml.org">"OCaml.org"</Link>". The Developer Preview is an unstable distribution of Dune and, by nature, will always be unstable. However, its features will stabilise over time and move to a stable release of Dune. If you use the Developer Preview, expect bugs and please report them to "<Link href="https://github.com/ocaml/dune/issues">"ocaml/dune"</Link>"."</p>)
+  ;  "Is it stable?", (<p>"No. For a stable release of OCaml, please follow the installation guide on "<Link href="https://ocaml.org">"OCaml.org"</Link>". The Developer nightly is an unreleased preview of the next upcoming Dune release and, by nature, not tested in the same way as stable releases are. However, its features will stabilise over time and be incorporated into the next stable release of Dune. If you use the nightly, expect bugs and please report them to "<Link href="https://github.com/ocaml/dune/issues">"ocaml/dune"</Link>"."</p>)
   ; "Does it support Windows?", <p>"No, not yet. Watch this space for news!"</p>
-  ; "Can I build the Developer Preview of Dune from sources?",
+  ; "Can I build the nightly of Dune from sources?",
     <div class_="flex flex-col gap-2">
-      <p>"Yes. The only difference from a regular build from source is in a few
-      configuration flags. Please look in the Dune repository for complete instructions
+      <p>"Yes. The nightly is just a binary distribution of the latest Dune features.
+      Please look in the Dune repository for complete instructions
       on how to do a source build of Dune."
       </p>
-      <p>"When configuring the build you'll want to enable the following flags:" </p>
-      <Code>
-"--pkg-build-progress enable"
-"--lock-dev-tool enable"
-"--portable-lock-dir enable"
-</Code>
     </div>
   ; "Can I access these features from a version of Dune managed by opam?",
     <div class_="flex flex-col gap-2">
-      <p>"Yes, but we can't guarantee they will work correctly since the Dune Developer Preview makes some assumptions for package management that aren't supported by opam."
+      <p>"Yes, but we can't guarantee that every feature of the nightly will make it as-is into future releases."
       </p>
-      <p>"To enable these features make sure you are pinning dune to the development version, and export the following environment variables: "
+      <p>"To enable these features make sure you are pinning Dune to the development version: "
       </p>
       <Code>
 "$ opam pin add dune --dev"
-"$ export DUNE_CONFIG__PKG_BUILD_PROGRESS=enabled"
-"$ export DUNE_CONFIG__LOCK_DEV_TOOL=enabled"
-"$ export DUNE_CONFIG__PORTABLE_LOCK_DIRS=enabled"
+"TODO"
 </Code>
     </div>
 ]
@@ -250,11 +235,11 @@ let manual_installation ~base_url ~releases () =
     <div class_="w-full lg:w-lg flex flex-col gap-2 ">
     <h2 class_="mb-2"> "Manual Installation" </h2>
     <p class_="mb-5">
-      "In this section you’ll find instructions to manually install the Dune Developer Review, and verify the installation. This is recommended for advanced users, or if you want s understand where the binaries come from."
+      "In this section you’ll find instructions to manually install the Dune nightly, and verify the installation. This is recommended for advanced users, or if you want to understand where the binaries come from."
     </p>
     <h3 class_="mb-2.5"> "Featured Downloads" </h3>
     <p class_="mb-4">
-      "This is the latest release of the Dune Developer Preview. See the "
+      "This is the latest release of the Dune nightly. See the "
       <Link class_="text-[var(--accent)]" href="#release-history">"release history"</Link>
       " section for all past releases."
     </p>
@@ -265,7 +250,7 @@ let manual_installation ~base_url ~releases () =
        |> JSX.list)
     </ul>
 
-    <h3 class_="mb-2.5"> "Installing the Binary" </h3>
+    <h3 class_="mb-2.5"> "Installing the binary" </h3>
     <p>
       "After downloading a binary release of Dune, make it executable and place it somewhere reachable by your PATH:"
     </p>
@@ -323,7 +308,7 @@ let release_history ~base_url ~releases () =
     <p>
       "Here is a list of the "
       (JSX.int (List.length releases))
-      " latest releases of the Dune Developer Preview."
+      " latest builds of the Dune nightly."
     </p>
     <div class_="w-full flex flex-col gap-4">
     (
