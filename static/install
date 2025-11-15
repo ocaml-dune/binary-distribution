@@ -317,7 +317,7 @@ bash)
     fi
     ;;
 
-*|unset)
+*)
     env="${env_dir}/env.bash"
     env_file=$(unsubst_home "${env}")
 
