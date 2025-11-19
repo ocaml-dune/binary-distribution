@@ -1,6 +1,6 @@
 # Dune binaries distribution
 
-This is a webpage for `dune` binaries distribution of `Dune developer Preview`.
+This is a webpage for nightly binary distributions of  `dune`.
 The page is automatically generated from file `metadata.json`. Apart from the
 _YAML_ part, the code is written in _OCaml_.
 
