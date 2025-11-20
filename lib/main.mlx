@@ -201,8 +201,7 @@ let q_and_a = [
       <p>"To enable these features make sure you are pinning Dune to the development version: "
       </p>
       <Code>
-"$ opam pin add dune --dev"
-"TODO"
+[JSX.string "$ opam pin add dune --dev"]
 </Code>
     </div>
 ]
