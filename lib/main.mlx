@@ -177,7 +177,15 @@ let q_and_a = [
     <div class_="flex flex-col gap-2">
       <p>"The Dune nightly provides early access to the latest development of Dune without having to wait for a stable release. It's a continuous initiative to involve the community in testing and refining upcoming developments."</p>
     </div>
-  ;  "Is it stable?", (<p>"No. The Developer nightly is built from unreleased code on the head of the development branch. If you use the nightly, expect bugs and please report them to "<Link href="https://github.com/ocaml/dune/issues">"ocaml/dune"</Link>". For a stable release of OCaml, please follow the installation guide on "<Link href="https://ocaml.org">"OCaml.org"</Link>". Binary installations of stable release are available at "<Link href="https://github.com/ocaml-dune/dune-bin-install?tab=readme-ov-file#dune-binary-installer">"Dune Binary Installer"</Link>". </p>)
+  ; "Is it stable?",
+    <p>
+      "No. The Developer nightly is built from unreleased code on the head of the development branch. If you use the nightly, expect bugs and please report them to "
+      <Link href="https://github.com/ocaml/dune/issues">"ocaml/dune"</Link>
+      ". For a stable release of OCaml, please follow the installation guide on "
+      <Link href="https://ocaml.org">"OCaml.org"</Link>
+      ". Binary installations of stable release are available at"
+      <Link href="https://github.com/ocaml-dune/dune-bin-install?tab=readme-ov-file#dune-binary-installer">"Dune Binary Installer"</Link>"."
+    </p>
   ; "Can I install the binary on Windows?", <p>"No, not yet. Watch this space for news!"</p>
   ; "Can I build the nightly of Dune from sources?",
     <div class_="flex flex-col gap-2">
