@@ -62,11 +62,7 @@ let getting_started ~install_url () =
 {|$ dune exec "$PROJECT"|}
     </Code>
     <h3 class_="mt-10 mb-2.5">"Editor Configuration"</h3>
-    <p>
-        "Here is how to configure some popular editors for OCaml using the Dune nightly. Note that it is unnecessary to install "
-        <span class_="font-mono text-block-p">"ocaml-lsp-server"</span>
-        " as Dune will install it automatically."
-    </p>
+    <p>"Here is how to configure some popular editors for OCaml using the Dune nightly."</p>
 
     <Details summary="Visual Studio Code" extend_class="mt-4" container_class="px-4 lg:px-14 py-1">
         <div>
