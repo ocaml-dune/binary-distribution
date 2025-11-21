@@ -85,7 +85,7 @@ jobs:
 
       - name: Export version
         run: |
-          echo "(version \"Dune Developer Preview: build $(date -u +"%Y-%m-%dT%H:%M:%SZ"), git revision $(git rev-parse HEAD)\")" >> dune-project
+          echo "(version \"Nightly build $(date -u +"%Y-%m-%dT%H:%M:%SZ"), git revision $(git rev-parse HEAD)\")" >> dune-project
 
       - run: nix build ${{ matrix.installable }}
 
