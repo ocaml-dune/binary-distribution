@@ -1,6 +1,6 @@
 # Dune binaries distribution
 
-This is a webpage for nightly binary distributions of  `dune`.
+This is the web site for for the nightly binary distribution of  `dune`.
 The page is automatically generated from file `metadata.json`. Apart from the
 _YAML_ part, the code is written in _OCaml_.
 
