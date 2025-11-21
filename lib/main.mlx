@@ -185,9 +185,11 @@ let q_and_a = [
   ; "Can I install the binary on Windows?", <p>"No, not yet. Watch this space for news!"</p>
   ; "Can I build the nightly of Dune from sources?",
     <div class_="flex flex-col gap-2">
-      <p>"Yes. The nightly is just a binary distribution of the latest Dune features.
-      Please look in the Dune repository for complete instructions
-      on how to do a source build of Dune."
+      <p>"Yes. The nightly is just a binary distribution of the latest Dune features."</p>
+      <p>
+        "Check out "
+	<Link href="https://github.com/ocaml/dune?tab=readme-ov-file#installation-1">"the installation instructions in the Dune repository"</Link>
+	" on how to do a source build of Dune."
       </p>
     </div>
   ; "Can I access these features from a version of Dune managed by opam?",
