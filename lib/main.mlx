@@ -269,7 +269,7 @@ let manual_installation ~base_url ~releases () =
     <p class_="mt-2.5 mb-2.5">"You can verify your installation by running:"</p>
     <Code>
 "$ dune --version"
-"Dune Developer Preview: build , git revision cc260345db57ab639db6363b2dc89072a1492832"
+"Nightly build 2025-11-25T10:09:55Z, git revision 95431847d306a9b7b94748ec2c2903c989f34c34"
     </Code>
 
     <h3 class_="mt-5 mb-2.5"> "Verifying the Dune binary" </h3>

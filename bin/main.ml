@@ -88,7 +88,7 @@ module Sync = struct
   ;;
 
   let info =
-    let doc = "Update the metadata, push the binaries and, update the index.html file." in
+    let doc = "Update the metadata and push the binaries." in
     Cmd.info "sync" ~doc
   ;;
 
@@ -97,7 +97,7 @@ end
 
 module Http = struct
   let serve dev metadata_file port =
-    let title = "Dune Developer Preview" in
+    let title = "Dune Nightly" in
     let base_url = Config.Server.url in
     let bundles = Metadata.import_from_json metadata_file in
     let routes =

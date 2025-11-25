@@ -9,5 +9,4 @@ module Path = struct
   let metadata = "./metadata.json"
   let rclone = "./rclone.conf"
   let install = "./static/install"
-  let html_index = "./static/index.html"
 end
