@@ -57,8 +57,11 @@ let getting_started ~install_url () =
 {|$ PROJECT=hello_world|}
 {|$ dune init proj "$PROJECT"|}
 {|$ cd "$PROJECT"|}
-{|# To opt in to using dune for package management |}
-{|$ echo "(dune-lang 3.21)\n(pkg enabled)" > dune-workspace|}
+{|$ # To opt in to using dune for package management|}
+{|$ cat > dune-workspace <<EOF|}
+{|> (lang dune 3.21)|}
+{|> (pkg enabled)|}
+{|> EOF|}
 {|$ dune exec "$PROJECT"|}
     </Code>
     <h3 class_="mt-10 mb-2.5">"Editor Configuration"</h3>
