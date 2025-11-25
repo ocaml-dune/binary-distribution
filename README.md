@@ -1,6 +1,6 @@
 # Dune binaries distribution
 
-This is a webpage for `dune` binaries distribution of `Dune developer Preview`.
+This is the web site for for the nightly binary distribution of  `dune`.
 The page is automatically generated from file `metadata.json`. Apart from the
 _YAML_ part, the code is written in _OCaml_.
 
@@ -10,7 +10,7 @@ it:
 - generates new artifacts and pushes them to their SSH storage using `RClone`
 - publishes the Dockerfile used to deploy the website
 
-The web page is deployed on [preview.dune.build](https://preview.dune.build).
+The web page is deployed on [nightly.dune.build](https://nightly.dune.build).
 
 > :hourglass: The pipeline is triggered every day at _01:00 UTC_.
 
@@ -101,7 +101,7 @@ page to ensure the page is reloaded when you restart the server.
 ### Deploying on staging environment
 
 If you need to test your work, you can push on the staging environment. This
-environment is available at https://staging-preview.dune.build. If you just need
+environment is available at https://staging-nightly.dune.build. If you just need
 to test the website view, you need to reset the HEAD of the `staging` branch
 and push force on it:
 ```sh
