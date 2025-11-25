@@ -28,7 +28,7 @@
 (package
  (name sandworm)
  (synopsis "Dune metadata website generator")
- (description "The Dev Preview website generator.")
+ (description "The Dune nightly website generator.")
  (depends
   ocaml
   dune

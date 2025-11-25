@@ -73,7 +73,7 @@ case $(uname -ms) in
     target=x86_64-unknown-linux-musl
     ;;
 *)
-    error "The Dune Developer Preview does not currently support $(uname -ms)."
+    error "The Dune nightly does not currently support $(uname -ms)."
 esac
 
 tar_target_name="dune-$target"
