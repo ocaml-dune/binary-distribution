@@ -88,7 +88,7 @@ module Sync = struct
   ;;
 
   let info =
-    let doc = "Update the metadata, push the binaries and, update the index.html file." in
+    let doc = "Update the metadata and push the binaries." in
     Cmd.info "sync" ~doc
   ;;
 
