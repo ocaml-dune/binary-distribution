@@ -207,8 +207,15 @@ let q_and_a = [
     </div>
   ; "How does the nightly differ from the preview?",
     <div class_="flex flex-col gap-2">
-      <p>"Like the nightly, the preview was a binary build created every day from the most current Dune sources. However, it did enable certain optional features by default. These features can still be used in the nightly, but they have to be enabled at runtime."</p>
-      <p>"We decided on this rebranding to show that package management is available in Dune and does not require a special fork - it is just Dune."</p>
+      <p>"Like the nightly, the preview was a binary build created every day from the most current Dune sources. However, it did enable certain optional features by default."</p>
+      <p>
+        <ul>
+	  <li><var>"DUNE_CONFIG__PORTABLE_LOCK_DIRS"</var>" has been incorporated into mainline Dune, it is always enabled."</li>
+	  <li><var>"DUNE_CONFIG__PKG_BUILD_PROGRESS"</var>" has been incorporated into mainline Dune, it is enabled when running Dune with "<code>"--display=short"</code>"."</li>
+	  <li><var>"DUNE_CONFIG__LOCK_DEV_TOOL"</var>" is not enabled anymore but can still be set in the environment. To use dev-tools use "<code>"dune tools"</code>" while we work for better support for dev-tools."</li>
+	</ul>
+      </p>
+      <p>"The re-branded nightly builds now just follow Dune's "<pre>"main"</pre>" branch with no special features enabled."</p>
     </div>
 ]
 
