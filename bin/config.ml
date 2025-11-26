@@ -12,5 +12,4 @@ module Path = struct
   let artifacts_dir = "./artifacts"
   let metadata = "./metadata.json"
   let rclone = "./rclone.conf"
-  let install = "./static/install"
 end
