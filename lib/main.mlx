@@ -205,6 +205,11 @@ let q_and_a = [
 [JSX.string "$ opam pin add dune --dev-repo"]
 </Code>
     </div>
+  ; "How does the nightly differ from the preview?",
+    <div class_="flex flex-col gap-2">
+      <p>"Like the nightly, the preview was a binary build created every day from the most current Dune sources. However, it did enable certain optional features by default. These features can still be used in the nightly, but they have to be enabled at runtime."</p>
+      <p>"We decided on this rebranding to show that package management is available in Dune and does not require a special fork - it is just Dune."</p>
+    </div>
 ]
 
 let faq () =
