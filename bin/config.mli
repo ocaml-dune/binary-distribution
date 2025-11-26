@@ -1,6 +1,10 @@
 module Server : sig
   val rclone_bucket_ref : string
-  val url : string
+  val artifact_base_url : string
+end
+
+module Site : sig
+  val install_script_url : string
 end
 
 module Path : sig
