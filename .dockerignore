@@ -1,6 +1,7 @@
 *
 !dune
 !dune-project
+!dune.lock
 !sandworm.opam
 !bin/
 !lib/
