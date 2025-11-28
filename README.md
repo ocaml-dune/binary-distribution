@@ -75,10 +75,10 @@ artifacts rclone.conf
 $ dune exec -- sandworm sync --commit [commit hash]
 ```
 
-## Running the developement server
+## Running the development server
 
 To make the development of the web pages easier, you can use the web server in
-developement mode. It will auto update the page will saving files and,
+development mode. It will auto update the page will saving files and
 regenarate the CSS if needed:
 
 ```sh
@@ -119,3 +119,38 @@ extra work to deploy it.
 This schema provides explanations about the workflow used to build the binaries
 and the certificates, and export them to the correct server.
 ![pipeline](./docs/pipeline.svg)
+
+## User flow
+
+The nightly binary distribution consists of multiple parts:
+
+  1. The GitHub Action `binaries` which spins up GitHub runners, builds Dune on
+     them, verifies the attestation. The tarballs are then uploaded to date-keyed
+     subfolders on `get.dune.build`, along with the `install` script. Then the
+     action updates the repository with a new entry into `metadata.json`.
+
+     This action is run nightly if there are changes on the Dune repository. If
+     no changes happened (weekends) it will skip the run and no new binaries
+     will be uploaded.
+  2. `get.dune.build` is a server hosting static files, uploaded via RClone
+     using SFTP as part of the GitHub action. Users eventually download the
+     tarballs from this location.
+  3. The web server (`sandworm serve`) running on `nightly.dune.build`. It
+     serves the [web site](https://nightly.dune.build), the install script, and the endpoint used by the install script to get redirected to
+     the most recent binary for a certain target. This is done by reading the
+     `metadata.json` file.
+
+     This web server is built and deployed via the `Dockerfile` on
+     `nightly.dune.build`.
+
+This setup has certain advantages, like the fact that users of the installer
+will automatically get the most recent version of the binary, without having to
+update the install script every time there is a new release. It also means that
+the binaries could be served via a CDN, as `get.dune.build` is exclusively
+serving static content that can be served efficiently.
+
+One downside of this setup is that the install script on
+`nightly.dune.build/install` is updated as soon as the `main` branch is
+deployed, however the install script at `get.dune.build/insall` is only updated
+once the `binaries` action is run. Which can take several days if no changes
+are happening in the Dune repository.
