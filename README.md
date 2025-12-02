@@ -22,19 +22,15 @@ The web page is deployed on [nightly.dune.build](https://nightly.dune.build).
 
 ### Requirement
 
-You need to have `opam` available to install and build the project.
+You need to have `dune` available to install and build the project. A
+relatively recent version with package management support like 3.20 or newer is
+preferable.
 
-### Install
+### Building
 
-The _OCaml code_ is stored in the repository root directory. Install
-the dependencies with the following commands:
-
-```sh
-$ opam install . --deps-only --with-dev-setup
-```
-
-Please note that `--with-dev-setup` should only be used for a development
-purpose.
+The repository comes with a lock directory in `dune.lock`, thus the
+dependencies will be automatically downloaded and built when running `dune
+build`.
 
 ### Configure
 
