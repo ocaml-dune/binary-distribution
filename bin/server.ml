@@ -13,13 +13,13 @@ let reload_script_middleware ~dev inner_handler request =
   if dev then Dream.livereload inner_handler request else inner_handler request
 ;;
 
-let latest_route_from_targets ~base_url bundle =
+let latest_route_from_targets ~artifact_base_url bundle =
   let open Sandworm.Metadata in
   List.map
     (fun target ->
-      let path = Format.sprintf "/%s" (Target.to_string target) in
-      Dream.get path (fun request ->
-        Dream.redirect request (Bundle.to_download_url ~base_url ~target bundle)))
+       let path = Format.sprintf "/%s" (Target.to_string target) in
+       Dream.get path (fun request ->
+         Dream.redirect request (Bundle.to_download_url ~artifact_base_url ~target bundle)))
     bundle.targets
 ;;
 
@@ -39,7 +39,7 @@ let from_tuple_to_dream page =
   List.map (fun (path, content) -> Dream.get path (fun _ -> Dream.html content)) page
 ;;
 
-let serve ~dev ~base_url routes port bundle =
+let serve ~dev ~artifact_base_url routes port bundle =
   let interface = if dev then "127.0.0.1" else "0.0.0.0" in
   let error_handler = Dream.error_template error_template in
   Dream.log
@@ -56,6 +56,6 @@ let serve ~dev ~base_url routes port bundle =
         @ [ Dream.get "/health" (fun _ -> Dream.html "OK")
           ; Dream.get "/install" (fun request -> Dream.redirect request "/static/install")
           ; Dream.get "/static/**" @@ Dream.static "static"
-          ; Dream.scope "/latest" [] (latest_route_from_targets ~base_url bundle)
+          ; Dream.scope "/latest" [] (latest_route_from_targets ~artifact_base_url bundle)
           ])
 ;;
