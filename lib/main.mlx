@@ -38,7 +38,7 @@ let warning () =
   </div>
 
 
-let getting_started ~install_url () =
+let getting_started ~install_script_url () =
   <section id="download" class_="w-full flex justify-center pt-9 pb-12 px-5 lg:px-0">
     <div class_="w-full lg:w-lg flex flex-col">
     <h2 class_="mb-5">"Install Dune"</h2>
@@ -46,7 +46,7 @@ let getting_started ~install_url () =
       <span class_="mr-2.5"><Icons.terminal /></span>
       "Copy & Install"
     </h4>
-    <Curl script=(Info.curl_with_sh install_url) />
+    <Curl script=(Info.curl_with_sh install_script_url) />
     <h3 class_="mt-10 mb-2.5">"Getting Started"</h3>
     <p>"You can create and run your first hello-world program using Dune like this"</p>
     <h4 class_="mt-2.5">
@@ -216,13 +216,13 @@ let faq () =
   </div>
   </section>
 
-let installation_target ~base_url ~bundle target =
+let installation_target ~artifact_base_url ~bundle target =
   let open Metadata in
   let title = Target.to_human_readable_string target in
   let desc = Target.to_description target in
   let targz = Bundle.to_download_file target in
-  let cert_href = Bundle.to_certificate_url bundle ~base_url ~target in
-  let tar_href = Bundle.to_download_url bundle ~base_url ~target  in
+  let cert_href = Bundle.to_certificate_url bundle ~artifact_base_url ~target in
+  let tar_href = Bundle.to_download_url bundle ~artifact_base_url ~target  in
   <li class_="w-[420px] flex flex-col justify-center items-end">
     <div class_="w-full h-[140px] px-4 py-2 mb-2.5 gap-y-2.5 flex flex-col justify-center items-center border-[2px] border-solid border-primary-light rounded-md bg-white">
       <h4 class_="font-bold">(JSX.string title)</h4>
@@ -237,7 +237,7 @@ let installation_target ~base_url ~bundle target =
     <a class_="text-black underline hover:text-primary-light" href=cert_href>"Certificate"</a>
   </li>
 
-let manual_installation ~base_url ~releases () =
+let manual_installation ~artifact_base_url ~releases () =
   <section id="manual-installation" class_="w-full flex justify-center border-t border-b border-black/20 py-10  bg-section-manual px-5 lg:px-0">
     <div class_="w-full lg:w-lg flex flex-col gap-2 ">
     <h2 class_="mb-2"> "Manual Installation" </h2>
@@ -253,7 +253,7 @@ let manual_installation ~base_url ~releases () =
     <ul class_="flex flex-row gap-2.5 justify-around flex-wrap items-center align-center mb-5">
       (let bundle: Metadata.Bundle.t = releases |> List.hd in
       bundle.targets
-       |> List.map (installation_target ~base_url ~bundle)
+       |> List.map (installation_target ~artifact_base_url ~bundle)
        |> JSX.list)
     </ul>
 
@@ -286,11 +286,11 @@ let manual_installation ~base_url ~releases () =
   </section>
 
 
-let release_information ~base_url ~bundle ~target () =
+let release_information ~artifact_base_url ~bundle ~target () =
   let open Metadata in
   let targz = Bundle.to_download_file target in
-  let cert_href = Bundle.to_certificate_url bundle ~base_url ~target in
-  let tar_href = Bundle.to_download_url bundle ~base_url ~target  in
+  let cert_href = Bundle.to_certificate_url bundle ~artifact_base_url ~target in
+  let tar_href = Bundle.to_download_url bundle ~artifact_base_url ~target  in
   let (arch, _, os) = Target.to_triple target in
   <tr class_="odd:bg-tertiary/10">
     <td class_="pl-2.5 lg:pl-14 border"><Link class_="hover:underline" href=tar_href>(JSX.string targz)</Link></td>
@@ -307,7 +307,7 @@ let release_information ~base_url ~bundle ~target () =
   </tr>
 
 
-let release_history ~base_url ~releases () =
+let release_history ~artifact_base_url ~releases () =
   let open Metadata in
   <section id="release-history" class_="w-full flex justify-center py-10 px-5 lg:px-0">
     <div class_="w-full lg:w-lg flex flex-col gap-2 text-left">
@@ -323,7 +323,7 @@ let release_history ~base_url ~releases () =
       |> List.map (fun (bundle: Bundle.t) ->
           let date = Bundle.get_date_string_from ~prefix:"nightly-" bundle in
           let summary = Format.sprintf "dune %s" date in
-          let files = bundle.targets |> List.map (fun (target: Target.t) -> (<release_information base_url bundle target />)) in
+          let files = bundle.targets |> List.map (fun (target: Target.t) -> (<release_information artifact_base_url bundle target />)) in
           (<Details summary container_class="w-full overflow-scroll">
              <table class_="w-full pb-4 border-collapse border">
                 <thead class_="font-normal border">
@@ -347,15 +347,14 @@ let release_history ~base_url ~releases () =
   </div>
   </section>
 
-let page ~base_url ~releases () =
+let page ~artifact_base_url ~install_script_url ~releases () =
   let releases = Core.List.take 30 releases in
-  let install_url = Filename.concat base_url "install" in
   <main class_="flex flex-col w-full">
     <header_info />
     <warning />
-    <getting_started install_url />
+    <getting_started install_script_url />
     <feedback />
     <faq />
-    <manual_installation base_url releases />
-    <release_history base_url releases />
+    <manual_installation artifact_base_url releases />
+    <release_history artifact_base_url releases />
   </main>
