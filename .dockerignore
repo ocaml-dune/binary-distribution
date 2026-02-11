@@ -6,5 +6,5 @@
 !lib/
 !static/
 !css/
-!metadata.json
+!metadata-nightly.json
 !tailwind.config.js

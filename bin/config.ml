@@ -6,7 +6,8 @@ end
 
 module Path = struct
   let artifacts_dir = "./artifacts"
-  let metadata = "./metadata.json"
+  let metadata_nightly = "./metadata-nightly.json"
+  let metadata_stable = "./metadata-stable.json"
   let rclone = "./rclone.conf"
   let install = "./static/install"
 end

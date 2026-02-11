@@ -15,7 +15,7 @@ FROM alpine:3.20 AS run
 RUN apk update && apk add --update libev gmp git
 WORKDIR /app
 COPY --from=build /home/opam/static static
-COPY --from=build /home/opam/metadata.json ./metadata.json
+COPY --from=build /home/opam/metadata-nightly.json ./metadata-nightly.json
 COPY --from=build /home/opam/_build/install/default/bin/sandworm /bin/sandworm
 EXPOSE 80
 CMD [ "sandworm", "serve", "--port", "80"]
