@@ -5,7 +5,8 @@ end
 
 module Path : sig
   val artifacts_dir : string
-  val metadata : string
+  val metadata_nightly : string
+  val metadata_stable : string
   val rclone : string
   val install : string
 end

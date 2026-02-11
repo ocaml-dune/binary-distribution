@@ -4,7 +4,7 @@ open Cmdliner
 module Common_args = struct
   let metadata_file =
     let doc = "The JSON file to import the data from." in
-    Arg.(value & opt string Config.Path.metadata & info ~doc [ "metadata" ])
+    Arg.(value & opt string Config.Path.metadata_nightly & info ~doc [ "metadata" ])
   ;;
 
   let commit =
