@@ -1,0 +1,251 @@
+name: Binaries (nightly)
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 1 * * *" # Triggers the build at 1:00 UTC time
+
+jobs:
+  check_build:
+    name: Check if we need to run the pipeline or not
+    runs-on: ubuntu-latest
+    outputs:
+      action: ${{ steps.verify.outputs.action }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          repository: ocaml/dune
+          ref: main
+          fetch-depth: 1
+      - name: Export HEAD
+        run: echo "GIT_HEAD=$(git rev-parse HEAD)" > "$GITHUB_ENV"
+      - name: Checkout
+        uses: actions/checkout@v6
+      - id: verify
+        run: |
+          LAST_COMMIT=$(jq -r ".|sort_by(.date)|last|.commit" < metadata-nightly.json)
+          if [ "$GIT_HEAD" = "$LAST_COMMIT" ] ; then
+            echo "action=SKIP" >> "$GITHUB_OUTPUT"
+          else
+            echo "action=BUILD" >> "$GITHUB_OUTPUT"
+          fi
+
+  binary:
+    name: Create the artifact
+    needs: check_build
+    permissions:
+      id-token: write
+      attestations: write
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-15-intel
+            name: x86_64-apple-darwin
+            installable: .#dune
+          - os: macos-14
+            name: aarch64-apple-darwin
+            installable: .#dune
+          - os: ubuntu-22.04
+            name: x86_64-unknown-linux-musl
+            installable: .#dune-static
+
+    # If the latest commit is the same as latest run, don't re-run.
+    if: ${{ needs.check_build.outputs.action == 'BUILD' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ${{ matrix.os }}
+    outputs:
+      git-commit: ${{ steps.git-commit.outputs.hash }}
+    steps:
+      - name: Set DATE environment variable
+        run: echo "DATE=$(date +'%Y-%m-%d')" >> "$GITHUB_ENV"
+
+      - name: Set archive environment variables
+        run: |
+          echo "ARCHIVE_DIR=dune-$DATE-${{ matrix.name }}" >> $GITHUB_ENV
+          echo "ARCHIVE_TAR=dune-$DATE-${{ matrix.name }}.tar" >> $GITHUB_ENV
+          echo "ARCHIVE_TARGZ=dune-$DATE-${{ matrix.name }}.tar.gz" >> $GITHUB_ENV
+
+      - uses: actions/checkout@v6
+        with:
+          repository: ocaml/dune
+          ref: main
+          fetch-depth: 0 # for git describe
+
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          path: dune-binary-distribution
+
+      - uses: cachix/install-nix-action@v31
+
+      - name: Extract build informations
+        id: git-commit
+        run: echo "hash=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Export version
+        run: |
+          echo "(version \"Nightly build $(date -u +"%Y-%m-%dT%H:%M:%SZ"), git revision $(git rev-parse HEAD)\")" >> dune-project
+
+      - run: nix build ${{ matrix.installable }}
+
+      - name: Generate artifact attestation
+        id: certificate
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-path: "result/bin/dune"
+          show-summary: false
+
+      - name: Extract artifact and attestation
+        run: |
+          mkdir -p ~/build/$ARCHIVE_DIR/
+          cp ${{ steps.certificate.outputs.bundle-path }} ~/build
+          cp result/bin/dune ~/build/$ARCHIVE_DIR
+          cp -r $GITHUB_WORKSPACE/dune-binary-distribution/env ~/build/$ARCHIVE_DIR
+          cp -r $GITHUB_WORKSPACE/dune-binary-distribution/completions ~/build/$ARCHIVE_DIR
+          cp -r $GITHUB_WORKSPACE/dune-binary-distribution/tool-wrappers ~/build/$ARCHIVE_DIR
+          tar --format=posix -cvf ~/build/$ARCHIVE_TAR -C ~/build $ARCHIVE_DIR
+          gzip -9 ~/build/$ARCHIVE_TAR
+          rm -rf ~/build/$ARCHIVE_DIR
+
+      - uses: actions/upload-artifact@v4
+        with:
+          path: ~/build
+          name: ${{ matrix.name }}
+
+  check-artifacts:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-15-intel
+            name: x86_64-apple-darwin
+          - os: macos-14
+            name: aarch64-apple-darwin
+          - os: ubuntu-22.04
+            name: x86_64-unknown-linux-musl
+
+    runs-on: ${{ matrix.os }}
+    needs: binary
+    steps:
+      - name: Set DATE environment variable
+        run: echo "DATE=$(date +'%Y-%m-%d')" >> "$GITHUB_ENV"
+
+      - name: Set archive environment variables
+        run: |
+          echo "ARCHIVE_TARGZ=dune-$DATE-${{ matrix.name }}.tar.gz" >> $GITHUB_ENV
+          echo "ARCHIVE_DIR=dune-$DATE-${{ matrix.name }}" >> $GITHUB_ENV
+
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - uses: actions/download-artifact@v4
+
+      - name: Get dune accessible
+        run: |
+          mv ${{ matrix.name }}/$ARCHIVE_TARGZ .
+          tar -xvf $ARCHIVE_TARGZ
+          mv ./$ARCHIVE_DIR/dune ./dune
+
+      - name: Check dune is working
+        run: |
+          export PATH="$PWD:$PATH"
+          cd test
+          dune pkg lock
+          dune build
+
+  deploy-s3:
+    runs-on: ubuntu-latest
+    needs: [binary, check-artifacts]
+    permissions:
+      contents: write
+    steps:
+      - name: Install rclone
+        run: |
+          sudo -v ; curl https://rclone.org/install.sh | sudo bash
+
+      - name: Install sandworm external deps
+        run: |
+          sudo apt-get install $(dune show depexts) libev-dev
+
+      - name: Prepare SSH env
+        shell: bash
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/tarides
+          echo "$SSH_PUBLIC_KEY" > ~/.ssh/tarides.pub
+          chmod 600 ~/.ssh/tarides
+          chmod 600 ~/.ssh/tarides.pub
+          ssh-keyscan -H "$DEPLOY_SERVER" >> ~/.ssh/known_hosts
+        env:
+          DEPLOY_SERVER: ${{ secrets.DEPLOY_SERVER }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_PUBLIC_KEY: ${{ secrets.SSH_PUBLIC_KEY }}
+
+      - name: Set up date environment variables
+        run: echo "DATE=$(date +'%Y-%m-%d')" >> "$GITHUB_ENV"
+
+      - name: Set binary environment variables
+        run: |
+          echo "ARCHIVE_TARGZ=dune-$DATE-x86_64-unknown-linux-musl.tar.gz" >> $GITHUB_ENV
+          echo "ARCHIVE_DIR=dune-$DATE-x86_64-unknown-linux-musl" >> $GITHUB_ENV
+
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: /home/runner/artifacts
+
+      - name: Get dune accessible
+        run: |
+          cp "/home/runner/artifacts/x86_64-unknown-linux-musl/$ARCHIVE_TARGZ" .
+          tar -xvf "$ARCHIVE_TARGZ"
+          mkdir -p "$HOME/.local/bin"
+          mv "./$ARCHIVE_DIR/dune" "$HOME/.local/bin"
+          rm -rf "./$ARCHIVE_DIR"
+
+      - name: Update config on test
+        if: ${{ github.ref == 'refs/heads/staging' }}
+        run: |
+          sed -i 's#let bucket_dir = .*#let bucket_dir = "/dune/test"#g' ./bin/config.ml
+          sed -i 's#let url = .*#let url = "https://get.dune.build/test"#g' ./bin/config.ml
+          git add --ignore-errors ./bin/config.ml
+          cat ./bin/config.ml
+
+      - name: Install Sandworm deps && build
+        run: dune build
+
+      - name: Move artifacts to scope
+        run: mv "/home/runner/artifacts" "."
+
+      - name: Export Rclone configuration
+        run: echo "${{ secrets.RCLONE_CONF }}" >> rclone.conf
+
+      - name: Export executables and generate html
+        shell: bash
+        run: ./_build/install/default/bin/sandworm sync --commit "${{ needs.binary.outputs.git-commit }}"
+
+      - name: Commit changes to branch
+        run: |
+          git config --global user.name 'Sandworm'
+          git config --global user.email 'ocaml-dune@users.noreply.github.com'
+          (git add metadata-nightly.json && \
+          git commit -m "Nightly build $(date +'%Y-%m-%d')" && \
+          git push) || echo "No new data" # Prevent from committing empty stuff
+
+  notify:
+    runs-on: ubuntu-latest
+    needs: [binary, check-artifacts, deploy-s3]
+    if: ${{ github.ref == 'refs/heads/main' && !cancelled() && (needs.binary.result == 'failure' || needs.check-artifacts.result == 'failure' || needs.deploy-s3.result == 'failure' ) }}
+    steps:
+      - name: Post an error message to Slack
+        id: slack
+        uses: slackapi/slack-github-action@v1.27.0
+        with:
+          channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
+          slack-message: |
+            :red_circle: I'm sorry to bother you, but it seems your build is failing:
+            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}

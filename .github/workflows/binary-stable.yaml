@@ -1,7 +1,17 @@
-name: Binaries
+name: Binaries (stable)
 
 on:
   workflow_dispatch:
+    inputs:
+      release:
+        description: "Force building of this tag"
+        type: string
+        required: false
+      test:
+        description: "Deploy to test location"
+        type: boolean
+        default: true
+
   schedule:
     - cron: "0 1 * * *" # Triggers the build at 1:00 UTC time
 
@@ -11,24 +21,48 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       action: ${{ steps.verify.outputs.action }}
+      release: ${{ steps.verify.outputs.release }}
+      commit: ${{ steps.verify.outputs.commit }}
     steps:
-      - uses: actions/checkout@v6
-        with:
-          repository: ocaml/dune
-          ref: main
-          fetch-depth: 1
-      - name: Export HEAD
-        run: echo "GIT_HEAD=$(git rev-parse HEAD)" > "$GITHUB_ENV"
-      - name: Checkout
+      - name: Checkout binary-distribution
         uses: actions/checkout@v6
+        with:
+          path: binary-distribution
       - id: verify
+        name: Determine whether there are releases to build
         run: |
-          LAST_COMMIT=$(jq -r ".|sort_by(.date)|last|.commit" < metadata-nightly.json)
-          if [ "$GIT_HEAD" = "$LAST_COMMIT" ] ; then
-            echo "action=SKIP" >> "$GITHUB_OUTPUT"
+          git ls-remote https://github.com/ocaml/dune.git | grep refs/tags/ | grep -v {} | sed 's#refs/tags/##' > remote
+          cut -f 2 < remote > tags
+          DUNE_RELEASES=$(grep -v alpha < tags | grep -v beta | sort -V | tail -n 10)
+          jq -r "[.[]?|.tag]|sort|.[]" < binary-distribution/metadata-stable.json > built
+          BUILT=$(xargs < built)
+          echo "Built so far: $BUILT"
+          echo "Dune releases are $DUNE_RELEASES"
+          if [ -z "${{ inputs.release }}" ]; then
+            # no release specified, determine what to build
+            for release in $DUNE_RELEASES; do
+              if ! grep -x "$release" built > /dev/null; then
+                echo "action=BUILD" >> "$GITHUB_OUTPUT"
+                echo "release=$release" >> "$GITHUB_OUTPUT"
+                commit=$(grep "$release\$" < remote | cut -f 1)
+                echo "commit=$commit" >> "$GITHUB_OUTPUT"
+                echo Building release $release at commit $commit
+                break
+              fi
+            done
+            if ! grep -x "action=BUILD" "$GITHUB_OUTPUT" > /dev/null; then
+              echo "action=SKIP" >> "$GITHUB_OUTPUT"
+            fi
           else
+            # release specified manually
+            release="${{ inputs.release }}"
             echo "action=BUILD" >> "$GITHUB_OUTPUT"
+            echo "release=$release" >> "$GITHUB_OUTPUT"
+            commit=$(grep "$release\$" < remote | cut -f 1)
+            echo "commit=$commit" >> "$GITHUB_OUTPUT"
+            echo Forced building release $release at commit $commit
           fi
+
 
   binary:
     name: Create the artifact
@@ -51,26 +85,16 @@ jobs:
             name: x86_64-unknown-linux-musl
             installable: .#dune-static
 
-    # If the latest commit is the same as latest run, don't re-run.
-    if: ${{ needs.check_build.outputs.action == 'BUILD' || github.event_name == 'workflow_dispatch' }}
+    # if we have nothing new to build, skip
+    if: ${{ needs.check_build.outputs.action == 'BUILD' }}
     runs-on: ${{ matrix.os }}
-    outputs:
-      git-commit: ${{ steps.git-commit.outputs.hash }}
     steps:
-      - name: Set DATE environment variable
-        run: echo "DATE=$(date +'%Y-%m-%d')" >> "$GITHUB_ENV"
-
-      - name: Set archive environment variables
-        run: |
-          echo "ARCHIVE_DIR=dune-$DATE-${{ matrix.name }}" >> $GITHUB_ENV
-          echo "ARCHIVE_TAR=dune-$DATE-${{ matrix.name }}.tar" >> $GITHUB_ENV
-          echo "ARCHIVE_TARGZ=dune-$DATE-${{ matrix.name }}.tar.gz" >> $GITHUB_ENV
-
-      - uses: actions/checkout@v6
+      - name: Checkout dune
+        uses: actions/checkout@v6
         with:
           repository: ocaml/dune
-          ref: main
-          fetch-depth: 0 # for git describe
+          ref: ${{ needs.check_build.outputs.release }}
+          fetch-depth: 1
 
       - name: Checkout
         uses: actions/checkout@v6
@@ -79,13 +103,9 @@ jobs:
 
       - uses: cachix/install-nix-action@v31
 
-      - name: Extract build informations
-        id: git-commit
-        run: echo "hash=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-
-      - name: Export version
+      - name: Set version
         run: |
-          echo "(version \"Nightly build $(date -u +"%Y-%m-%dT%H:%M:%SZ"), git revision $(git rev-parse HEAD)\")" >> dune-project
+          echo "(version ${{ needs.check_build.outputs.release }})" >> dune-project
 
       - run: nix build ${{ matrix.installable }}
 
@@ -98,7 +118,9 @@ jobs:
 
       - name: Extract artifact and attestation
         run: |
-          mkdir -p ~/build/$ARCHIVE_DIR/
+          ARCHIVE_DIR="dune-${{ needs.check_build.outputs.release }}-${{ matrix.name }}"
+          ARCHIVE_TAR="${ARCHIVE_DIR}.tar"
+          mkdir -p ~/build/$ARCHIVE_DIR
           cp ${{ steps.certificate.outputs.bundle-path }} ~/build
           cp result/bin/dune ~/build/$ARCHIVE_DIR
           cp -r $GITHUB_WORKSPACE/dune-binary-distribution/env ~/build/$ARCHIVE_DIR
@@ -114,6 +136,7 @@ jobs:
           name: ${{ matrix.name }}
 
   check-artifacts:
+    name: Check the artifact
     strategy:
       fail-fast: false
       matrix:
@@ -126,23 +149,17 @@ jobs:
             name: x86_64-unknown-linux-musl
 
     runs-on: ${{ matrix.os }}
-    needs: binary
+    needs: [check_build, binary]
     steps:
-      - name: Set DATE environment variable
-        run: echo "DATE=$(date +'%Y-%m-%d')" >> "$GITHUB_ENV"
-
-      - name: Set archive environment variables
-        run: |
-          echo "ARCHIVE_TARGZ=dune-$DATE-${{ matrix.name }}.tar.gz" >> $GITHUB_ENV
-          echo "ARCHIVE_DIR=dune-$DATE-${{ matrix.name }}" >> $GITHUB_ENV
-
       - name: Checkout
         uses: actions/checkout@v6
 
       - uses: actions/download-artifact@v4
 
-      - name: Get dune accessible
+      - name: Get dune artifact
         run: |
+          ARCHIVE_DIR="dune-${{ needs.check_build.outputs.release }}-${{ matrix.name }}"
+          ARCHIVE_TARGZ="${ARCHIVE_DIR}.tar.gz"
           mv ${{ matrix.name }}/$ARCHIVE_TARGZ .
           tar -xvf $ARCHIVE_TARGZ
           mv ./$ARCHIVE_DIR/dune ./dune
@@ -151,12 +168,13 @@ jobs:
         run: |
           export PATH="$PWD:$PATH"
           cd test
+          dune --version
           dune pkg lock
           dune build
 
   deploy-s3:
     runs-on: ubuntu-latest
-    needs: [binary, check-artifacts]
+    needs: [check_build, binary, check-artifacts]
     permissions:
       contents: write
     steps:
@@ -182,14 +200,6 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SSH_PUBLIC_KEY: ${{ secrets.SSH_PUBLIC_KEY }}
 
-      - name: Set up date environment variables
-        run: echo "DATE=$(date +'%Y-%m-%d')" >> "$GITHUB_ENV"
-
-      - name: Set binary environment variables
-        run: |
-          echo "ARCHIVE_TARGZ=dune-$DATE-x86_64-unknown-linux-musl.tar.gz" >> $GITHUB_ENV
-          echo "ARCHIVE_DIR=dune-$DATE-x86_64-unknown-linux-musl" >> $GITHUB_ENV
-
       - name: Checkout
         uses: actions/checkout@v6
 
@@ -197,16 +207,18 @@ jobs:
         with:
           path: /home/runner/artifacts
 
-      - name: Get dune accessible
+      - name: Get prebuilt dune binary
         run: |
+          ARCHIVE_DIR="dune-${{ needs.check_build.outputs.release }}-x86_64-unknown-linux-musl"
+          ARCHIVE_TARGZ="${ARCHIVE_DIR}.tar.gz"
           cp "/home/runner/artifacts/x86_64-unknown-linux-musl/$ARCHIVE_TARGZ" .
           tar -xvf "$ARCHIVE_TARGZ"
           mkdir -p "$HOME/.local/bin"
           mv "./$ARCHIVE_DIR/dune" "$HOME/.local/bin"
           rm -rf "./$ARCHIVE_DIR"
 
-      - name: Update config on test
-        if: ${{ github.ref == 'refs/heads/staging' }}
+      - name: Update config to point to test environment
+        if: ${{ github.ref == 'refs/heads/staging' || inputs.test }}
         run: |
           sed -i 's#let bucket_dir = .*#let bucket_dir = "/dune/test"#g' ./bin/config.ml
           sed -i 's#let url = .*#let url = "https://get.dune.build/test"#g' ./bin/config.ml
@@ -224,14 +236,14 @@ jobs:
 
       - name: Export executables and generate html
         shell: bash
-        run: ./_build/install/default/bin/sandworm sync --commit "${{ needs.binary.outputs.git-commit }}"
+        run: ./_build/install/default/bin/sandworm sync --commit "${{ needs.check_build.outputs.commit }}" --tag "${{ needs.check_build.outputs.release }}" --metadata metadata-stable.json
 
       - name: Commit changes to branch
         run: |
           git config --global user.name 'Sandworm'
           git config --global user.email 'ocaml-dune@users.noreply.github.com'
-          (git add metadata-nightly.json && \
-          git commit -m "Nightly build $(date +'%Y-%m-%d')" && \
+          (git add metadata-stable.json && \
+          git commit -m "Release build ${{ needs.check_build.outputs.release }}" && \
           git push) || echo "No new data" # Prevent from committing empty stuff
 
   notify:
