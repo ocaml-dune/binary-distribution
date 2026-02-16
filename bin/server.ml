@@ -17,9 +17,9 @@ let latest_route_from_targets ~base_url bundle =
   let open Sandworm.Metadata in
   List.map
     (fun target ->
-      let path = Format.sprintf "/%s" (Target.to_string target) in
-      Dream.get path (fun request ->
-        Dream.redirect request (Bundle.to_download_url ~base_url ~target bundle)))
+       let path = Format.sprintf "/%s" (Target.to_string target) in
+       Dream.get path (fun request ->
+         Dream.redirect request (Bundle.to_download_url ~base_url ~target bundle)))
     bundle.targets
 ;;
 
