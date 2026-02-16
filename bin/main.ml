@@ -32,7 +32,9 @@ module Sync = struct
   let synchronise metadata_file commit dry_run =
     Format.printf "--> Start synchronisation\n";
     let bundle = Metadata.import_from_json metadata_file in
-    let daily_bundle = Metadata.(Bundle.create_daily ~commit Target.defaults) in
+    let daily_bundle =
+      Metadata.Bundle.create_daily ~commit ~tag:None Metadata.Target.defaults
+    in
     let daily_bundle_date = Metadata.Bundle.get_date_string_from daily_bundle in
     let s3_daily_bundle =
       Filename.concat Config.Server.rclone_bucket_ref daily_bundle_date
