@@ -4,12 +4,17 @@ open Cmdliner
 module Common_args = struct
   let metadata_file =
     let doc = "The JSON file to import the data from." in
-    Arg.(value & opt string Config.Path.metadata_nightly & info ~doc [ "metadata" ])
+    Arg.(value & opt (some string) None & info ~doc [ "metadata" ])
   ;;
 
   let commit =
     let doc = "The build commit hash." in
     Arg.(required & opt (some string) None & info ~doc [ "c"; "commit" ])
+  ;;
+
+  let tag =
+    let doc = "The build tag." in
+    Arg.(value & opt (some string) None & info ~doc [ "tag" ])
   ;;
 
   let dry_run =
@@ -29,11 +34,11 @@ module Common_args = struct
 end
 
 module Sync = struct
-  let synchronise metadata_file commit dry_run =
+  let synchronise metadata_file ~commit ~tag dry_run =
     Format.printf "--> Start synchronisation\n";
-    let bundle = Metadata.import_from_json metadata_file in
+    let bundles = Metadata.import_from_json metadata_file in
     let daily_bundle =
-      Metadata.Bundle.create_daily ~commit ~tag:None Metadata.Target.defaults
+      Metadata.Bundle.create_daily ~commit ~tag Metadata.Target.defaults
     in
     let daily_bundle_date = Metadata.Bundle.get_date_string_from daily_bundle in
     let s3_daily_bundle =
@@ -72,7 +77,7 @@ module Sync = struct
           Config.Path.install
           install_bucket_path
     in
-    let bundles = Metadata.insert_unique daily_bundle bundle in
+    let bundles = Metadata.insert_unique daily_bundle bundles in
     let () =
       if dry_run
       then Format.printf "- Export metadata to %s\n" metadata_file
@@ -85,8 +90,17 @@ module Sync = struct
     let open Term.Syntax in
     let+ metadata_file = Common_args.metadata_file
     and+ commit = Common_args.commit
+    and+ tag = Common_args.tag
     and+ dry_run = Common_args.dry_run in
-    synchronise metadata_file commit dry_run
+    let metadata_file =
+      match metadata_file with
+      | Some metadata_file -> metadata_file
+      | None ->
+        (match tag with
+         | Some _ -> Config.Path.metadata_stable
+         | None -> Config.Path.metadata_nightly)
+    in
+    synchronise metadata_file ~commit ~tag dry_run
   ;;
 
   let info =
@@ -117,6 +131,9 @@ module Http = struct
     let+ dev = Common_args.dev
     and+ port = Common_args.port
     and+ metadata_file = Common_args.metadata_file in
+    let metadata_file =
+      Option.value ~default:Config.Path.metadata_nightly metadata_file
+    in
     serve dev metadata_file port
   ;;
 
