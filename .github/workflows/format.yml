@@ -1,0 +1,12 @@
+name: Check formatting
+on:
+  pull_request:
+jobs:
+  check-fmt:
+    name: "Check formatting of source code"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ocaml-dune/setup-dune@v2
+      - name: Check formatting
+        run: DUNE_CONFIG__LOCK_DEV_TOOL=enabled dune fmt
