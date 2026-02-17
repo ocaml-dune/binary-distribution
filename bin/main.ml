@@ -53,25 +53,6 @@ module Sync = struct
           Config.Path.artifacts_dir
           s3_daily_bundle
     in
-    let () =
-      let install_bucket_path =
-        Filename.concat
-          Config.Server.rclone_bucket_ref
-          (Filename.basename Config.Path.install)
-      in
-      if dry_run
-      then
-        Format.printf
-          "- Copy file (%s) to %s, using RClone (%s)\n"
-          Config.Path.install
-          install_bucket_path
-          Config.Path.rclone
-      else
-        Rclone.copy
-          ~config_path:Config.Path.rclone
-          Config.Path.install
-          install_bucket_path
-    in
     let bundles = Metadata.insert_unique daily_bundle bundle in
     let () =
       if dry_run
@@ -100,16 +81,19 @@ end
 module Http = struct
   let serve dev metadata_file port =
     let title = "Dune Nightly" in
-    let base_url = Config.Server.url in
+    let artifact_base_url = Config.Server.artifact_base_url in
+    let install_script_url = Config.Site.install_script_url in
     let bundles = Metadata.import_from_json metadata_file in
     let routes =
-      let main_page = Web.generate_main_page ~title ~base_url bundles in
+      let main_page =
+        Web.generate_main_page ~title ~artifact_base_url ~install_script_url bundles
+      in
       Web.Route.empty
       |> Web.Route.add ~path:"/" main_page
       |> Web.Route.add ~path:"/index.html" main_page
     in
     let latest = List.hd bundles in
-    Server.serve ~dev ~base_url routes port latest
+    Server.serve ~dev ~artifact_base_url routes port latest
   ;;
 
   let term =

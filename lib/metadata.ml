@@ -79,12 +79,12 @@ module Bundle = struct
 
   let ( / ) = Filename.concat
 
-  let to_url ~base_url ~target t =
-    base_url / get_date_string_from t / Target.to_string target
+  let to_url ~artifact_base_url ~target t =
+    artifact_base_url / get_date_string_from t / Target.to_string target
   ;;
 
-  let to_certificate_url ~base_url ~target t =
-    to_url ~base_url ~target t / "attestation.jsonl"
+  let to_certificate_url ~artifact_base_url ~target t =
+    to_url ~artifact_base_url ~target t / "attestation.jsonl"
   ;;
 
   let download_file_name ~date arch =
@@ -93,10 +93,10 @@ module Bundle = struct
     | Some date -> Format.sprintf "dune-%s-%s.tar.gz" date arch
   ;;
 
-  let to_download_url ~base_url ~target t =
+  let to_download_url ~artifact_base_url ~target t =
     let date = get_date_string_from t |> Option.some in
     let arch = Target.to_string target in
-    to_url ~base_url ~target t / download_file_name ~date arch
+    to_url ~artifact_base_url ~target t / download_file_name ~date arch
   ;;
 
   let to_download_file target =
