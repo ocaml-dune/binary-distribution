@@ -3,7 +3,7 @@ open Cmdliner
 
 module Common_args = struct
   let metadata_file =
-    let doc = "The JSON file to import the data from." in
+    let doc = "The JSON file containing the metadata." in
     Arg.(value & opt (some string) None & info ~doc [ "metadata" ])
   ;;
 
@@ -18,7 +18,7 @@ module Common_args = struct
   ;;
 
   let dry_run =
-    let doc = "Simulate the command executation" in
+    let doc = "Simulate the command execution" in
     Arg.(value & flag & info ~doc [ "n"; "dry-run" ])
   ;;
 
@@ -112,29 +112,27 @@ module Sync = struct
 end
 
 module Http = struct
-  let serve dev metadata_file port =
+  let serve dev port =
     let title = "Dune Nightly" in
     let base_url = Config.Server.url in
-    let bundles = Metadata.import_from_json metadata_file in
+    let bundles =
+      Metadata.import_from_json Config.Path.metadata_stable
+      @ Metadata.import_from_json Config.Path.metadata_nightly
+    in
     let routes =
       let main_page = Web.generate_main_page ~title ~base_url bundles in
       Web.Route.empty
       |> Web.Route.add ~path:"/" main_page
       |> Web.Route.add ~path:"/index.html" main_page
     in
-    let latest = List.hd bundles in
-    Server.serve ~dev ~base_url routes port latest
+    Server.serve ~dev ~base_url routes port bundles
   ;;
 
   let term =
     let open Term.Syntax in
     let+ dev = Common_args.dev
-    and+ port = Common_args.port
-    and+ metadata_file = Common_args.metadata_file in
-    let metadata_file =
-      Option.value ~default:Config.Path.metadata_nightly metadata_file
-    in
-    serve dev metadata_file port
+    and+ port = Common_args.port in
+    serve dev port
   ;;
 
   let info =
