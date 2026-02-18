@@ -178,15 +178,15 @@ jobs:
     permissions:
       contents: write
     steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
       - name: Install rclone
         run: |
           sudo -v ; curl https://rclone.org/install.sh | sudo bash
 
       - name: Install dune
         uses: ocaml-dune/setup-dune@v2
-
-      - name: Checkout
-        uses: actions/checkout@v6
 
       - name: Install sandworm external deps
         run: |
