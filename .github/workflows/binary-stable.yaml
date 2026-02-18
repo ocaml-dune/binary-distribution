@@ -182,9 +182,33 @@ jobs:
         run: |
           sudo -v ; curl https://rclone.org/install.sh | sudo bash
 
+      - name: Install dune
+        uses: ocaml-dune/setup-dune@v2
+
+      - name: Checkout
+        uses: actions/checkout@v6
+
       - name: Install sandworm external deps
         run: |
           sudo apt-get install $(dune show depexts) libev-dev
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: /home/runner/artifacts
+
+      - name: Update config to point to test environment
+        if: ${{ github.ref == 'refs/heads/staging' || inputs.test }}
+        run: |
+          sed -i 's#let bucket_dir = .*#let bucket_dir = "/dune/test"#g' ./bin/config.ml
+          sed -i 's#let url = .*#let url = "https://get.dune.build/test"#g' ./bin/config.ml
+          git add --ignore-errors ./bin/config.ml
+          cat ./bin/config.ml
+
+      - name: "Install Sandworm deps & build"
+        run: dune build
+
+      - name: Move artifacts to scope
+        run: mv "/home/runner/artifacts" "."
 
       - name: Prepare SSH env
         shell: bash
@@ -199,37 +223,6 @@ jobs:
           DEPLOY_SERVER: ${{ secrets.DEPLOY_SERVER }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SSH_PUBLIC_KEY: ${{ secrets.SSH_PUBLIC_KEY }}
-
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - uses: actions/download-artifact@v4
-        with:
-          path: /home/runner/artifacts
-
-      - name: Get prebuilt dune binary
-        run: |
-          ARCHIVE_DIR="dune-${{ needs.check_build.outputs.release }}-x86_64-unknown-linux-musl"
-          ARCHIVE_TARGZ="${ARCHIVE_DIR}.tar.gz"
-          cp "/home/runner/artifacts/x86_64-unknown-linux-musl/$ARCHIVE_TARGZ" .
-          tar -xvf "$ARCHIVE_TARGZ"
-          mkdir -p "$HOME/.local/bin"
-          mv "./$ARCHIVE_DIR/dune" "$HOME/.local/bin"
-          rm -rf "./$ARCHIVE_DIR"
-
-      - name: Update config to point to test environment
-        if: ${{ github.ref == 'refs/heads/staging' || inputs.test }}
-        run: |
-          sed -i 's#let bucket_dir = .*#let bucket_dir = "/dune/test"#g' ./bin/config.ml
-          sed -i 's#let url = .*#let url = "https://get.dune.build/test"#g' ./bin/config.ml
-          git add --ignore-errors ./bin/config.ml
-          cat ./bin/config.ml
-
-      - name: Install Sandworm deps && build
-        run: dune build
-
-      - name: Move artifacts to scope
-        run: mv "/home/runner/artifacts" "."
 
       - name: Export Rclone configuration
         run: echo "${{ secrets.RCLONE_CONF }}" >> rclone.conf
