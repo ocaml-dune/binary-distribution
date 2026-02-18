@@ -11,13 +11,6 @@ module Target = struct
     | X86_64_unknown_linux_musl -> "x86_64-unknown-linux-musl"
   ;;
 
-  let of_string = function
-    | "aarch64-apple-darwin" -> Some Aarch64_apple_darwin
-    | "x86_64-apple-darwin" -> Some X86_64_apple_darwin
-    | "x86_64-unknown-linux-musl" -> Some X86_64_unknown_linux_musl
-    | _ -> None
-  ;;
-
   let to_human_readable_string = function
     | Aarch64_apple_darwin -> "Apple macOS (ARM64)"
     | X86_64_apple_darwin -> "Apple macOS (x86-64)"
@@ -70,18 +63,6 @@ module Bundle = struct
     create ~date targets
   ;;
 
-  let matches_criteria ~tag ~target t =
-    let t =
-      match tag, t.tag with
-      | None, None -> Some t
-      | Some l, Some r when String.equal l r -> Some t
-      | _, _ -> None
-    in
-    match t with
-    | None -> false
-    | Some t -> List.mem target t.targets
-  ;;
-
   let get_date_string_from ?prefix t =
     let y, m, d = t.date in
     let date = Format.sprintf "%d-%02d-%02d" y m d in
@@ -106,27 +87,21 @@ module Bundle = struct
     to_url ~base_url ~target t / "attestation.jsonl"
   ;;
 
-  let download_nightly_name ~date arch =
+  let download_file_name ~date arch =
     match date with
     | None -> Format.sprintf "dune-%s.tar.gz" arch
     | Some date -> Format.sprintf "dune-%s-%s.tar.gz" date arch
   ;;
 
-  let download_release_name ~release arch =
-    Printf.sprintf "dune-%s-%s.tar.gz" release arch
-  ;;
-
   let to_download_url ~base_url ~target t =
     let date = get_date_string_from t |> Option.some in
     let arch = Target.to_string target in
-    match t.tag with
-    | None -> to_url ~base_url ~target t / download_nightly_name ~date arch
-    | Some release -> to_url ~base_url ~target t / download_release_name ~release arch
+    to_url ~base_url ~target t / download_file_name ~date arch
   ;;
 
   let to_download_file target =
     let arch = Target.to_string target in
-    download_nightly_name ~date:None arch
+    download_file_name ~date:None arch
   ;;
 end
 
