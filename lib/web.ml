@@ -4,8 +4,8 @@ let generate_main_page ~title ~base_url releases =
   Main.page ~base_url ~releases () |> export_website_to_string ~title
 ;;
 
-let generate_error_page ~title reason =
-  Error.page ~reason () |> export_website_to_string ~title
+let generate_error_page ~title ~code reason =
+  Error.page ~code ~reason () |> export_website_to_string ~title
 ;;
 
 module Route = struct
