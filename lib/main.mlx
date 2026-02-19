@@ -41,12 +41,20 @@ let warning () =
 let getting_started ~install_url () =
   <section id="download" class_="w-full flex justify-center pt-9 pb-12 px-5 lg:px-0">
     <div class_="w-full lg:w-lg flex flex-col">
+
     <h2 class_="mb-5">"Install Dune"</h2>
     <h4>
       <span class_="mr-2.5"><Icons.terminal /></span>
-      "Copy & Install"
+      "Copy & Install (nightly)"
     </h4>
-    <Curl script=(Info.curl_with_sh install_url) />
+    <Curl script=(Info.curl_with_sh_nightly ~url:install_url) />
+
+    <h4>
+      <span class_="mr-2.5"><Icons.terminal /></span>
+      "Copy & Install (stable)"
+    </h4>
+    <Curl script=(Info.curl_with_sh_stable ~url:install_url ~version:"<RELEASE>") />
+
     <h3 class_="mt-10 mb-2.5">"Getting Started"</h3>
     <p>"You can create and run your first hello-world program using Dune like this"</p>
     <h4 class_="mt-2.5">
