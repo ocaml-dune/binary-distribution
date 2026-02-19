@@ -188,10 +188,6 @@ jobs:
       - name: Install dune
         uses: ocaml-dune/setup-dune@v2
 
-      - name: Install sandworm external deps
-        run: |
-          sudo apt-get install $(dune show depexts) libev-dev
-
       - uses: actions/download-artifact@v4
         with:
           path: /home/runner/artifacts
@@ -231,6 +227,7 @@ jobs:
         run: ./_build/install/default/bin/sandworm sync --commit "${{ needs.check_build.outputs.commit }}" --tag "${{ needs.check_build.outputs.release }}" --metadata metadata-stable.json
 
       - name: Commit changes to branch
+        if: ${{ !inputs.test }}
         run: |
           git config --global user.name 'Sandworm'
           git config --global user.email 'ocaml-dune@users.noreply.github.com'
