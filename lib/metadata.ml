@@ -42,6 +42,12 @@ end
 module Bundle = struct
   type pdate = Ptime.date
 
+  let pdate_equal (l : pdate) (r : pdate) =
+    let y, m, d = l in
+    let y', m', d' = r in
+    Int.equal y y' && Int.equal m m' && Int.equal d d'
+  ;;
+
   let pdate_of_yojson json =
     json
     |> [%of_yojson: float]
@@ -90,12 +96,7 @@ module Bundle = struct
     | Some prefix -> prefix ^ date
   ;;
 
-  let equal b1 b2 =
-    let p1 = Ptime.of_date b1.date |> Option.get in
-    let p2 = Ptime.of_date b2.date |> Option.get in
-    Ptime.equal p1 p2
-  ;;
-
+  let equal l r = pdate_equal l.date r.date && Option.equal String.equal l.tag r.tag
   let ( / ) = Filename.concat
 
   let to_url ~base_url ~target t =
