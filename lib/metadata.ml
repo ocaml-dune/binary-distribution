@@ -39,27 +39,29 @@ module Target = struct
   let defaults = [ Aarch64_apple_darwin; X86_64_apple_darwin; X86_64_unknown_linux_musl ]
 end
 
-module Bundle = struct
-  type pdate = Ptime.date
+module Pdate = struct
+  type t = Ptime.date
 
-  let pdate_equal (l : pdate) (r : pdate) =
-    let y, m, d = l in
-    let y', m', d' = r in
-    Int.equal y y' && Int.equal m m' && Int.equal d d'
-  ;;
-
-  let pdate_of_yojson json =
+  let of_yojson json =
     json
     |> [%of_yojson: float]
     |> Result.map (fun f -> Ptime.of_float_s f |> Option.get |> Ptime.to_date)
   ;;
 
-  let pdate_to_yojson pdate =
+  let to_yojson pdate =
     Ptime.of_date pdate |> Option.get |> Ptime.to_float_s |> [%to_yojson: float]
   ;;
 
+  let equal (l : t) (r : t) =
+    let y, m, d = l in
+    let y', m', d' = r in
+    Int.equal y y' && Int.equal m m' && Int.equal d d'
+  ;;
+end
+
+module Bundle = struct
   type t =
-    { date : pdate
+    { date : Pdate.t
     ; targets : Target.t list
     ; has_certificate : bool [@default false]
     ; commit : string [@default "-"]
@@ -96,7 +98,7 @@ module Bundle = struct
     | Some prefix -> prefix ^ date
   ;;
 
-  let equal l r = pdate_equal l.date r.date && Option.equal String.equal l.tag r.tag
+  let equal l r = Pdate.equal l.date r.date && Option.equal String.equal l.tag r.tag
   let ( / ) = Filename.concat
 
   let to_url ~base_url ~target t =
