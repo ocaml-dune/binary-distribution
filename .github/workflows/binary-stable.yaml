@@ -201,7 +201,6 @@ jobs:
         run: |
           sed -i 's#let bucket_dir = .*#let bucket_dir = "/dune/test"#g' ./bin/config.ml
           sed -i 's#let url = .*#let url = "https://get.dune.build/test"#g' ./bin/config.ml
-          git add --ignore-errors ./bin/config.ml
           cat ./bin/config.ml
 
       - name: "Install Sandworm deps & build"
