@@ -100,31 +100,31 @@ module Bundle = struct
 
   let equal l r = Pdate.equal l.date r.date && Option.equal String.equal l.tag r.tag
   let ( / ) = Filename.concat
-
-  let to_url ~base_url ~target t =
-    base_url / get_date_string_from t / Target.to_string target
-  ;;
+  let to_nightly_url ~base_url ~target ~date = base_url / date / Target.to_string target
+  let to_stable_url ~base_url ~target ~tag = base_url / tag / Target.to_string target
 
   let to_certificate_url ~base_url ~target t =
-    to_url ~base_url ~target t / "attestation.jsonl"
+    let date = get_date_string_from t in
+    to_nightly_url ~base_url ~target ~date / "attestation.jsonl"
   ;;
 
   let download_nightly_name ~date arch =
+    (* TODO: why can the date be missing? *)
     match date with
     | None -> Format.sprintf "dune-%s.tar.gz" arch
     | Some date -> Format.sprintf "dune-%s-%s.tar.gz" date arch
   ;;
 
-  let download_release_name ~release arch =
-    Printf.sprintf "dune-%s-%s.tar.gz" release arch
-  ;;
+  let download_stable_name ~tag arch = Printf.sprintf "dune-%s-%s.tar.gz" tag arch
 
   let to_download_url ~base_url ~target t =
-    let date = get_date_string_from t |> Option.some in
+    let date = get_date_string_from t in
     let arch = Target.to_string target in
     match t.tag with
-    | None -> to_url ~base_url ~target t / download_nightly_name ~date arch
-    | Some release -> to_url ~base_url ~target t / download_release_name ~release arch
+    | None ->
+      to_nightly_url ~base_url ~target ~date
+      / download_nightly_name ~date:(Some date) arch
+    | Some tag -> to_stable_url ~base_url ~target ~tag / download_stable_name ~tag arch
   ;;
 
   let to_download_file target =
