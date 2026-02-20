@@ -46,12 +46,15 @@ while [ "$#" -gt "0" ]; do
     shift
     case "$arg" in
         -r|--release)
-	    if [ "$#" -eq "0" ]; then
+            if [ "$#" -eq "0" ]; then
                 error "--release must be passed an argument"
             fi
-	    release="$1"
-	    shift
-	    ;;
+            release="$1"
+            shift
+            ;;
+        *)
+            error "Unknown argument: ${arg}"
+            ;;
     esac
 done
 
