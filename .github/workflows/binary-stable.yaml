@@ -34,7 +34,7 @@ jobs:
           git ls-remote https://github.com/ocaml/dune.git | grep refs/tags/ | grep -v {} | sed 's#refs/tags/##' > remote
           cut -f 2 < remote > tags
           DUNE_RELEASES=$(grep -v alpha < tags | grep -v beta | sort -V | tail -n 10)
-          jq -r "[.[]?|.tag]|sort|.[]" < binary-distribution/metadata-stable.json > built
+          jq -r "[.[]|.tag]|sort|.[]|values" < binary-distribution/metadata.json > built
           BUILT=$(xargs < built)
           echo "Built so far: $BUILT"
           echo "Dune releases are $DUNE_RELEASES"
@@ -224,14 +224,14 @@ jobs:
 
       - name: Export executables and generate html
         shell: bash
-        run: ./_build/install/default/bin/sandworm sync --commit "${{ needs.check_build.outputs.commit }}" --tag "${{ needs.check_build.outputs.release }}" --metadata metadata-stable.json
+        run: ./_build/install/default/bin/sandworm sync --commit "${{ needs.check_build.outputs.commit }}" --tag "${{ needs.check_build.outputs.release }}"
 
       - name: Commit changes to branch
         if: ${{ !inputs.test }}
         run: |
           git config --global user.name 'Sandworm'
           git config --global user.email 'ocaml-dune@users.noreply.github.com'
-          (git add metadata-stable.json && \
+          (git add metadata.json && \
           git commit -m "Release build ${{ needs.check_build.outputs.release }}" && \
           git push) || echo "No new data" # Prevent from committing empty stuff
 

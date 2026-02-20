@@ -4,7 +4,7 @@ open Cmdliner
 module Common_args = struct
   let metadata_file =
     let doc = "The JSON file containing the metadata." in
-    Arg.(value & opt (some string) None & info ~doc [ "metadata" ])
+    Arg.(value & opt string Config.Path.metadata & info ~doc [ "metadata" ])
   ;;
 
   let commit =
@@ -92,14 +92,6 @@ module Sync = struct
     and+ commit = Common_args.commit
     and+ tag = Common_args.tag
     and+ dry_run = Common_args.dry_run in
-    let metadata_file =
-      match metadata_file with
-      | Some metadata_file -> metadata_file
-      | None ->
-        (match tag with
-         | Some _ -> Config.Path.metadata_stable
-         | None -> Config.Path.metadata_nightly)
-    in
     synchronise metadata_file ~commit ~tag dry_run
   ;;
 
@@ -112,13 +104,10 @@ module Sync = struct
 end
 
 module Http = struct
-  let serve dev port =
+  let serve dev metadata_file port =
     let title = "Dune Nightly" in
     let base_url = Config.Server.url in
-    let bundles =
-      Metadata.import_from_json Config.Path.metadata_stable
-      @ Metadata.import_from_json Config.Path.metadata_nightly
-    in
+    let bundles = Metadata.import_from_json metadata_file in
     let routes =
       let main_page = Web.generate_main_page ~title ~base_url bundles in
       Web.Route.empty
@@ -131,8 +120,9 @@ module Http = struct
   let term =
     let open Term.Syntax in
     let+ dev = Common_args.dev
+    and+ metadata_file = Common_args.metadata_file
     and+ port = Common_args.port in
-    serve dev port
+    serve dev metadata_file port
   ;;
 
   let info =
