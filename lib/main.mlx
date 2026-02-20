@@ -38,7 +38,7 @@ let warning () =
   </div>
 
 
-let getting_started ~install_url () =
+let getting_started ~install_url ~latest_release:version () =
   <section id="download" class_="w-full flex justify-center pt-9 pb-12 px-5 lg:px-0">
     <div class_="w-full lg:w-lg flex flex-col">
 
@@ -53,7 +53,7 @@ let getting_started ~install_url () =
       <span class_="mr-2.5"><Icons.terminal /></span>
       "Copy & Install (stable)"
     </h4>
-    <Curl script=(Info.curl_with_sh_stable ~url:install_url ~version:"<RELEASE>") />
+    <Curl script=(Info.curl_with_sh_stable ~url:install_url ~version) />
 
     <h3 class_="mt-10 mb-2.5">"Getting Started"</h3>
     <p>"You can create and run your first hello-world program using Dune like this"</p>
@@ -245,7 +245,7 @@ let installation_target ~base_url ~bundle target =
     <a class_="text-black underline hover:text-primary-light" href=cert_href>"Certificate"</a>
   </li>
 
-let manual_installation ~base_url ~releases () =
+let manual_installation ~base_url ~builds () =
   <section id="manual-installation" class_="w-full flex justify-center border-t border-b border-black/20 py-10  bg-section-manual px-5 lg:px-0">
     <div class_="w-full lg:w-lg flex flex-col gap-2 ">
     <h2 class_="mb-2"> "Manual Installation" </h2>
@@ -254,12 +254,12 @@ let manual_installation ~base_url ~releases () =
     </p>
     <h3 class_="mb-2.5"> "Featured Downloads" </h3>
     <p class_="mb-4">
-      "This is the latest release of the Dune nightly. See the "
-      <Link class_="text-[var(--accent)]" href="#release-history">"release history"</Link>
-      " section for all past releases."
+      "This is the latest build of the Dune nightly. See the "
+      <Link class_="text-[var(--accent)]" href="#build-history">"build history"</Link>
+      " section for all past builds."
     </p>
     <ul class_="flex flex-row gap-2.5 justify-around flex-wrap items-center align-center mb-5">
-      (let bundle: Metadata.Bundle.t = releases |> List.hd in
+      (let bundle: Metadata.Bundle.t = builds |> List.hd in
       bundle.targets
        |> List.map (installation_target ~base_url ~bundle)
        |> JSX.list)
@@ -267,7 +267,7 @@ let manual_installation ~base_url ~releases () =
 
     <h3 class_="mb-2.5"> "Installing the binary" </h3>
     <p>
-      "After downloading a binary release of Dune, make it executable and place it somewhere reachable by your PATH:"
+      "After downloading a binary build of Dune, make it executable and place it somewhere reachable by your PATH:"
     </p>
     <h4 class_="mt-2.5">
       <span class_="mr-2.5"><Icons.terminal /></span>
@@ -315,19 +315,19 @@ let release_information ~base_url ~bundle ~target () =
   </tr>
 
 
-let release_history ~base_url ~releases () =
+let build_history ~base_url ~builds () =
   let open Metadata in
-  <section id="release-history" class_="w-full flex justify-center py-10 px-5 lg:px-0">
+  <section id="build-history" class_="w-full flex justify-center py-10 px-5 lg:px-0">
     <div class_="w-full lg:w-lg flex flex-col gap-2 text-left">
-    <h2 class_="mb-4"> "Last Month Release History" </h2>
+    <h2 class_="mb-4"> "Last Month Build History" </h2>
     <p>
       "Here is a list of the "
-      (JSX.int (List.length releases))
+      (JSX.int (List.length builds))
       " latest builds of the Dune nightly."
     </p>
     <div class_="w-full flex flex-col gap-4">
     (
-      releases
+      builds
       |> List.map (fun (bundle: Bundle.t) ->
           let date = Bundle.get_date_string_from ~prefix:"nightly-" bundle in
           let summary = Format.sprintf "dune %s" date in
@@ -355,15 +355,15 @@ let release_history ~base_url ~releases () =
   </div>
   </section>
 
-let page ~base_url ~releases () =
-  let releases = Core.List.take 30 releases in
+let page ~base_url ~latest_release ~builds () =
+  let builds = Core.List.take 30 builds in
   let install_url = Filename.concat base_url "install" in
   <main class_="flex flex-col w-full">
     <header_info />
     <warning />
-    <getting_started install_url />
+    <getting_started install_url latest_release />
     <feedback />
     <faq />
-    <manual_installation base_url releases />
-    <release_history base_url releases />
+    <manual_installation base_url builds />
+    <build_history base_url builds />
   </main>
