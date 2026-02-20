@@ -41,6 +41,23 @@ success_bold() {
     printf "%b%s %b" "${Bold_Green}" "$*" "${Color_Off}"
 }
 
+while [ "$#" -gt "0" ]; do
+    arg="$1"
+    shift
+    case "$arg" in
+        -r|--release)
+            if [ "$#" -eq "0" ]; then
+                error "--release must be passed an argument"
+            fi
+            release="$1"
+            shift
+            ;;
+        *)
+            error "Unknown argument: ${arg}"
+            ;;
+    esac
+done
+
 tildify() {
     case "$1" in
     "$HOME"/*)
@@ -78,7 +95,13 @@ esac
 
 tar_target_name="dune-$target"
 tar_target="$tar_target_name.tar.gz"
-dune_tar_uri="https://nightly.dune.build/latest/$target"
+
+release=${release:-nightly}
+if [ "$release" = "nightly" ]; then
+    dune_tar_uri="https://nightly.dune.build/latest/${target}"
+else
+    dune_tar_uri="https://nightly.dune.build/stable/${release}/${target}"
+fi
 
 install_dir="$HOME/.local"
 bin_dir="${install_dir}/bin"
@@ -345,4 +368,4 @@ fi
 # end of main
 }
 
-main
+main "$@"

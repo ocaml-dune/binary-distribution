@@ -1,6 +1,16 @@
 module Info = struct
-  let curl_with_sh url =
-    Format.sprintf "curl -fsSL %s | sh" url  |> JSX.string
+  let curl_with_sh ~url ~sh_args =
+    let sh_args = match sh_args with
+      | None -> ""
+      | Some x -> " " ^ x
+    in
+    Printf.sprintf "curl -fsSL %s | sh%s" url sh_args |> JSX.string
+
+  let curl_with_sh_nightly ~url = curl_with_sh ~url ~sh_args:None
+
+  let curl_with_sh_stable ~url ~version =
+    let sh_args = Some (Printf.sprintf "-s - --release %s" version) in
+    curl_with_sh ~url ~sh_args
 end
 
 module Link = struct
