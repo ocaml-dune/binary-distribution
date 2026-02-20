@@ -1,12 +1,12 @@
 # Dune binaries distribution
 
 This is the web site for for the nightly binary distribution of  `dune`. The
-page is automatically generated from file `metadata-nightly.json`. Apart from
-the _YAML_ part, the code is written in _OCaml_.
+page is automatically generated from file `metadata.json`. Apart from the
+_YAML_ part, the code is written in _OCaml_.
 
 The GitHub Actions pipeline regularly creates commit on the `main` branch where
 it:
-- updates the content of `metadata-nightly.json`
+- updates the content of `metadata.json`
 - generates new artifacts and pushes them to their SSH storage using `RClone`
 - publishes the Dockerfile used to deploy the website
 
@@ -15,7 +15,7 @@ The web page is deployed on [nightly.dune.build](https://nightly.dune.build).
 > :hourglass: The pipeline is triggered every day at _01:00 UTC_.
 
 > [!CAUTION]
-> The _metadata-nightly.json_ file must not be modified manually. If you do so, expect some unexpected behaviours.
+> The _metadata.json_ file must not be modified manually. If you do so, expect some unexpected behaviours.
 
 
 ## Installation & configuration
@@ -127,7 +127,7 @@ The nightly binary distribution consists of multiple parts:
   1. The GitHub Action `binaries` which spins up GitHub runners, builds Dune on
      them, verifies the attestation. The tarballs are then uploaded to date-keyed
      subfolders on `get.dune.build`, along with the `install` script. Then the
-     action updates the repository with a new entry into `metadata-nightly.json`.
+     action updates the repository with a new entry into `metadata.json`.
 
      This action is run nightly if there are changes on the Dune repository. If
      no changes happened (weekends) it will skip the run and no new binaries
@@ -139,7 +139,7 @@ The nightly binary distribution consists of multiple parts:
      serves the [web site](https://nightly.dune.build), the install script, and
      the endpoint used by the install script to get redirected to the most
      recent binary for a certain target. This is done by reading the
-     `metadata-nightly.json` file.
+     `metadata.json` file.
 
      This web server is built and deployed via the `Dockerfile` on
      `nightly.dune.build`.
