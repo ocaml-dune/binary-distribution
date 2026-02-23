@@ -35,43 +35,15 @@ end
 module Curl = struct
   let make ~script () =
         <div class_="w-full pl-4 bg-secondary text-white flex flex-row items-center justify-between rounded-md">
-          <span id="install-cmd" class_="pr-2 font-mono">
+          <span class_="pr-2 font-mono curl-cmd">
             script
           </span>
-          <Icons.copy id="copy-btn" class_="rounded-tr-md rounded-br-md cursor-pointer bg-copy" />
-          <Icons.ok id="copy-btn-active" class_="h-[52px] w-[52px] flex items-center justify-center hidden rounded-tr-md rounded-br-md cursor-pointer bg-primary-light" />
-          <script>
-            (JSX.unsafe {|
-              function activeButton(active) {
-                const copyBtn = document.querySelector('#copy-btn');
-                const copyBtnActive = document.querySelector('#copy-btn-active');
-                if (active) {
-                    copyBtn.classList.add("hidden")
-                    copyBtnClicked.classList.remove("hidden")
-                } else {
-                    copyBtnClciked.classList.add("hidden")
-                    copyBtn.classList.remove("hidden")
-                }
-              }
-
-              document.addEventListener('DOMContentLoaded', () => {
-                const installCmd = document.querySelector('#install-cmd');
-                const copyBtn = document.querySelector('#copy-btn');
-                const copyBtnActive = document.querySelector('#copy-btn-active');
-                copyBtn.addEventListener('click', () => {
-                  navigator.clipboard.writeText(installCmd.innerText)
-                    copyBtn.classList.add("hidden")
-                    copyBtnActive.classList.remove("hidden")
-                    setTimeout(() => {
-                      copyBtnActive.classList.add("hidden")
-                      copyBtn.classList.remove("hidden")
-                    }, 2000);
-                  }, function(err) {
-                    console.error('Async: Could not copy text: ', err);
-                  });
-                });
-              |})
-          </script>
+          <div class_="curl-copy-btn cursor-pointer" onclick="(function(btn) { var container = btn.parentElement; var cmd = container.querySelector('.curl-cmd'); var okBtn = container.querySelector('.curl-copy-ok'); navigator.clipboard.writeText(cmd.innerText).then(function() { btn.classList.add('hidden'); okBtn.classList.remove('hidden'); setTimeout(function() { okBtn.classList.add('hidden'); btn.classList.remove('hidden'); }, 2000); }); })(this)">
+            <Icons.copy id="" class_="rounded-tr-md rounded-br-md bg-copy" />
+          </div>
+          <div class_="curl-copy-ok hidden">
+            <Icons.ok id="" class_="h-[52px] w-[52px] flex items-center justify-center rounded-tr-md rounded-br-md bg-primary-light" />
+          </div>
         </div>
 end
 
