@@ -43,6 +43,7 @@
   dream
   dream-encoding
   tailwindcss
+  (toml (>= 7))
   (ocaml-lsp-server :with-dev-setup)
   (ocamlformat
    (and

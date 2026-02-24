@@ -35,6 +35,7 @@ depends: [
   "dream"
   "dream-encoding"
   "tailwindcss"
+  "toml" {>= "7"}
   "ocaml-lsp-server" {with-dev-setup}
   "ocamlformat" {= "0.27.0" & with-dev-setup}
   "odoc" {with-doc}
