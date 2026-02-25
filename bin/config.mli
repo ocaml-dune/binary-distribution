@@ -1,11 +1,21 @@
-module Server : sig
-  val rclone_bucket_ref : string
-  val url : string
+module type FILE = sig
+  val file_name : string
 end
 
-module Path : sig
-  val artifacts_dir : string
-  val metadata : string
-  val rclone : string
-  val install : string
+module Production : FILE
+
+module type Configuration = sig
+  module Server : sig
+    val rclone_bucket_ref : string
+    val url : string
+  end
+
+  module Path : sig
+    val artifacts_dir : string
+    val metadata : string
+    val rclone : string
+    val install : string
+  end
 end
+
+module Make (_ : FILE) : Configuration
