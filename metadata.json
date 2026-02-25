@@ -7,6 +7,17 @@
       [ "X86_64_unknown_linux_musl" ]
     ],
     "has_certificate": true,
+    "commit": "b97cbeb081a70f6e7e84e9a38d75986369954791",
+    "tag": "3.21.1"
+  },
+  {
+    "date": 1771977600.0,
+    "targets": [
+      [ "Aarch64_apple_darwin" ],
+      [ "X86_64_apple_darwin" ],
+      [ "X86_64_unknown_linux_musl" ]
+    ],
+    "has_certificate": true,
     "commit": "f38de6ecbde4238a2e9acfa8be0644ae3dd7cb3c",
     "tag": "3.21.0"
   },
