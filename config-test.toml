@@ -1,0 +1,9 @@
+[server]
+bucket_dir = "/dune/test"
+url = "https://get.dune.build/test"
+
+[path]
+artifacts_dir = "./artifacts"
+metadata = "./metadata.json"
+rclone = "./rclone.conf"
+install = "./static/install"
