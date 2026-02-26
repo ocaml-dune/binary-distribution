@@ -1,7 +1,7 @@
 let export_website_to_string ~title content = Container.page ~title content |> JSX.render
 
-let generate_main_page ~title ~base_url releases =
-  Main.page ~base_url ~releases () |> export_website_to_string ~title
+let generate_main_page ~title ~base_url ~latest_release builds =
+  Main.page ~base_url ~latest_release ~builds () |> export_website_to_string ~title
 ;;
 
 let generate_error_page ~title reason =

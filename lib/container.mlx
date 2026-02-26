@@ -33,7 +33,7 @@ let navbar () =
       <a id="share-menu" class_="p-2.5 hover:text-primary-light" onclick="onItemClick(this)" href="/#feedback">"Share Feedback"</a>
       <a id="faq-menu" class_="p-2.5 hover:text-primary-light"  onclick="onItemClick(this)" href="/#faq">"FAQs"</a>
       <a id="manual-menu" class_="p-2.5 hover:text-primary-light" onclick="onItemClick(this)" href="/#manual-installation">"Manual Installation"</a>
-      <a id="release-menu" class_="p-2.5 hover:text-primary-light" onclick="onItemClick(this)" href="/#release-history">"Last Month Release History"</a>
+      <a id="release-menu" class_="p-2.5 hover:text-primary-light" onclick="onItemClick(this)" href="/#build-history">"Last Month Build History"</a>
     </div>
   </nav>
 
@@ -58,7 +58,7 @@ let footer_info () =
         <a class_="hover:text-primary-light" href="/#feedback">"Share Feedback"</a>
         <a class_="hover:text-primary-light" href="/#faq">"FAQs"</a>
         <a class_="hover:text-primary-light" href="/#manual-installation">"Manual Installation"</a>
-        <a class_="hover:text-primary-light" href="/#release-history">"Last Month Release History"</a>
+        <a class_="hover:text-primary-light" href="/#build-history">"Last Month Build History"</a>
       </div>
       <div class_="bg-primary-light/20 rounded-md border border-primary-light flex justify-start items-center px-5 py-2 gap-4">
         <Icons.github class_="fill-primary-light" />

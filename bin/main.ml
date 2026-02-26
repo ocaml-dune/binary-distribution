@@ -103,13 +103,42 @@ module Sync = struct
   let cmd = Cmd.v info term
 end
 
+let find_latest_stable bundles =
+  bundles
+  |> List.filter_map (fun (b : Metadata.Bundle.t) ->
+    match b.tag with
+    | None -> None
+    | Some tag ->
+      (match Scanf.sscanf_opt tag "%d.%d.%d" (fun x y z -> x, y, z) with
+       | None -> None
+       | Some tup -> Some (tup, b)))
+  |> List.sort (fun ((maj, min, patch), _) ((maj', min', patch'), _) ->
+    (* reverse sort, biggest first *)
+    match Int.compare maj' maj with
+    | 0 ->
+      (match Int.compare min' min with
+       | 0 -> Int.compare patch' patch
+       | otherwise -> otherwise)
+    | otherwise -> otherwise)
+  |> function
+  | [] -> None
+  | (_, bundle) :: _ -> Some bundle
+;;
+
 module Http = struct
   let serve dev metadata_file port =
     let title = "Dune Nightly" in
     let base_url = Config.Server.url in
     let bundles = Metadata.import_from_json metadata_file in
+    let latest_release =
+      match find_latest_stable bundles with
+      | None -> "<RELEASE>"
+      | Some bundle ->
+        (* guaranteed to exist at this point *)
+        Option.get bundle.tag
+    in
     let routes =
-      let main_page = Web.generate_main_page ~title ~base_url bundles in
+      let main_page = Web.generate_main_page ~title ~base_url ~latest_release bundles in
       Web.Route.empty
       |> Web.Route.add ~path:"/" main_page
       |> Web.Route.add ~path:"/index.html" main_page
