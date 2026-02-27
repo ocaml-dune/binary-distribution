@@ -1,15 +1,22 @@
-FROM ocaml/opam:alpine-3.23-ocaml-5.4 AS build
+FROM alpine:3.23 AS build
 
-RUN sudo apk update && \
-  sudo apk add curl git curl-dev libev-dev openssl-dev gmp-dev && \
-  sudo ln -f /usr/bin/opam-2.5 /usr/bin/opam && opam init --reinit -ni && \
-  opam update -y
+RUN apk update && \
+  apk add curl git curl-dev libev-dev openssl-dev gmp-dev musl-dev linux-headers make ocaml
 
 WORKDIR /home/opam
-COPY sandworm.opam sandworm.opam
-RUN opam install . --deps-only -y
-COPY --chown=opam:opam . .
-RUN opam exec -- dune build --release
+RUN curl -fsSL https://github.com/ocaml/dune/releases/download/3.21.1/dune-3.21.1.tbz -o dune.tar.bz2 && \
+  tar xf dune.tar.bz2 && \
+  cd dune-* && \
+  ./configure --prefix=/usr && \
+  make release && \
+  make install && \
+  cd .. && \
+  rm -r dune-*
+COPY . .
+
+RUN sed -i /dependency_hash/d dune.lock/lock.dune
+RUN apk add sqlite-dev $(dune show depexts)
+RUN dune build --release
 
 FROM alpine:3.23 AS run
 RUN apk update && apk add --update libev gmp git
