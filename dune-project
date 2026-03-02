@@ -39,7 +39,7 @@
   ptime
   fpath
   cmdliner
-  html_of_jsx
+  (html_of_jsx (< 0.0.8))
   dream
   dream-encoding
   tailwindcss
