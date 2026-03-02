@@ -1,72 +1,10 @@
 (version 1)
 
 (build
- (choice
-  ((((arch x86_64)
-     (os linux))
-    ((arch arm64)
-     (os linux))
-    ((arch x86_64)
-     (os macos))
-    ((arch arm64)
-     (os macos)))
-   ((action
-     (run pkg-config sqlite3))))
-  ((((arch x86_64)
-     (os win32))
-    ((arch arm64)
-     (os win32)))
-   ((action
-     (run
-      (when
-       (catch_undefined_var
-        (and_absorb_undefined_var
-         true
-         (<> %{os_distribution} cygwinports))
-        false)
-       pkgconf)
-      (when
-       (catch_undefined_var
-        (and_absorb_undefined_var
-         true
-         (<> %{os_distribution} cygwinports)
-         %{pkg:host-arch-x86_32:installed})
-        false)
-       --personality=i686-w64-mingw32)
-      (when
-       (catch_undefined_var
-        (and_absorb_undefined_var
-         true
-         (<> %{os_distribution} cygwinports)
-         %{pkg:host-arch-x86_64:installed})
-        false)
-       --personality=x86_64-w64-mingw32)
-      (when
-       (catch_undefined_var
-        (or_absorb_undefined_var
-         false
-         (<> %{os_distribution} cygwin))
-        false)
-       pkg-config)
-      sqlite3))))))
+ (all_platforms ((action (run pkg-config sqlite3)))))
 
 (depends
- (choice
-  ((((arch x86_64)
-     (os linux))
-    ((arch arm64)
-     (os linux))
-    ((arch x86_64)
-     (os macos))
-    ((arch arm64)
-     (os macos)))
-   (conf-pkg-config))
-  ((((arch x86_64)
-     (os win32)))
-   (conf-pkg-config host-arch-x86_64 conf-mingw-w64-sqlite3-x86_64))
-  ((((arch arm64)
-     (os win32)))
-   (conf-pkg-config host-arch-x86_32 conf-mingw-w64-sqlite3-i686))))
+ (all_platforms (conf-pkg-config)))
 
 (depexts
  ((libsqlite3-dev)

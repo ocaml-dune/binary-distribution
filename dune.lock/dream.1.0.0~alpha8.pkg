@@ -4,82 +4,39 @@
  (all_platforms ((action (run dune build -p %{pkg-self:name} -j %{jobs})))))
 
 (depends
- (choice
-  ((((arch x86_64)
-     (os linux))
-    ((arch arm64)
-     (os linux))
-    ((arch x86_64)
-     (os macos))
-    ((arch arm64)
-     (os macos)))
-   (base-unix
-    bigarray-compat
-    camlp-streams
-    caqti
-    caqti-lwt
-    conf-libev
-    cstruct
-    digestif
-    dream-httpaf
-    dream-pure
-    dune
-    fmt
-    graphql_parser
-    graphql-lwt
-    lambdasoup
-    lwt
-    lwt_ppx
-    lwt_ssl
-    logs
-    magic-mime
-    markup
-    mirage-clock
-    mirage-crypto
-    mirage-crypto-rng
-    mirage-crypto-rng-lwt
-    multipart_form
-    multipart_form-lwt
-    ocaml
-    ptime
-    ssl
-    uri
-    yojson))
-  ((((arch x86_64)
-     (os win32))
-    ((arch arm64)
-     (os win32)))
-   (base-unix
-    bigarray-compat
-    camlp-streams
-    caqti
-    caqti-lwt
-    ocaml
-    cstruct
-    digestif
-    dream-httpaf
-    dream-pure
-    dune
-    fmt
-    graphql_parser
-    graphql-lwt
-    lambdasoup
-    lwt
-    lwt_ppx
-    lwt_ssl
-    logs
-    magic-mime
-    markup
-    mirage-clock
-    mirage-crypto
-    mirage-crypto-rng
-    mirage-crypto-rng-lwt
-    multipart_form
-    multipart_form-lwt
-    ptime
-    ssl
-    uri
-    yojson))))
+ (all_platforms
+  (base-unix
+   bigarray-compat
+   camlp-streams
+   caqti
+   caqti-lwt
+   conf-libev
+   cstruct
+   digestif
+   dream-httpaf
+   dream-pure
+   dune
+   fmt
+   graphql_parser
+   graphql-lwt
+   lambdasoup
+   lwt
+   lwt_ppx
+   lwt_ssl
+   logs
+   magic-mime
+   markup
+   mirage-clock
+   mirage-crypto
+   mirage-crypto-rng
+   mirage-crypto-rng-lwt
+   multipart_form
+   multipart_form-lwt
+   ocaml
+   ptime
+   ssl
+   uri
+   yojson)))
 
 (source
  (fetch

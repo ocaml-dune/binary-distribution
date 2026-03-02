@@ -1,0 +1,19 @@
+(version 0.0.7)
+
+(build
+ (all_platforms
+  ((action
+    (progn
+     (when %{pkg-self:dev} (run dune subst))
+     (run dune build -p %{pkg-self:name} -j %{jobs} @install))))))
+
+(depends
+ (all_platforms
+  (dune ocaml ppxlib)))
+
+(source
+ (fetch
+  (url
+   https://github.com/davesnx/html_of_jsx/releases/download/0.0.7/html_of_jsx-0.0.7.tbz)
+  (checksum
+   sha256=83b5437638815bb3d9c152a31f2125fda1989d6fc7d86774fbbfa4c90d0d8ea8)))

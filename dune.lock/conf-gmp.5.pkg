@@ -1,52 +1,12 @@
 (version 5)
 
 (build
- (choice
-  ((((arch x86_64)
-     (os linux))
-    ((arch arm64)
-     (os linux))
-    ((arch x86_64)
-     (os macos))
-    ((arch arm64)
-     (os macos)))
-   ((action
-     (run
-      sh
-      -c
-      "pkg-config --print-errors --exists gmp || cc -c $CFLAGS -I/usr/local/include test.c"))))
-  ((((arch x86_64)
-     (os win32))
-    ((arch arm64)
-     (os win32)))
-   ((action
-     (progn
-      (when
-       (and_absorb_undefined_var
-        true
-        (= %{os_distribution} cygwinports))
-       (run
-        sh
-        -exc
-        "$(ocamlc -config-var c_compiler) -c $CFLAGS -I/usr/local/include test.c"))
-      (when
-       (and_absorb_undefined_var
-        true
-        (<> %{os_distribution} cygwinports))
-       (run
-        sh
-        -exc
-        (concat
-         (if
-          (catch_undefined_var %{pkg:host-arch-x86_64:installed} false)
-          x86_64
-          "")
-         ""
-         (if
-          (catch_undefined_var %{pkg:host-arch-x86_32:installed} false)
-          i686
-          "")
-         "-w64-mingw32-gcc -c $CFLAGS test.c")))))))))
+ (all_platforms
+  ((action
+    (run
+     sh
+     -c
+     "pkg-config --print-errors --exists gmp || cc -c $CFLAGS -I/usr/local/include test.c")))))
 
 (depends
  (choice
@@ -59,13 +19,7 @@
      (os macos))
     ((arch arm64)
      (os macos)))
-   (conf-pkg-config))
-  ((((arch x86_64)
-     (os win32)))
-   (host-arch-x86_64 conf-mingw-w64-gmp-x86_64))
-  ((((arch arm64)
-     (os win32)))
-   (host-arch-x86_32 conf-mingw-w64-gmp-i686))))
+   (conf-pkg-config))))
 
 (depexts
  ((libgmp-dev)
@@ -92,6 +46,8 @@
   (= %{os} openbsd))
  ((gmp)
   (= %{os} freebsd))
+ ((gmp)
+  (= %{os_distribution} arch))
  ((gmp-dev)
   (= %{os_distribution} alpine))
  ((gmp-devel)

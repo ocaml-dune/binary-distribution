@@ -28,19 +28,7 @@
         (and_absorb_undefined_var
          true
          (= %{os_distribution} homebrew)))
-       (run pkgconf --version))))))
-  ((((arch x86_64)
-     (os win32))
-    ((arch arm64)
-     (os win32)))
-   ((action
-     (when
-      (or_absorb_undefined_var
-       (and_absorb_undefined_var
-        true
-        (<> %{os_distribution} msys2))
-       false)
-      (run pkgconf --version)))))))
+       (run pkgconf --version))))))))
 
 (depexts
  ((pkg-config)

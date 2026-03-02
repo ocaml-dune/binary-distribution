@@ -9,94 +9,18 @@
     (run sh -ex ./homebrew.sh install %{lib})))))
 
 (build
- (choice
-  ((((arch x86_64)
-     (os linux))
-    ((arch arm64)
-     (os linux))
-    ((arch x86_64)
-     (os macos))
-    ((arch arm64)
-     (os macos)))
-   ((action
-     (withenv
-      ((= HOMEBREW_NO_AUTO_UPDATE 1))
-      (progn
-       (when
-        (and_absorb_undefined_var
-         true
-         (<> %{os_distribution} homebrew))
-        (run pkg-config --print-errors --exists openssl))
-       (when
-        (= %{os_distribution} homebrew)
-        (run sh -ex ./homebrew.sh check)))))))
-  ((((arch x86_64)
-     (os win32))
-    ((arch arm64)
-     (os win32)))
-   ((action
-     (withenv
-      ((= HOMEBREW_NO_AUTO_UPDATE 1))
-      (progn
-       (when
-        (and_absorb_undefined_var
-         true
-         (<> %{os_distribution} homebrew))
-        (run
-         (when
-          (catch_undefined_var
-           (and_absorb_undefined_var
-            true
-            (= %{os_distribution} cygwin))
-           false)
-          pkgconf)
-         (when
-          (catch_undefined_var
-           (and_absorb_undefined_var
-            true
-            (= %{os_distribution} cygwin)
-            %{pkg:host-arch-x86_32:installed})
-           false)
-          --personality=i686-w64-mingw32)
-         (when
-          (catch_undefined_var
-           (and_absorb_undefined_var
-            true
-            (= %{os_distribution} cygwin)
-            %{pkg:host-arch-x86_64:installed})
-           false)
-          --personality=x86_64-w64-mingw32)
-         (when
-          (catch_undefined_var
-           (or_absorb_undefined_var
-            false
-            (<> %{os_distribution} cygwin))
-           false)
-          pkg-config)
-         --print-errors
-         --exists
-         openssl))
-       (when
-        (= %{os_distribution} homebrew)
-        (run sh -ex ./homebrew.sh check)))))))))
+ (all_platforms
+  ((action
+    (withenv
+     ((= HOMEBREW_NO_AUTO_UPDATE 1))
+     (progn
+      (when
+       (and_absorb_undefined_var true (<> %{os_distribution} homebrew))
+       (run pkg-config --print-errors --exists openssl))
+      (when (= %{os_distribution} homebrew) (run sh -ex ./homebrew.sh check))))))))
 
 (depends
- (choice
-  ((((arch x86_64)
-     (os linux))
-    ((arch arm64)
-     (os linux))
-    ((arch x86_64)
-     (os macos))
-    ((arch arm64)
-     (os macos)))
-   (conf-pkg-config))
-  ((((arch x86_64)
-     (os win32)))
-   (conf-pkg-config host-arch-x86_64 conf-mingw-w64-openssl-x86_64))
-  ((((arch arm64)
-     (os win32)))
-   (conf-pkg-config host-arch-x86_32 conf-mingw-w64-openssl-i686))))
+ (all_platforms (conf-pkg-config)))
 
 (depexts
  ((libssl-dev)
