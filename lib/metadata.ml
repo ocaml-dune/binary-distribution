@@ -145,5 +145,6 @@ let import_from_json file : t = Yojson.Safe.from_file file |> of_yojson |> Resul
 
 let export_to_json file t =
   Out_channel.with_open_bin file (fun oc ->
-    t |> to_yojson |> Yojson.Safe.pretty_to_channel oc)
+    t |> to_yojson |> Yojson.Safe.pretty_to_channel oc;
+    Out_channel.output_char oc '\n')
 ;;
