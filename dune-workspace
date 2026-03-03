@@ -1,0 +1,8 @@
+(lang dune 3.20)
+(pkg enabled)
+
+(lock_dir
+  (path dune.lock)
+  (constraints
+    (dune-configurator (<= 3.21))
+    (dune-private-libs (<= 3.21))))
