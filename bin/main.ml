@@ -40,23 +40,25 @@ module Sync = struct
     let daily_bundle =
       Metadata.Bundle.create_daily ~commit ~tag Metadata.Target.defaults
     in
-    let daily_bundle_date = Metadata.Bundle.get_date_string_from daily_bundle in
-    let s3_daily_bundle =
-      Filename.concat Config.Server.rclone_bucket_ref daily_bundle_date
+    let bundle_key =
+      match daily_bundle.tag with
+      | Some tag -> tag
+      | None -> Metadata.Bundle.get_date_string_from daily_bundle
     in
+    let s3_bundle_dir = Filename.concat Config.Server.rclone_bucket_ref bundle_key in
     let () =
       if dry_run
       then
         Format.printf
           "- Copy files from path (%s) to %s, using RClone (%s)\n"
           Config.Path.artifacts_dir
-          s3_daily_bundle
+          s3_bundle_dir
           Config.Path.rclone
       else
         Rclone.copy
           ~config_path:Config.Path.rclone
           Config.Path.artifacts_dir
-          s3_daily_bundle
+          s3_bundle_dir
     in
     let () =
       let install_bucket_path =
