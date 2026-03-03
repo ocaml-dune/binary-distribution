@@ -1,4 +1,4 @@
-(version 0.0.7)
+(version 0.0.8)
 
 (build
  (all_platforms
@@ -14,6 +14,6 @@
 (source
  (fetch
   (url
-   https://github.com/davesnx/html_of_jsx/releases/download/0.0.7/html_of_jsx-0.0.7.tbz)
+   https://github.com/davesnx/html_of_jsx/releases/download/0.0.8/html_of_jsx-0.0.8.tbz)
   (checksum
-   sha256=83b5437638815bb3d9c152a31f2125fda1989d6fc7d86774fbbfa4c90d0d8ea8)))
+   sha256=6cfb7a461b619efe1f9b16a8c3ccb6c3204b00e4ecc5caaad4ce6181fdd7673d)))
