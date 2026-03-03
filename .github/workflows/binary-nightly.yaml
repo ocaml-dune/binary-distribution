@@ -162,7 +162,7 @@ jobs:
     steps:
       - name: Install rclone
         run: |
-          sudo -v ; curl https://rclone.org/install.sh | sudo bash
+          sudo apt-get install rclone
 
       - name: Install sandworm external deps
         run: |
