@@ -3,6 +3,9 @@ RUN apk update && \
   apk add curl git musl-dev linux-headers make dune gcc
 WORKDIR /home/sandworm
 COPY . .
+# There is a bug that makes Dune believe the lock file is out of date.
+# This is not the case, thus we disable the check by removing the hash from
+# the lock file as a (temporary) workaround
 RUN sed -i /dependency_hash/d dune.lock/lock.dune
 RUN apk add $(dune show depexts 2>&1)
 RUN dune build --release
