@@ -53,10 +53,11 @@ key_file = </path/to/your/ssh/private/key>
 ```
 
 If you don't have a `/dune` directory on your server, you might want to change
-the `s3_bucket_ref` variable. It could be:
+the `bucket_dir` variable in the config. For example:
 
-```ocaml
-let s3_bucket_ref = "dune-binary-distribution:/path/to/your/server/dir"
+```toml
+[server]
+bucket_dir = "/home/runner/dune/"
 ```
 
 > [!TIP]
