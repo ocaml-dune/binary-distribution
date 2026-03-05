@@ -42,7 +42,7 @@ are available in the directory where _sandworm_ binary is executed.
 
 The export relies on an SSH key to the server. If you want to run your own
 tests, you need to have a server available by _SSH_ with an _SSH key_. Then,
-you have to create a `rclone.conf` file as follows:
+you have to edit the `rclone.conf` file as follows:
 
 ```toml
 [dune-binary-distribution]
@@ -50,7 +50,6 @@ type = sftp
 user = <username>
 host = <replace.myhost.com>
 key_file = </path/to/your/ssh/private/key>
-shell_type = unix
 ```
 
 If you don't have a `/dune` directory on your server, you might want to change
