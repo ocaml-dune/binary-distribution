@@ -15,6 +15,7 @@ RUN apk update && apk add --update libev gmp git
 WORKDIR /app
 COPY --from=build /home/sandworm/static static
 COPY --from=build /home/sandworm/metadata.json ./metadata.json
+COPY --from=build /home/sandworm/config-production.toml ./config-production.toml
 COPY --from=build /home/sandworm/_build/install/default/bin/sandworm /bin/sandworm
 EXPOSE 80
 CMD ["sandworm", "serve", "--port", "80"]
