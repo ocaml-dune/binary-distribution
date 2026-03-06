@@ -151,26 +151,29 @@ jobs:
     runs-on: ${{ matrix.os }}
     needs: [check_build, binary]
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
       - uses: actions/download-artifact@v4
 
-      - name: Get dune artifact
+      - name: Install newly-built dune
         run: |
           ARCHIVE_DIR="dune-${{ needs.check_build.outputs.release }}-${{ matrix.name }}"
           ARCHIVE_TARGZ="${ARCHIVE_DIR}.tar.gz"
           mv ${{ matrix.name }}/$ARCHIVE_TARGZ .
           tar -xvf $ARCHIVE_TARGZ
-          mv ./$ARCHIVE_DIR/dune ./dune
+          mkdir -p ~/.local/bin
+          mv ./$ARCHIVE_DIR/dune ~/.local/bin/dune
+
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          path: binary-distribution
 
       - name: Check dune is working
         run: |
-          export PATH="$PWD:$PATH"
-          cd test
+          export PATH="$HOME/.local/bin:$PATH"
+          cd binary-distribution/test
           dune --version
-          dune pkg lock
-          dune build
+          dune pkg lock --root .
+          dune build --root .
 
   deploy:
     runs-on: ubuntu-latest
