@@ -2,11 +2,6 @@ name: Binaries (nightly)
 
 on:
   workflow_dispatch:
-    inputs:
-      test:
-        description: "Deploy to test location"
-        type: boolean
-        default: true
   schedule:
     - cron: "0 1 * * *" # Triggers the build at 1:00 UTC time
 
@@ -216,15 +211,14 @@ jobs:
         run: mv "/home/runner/artifacts" "."
 
       - name: Export executables and generate HTML (test)
-        if: ${{ inputs.test }}
+        if: ${{ github.ref == 'refs/heads/staging' }}
         run: ./_build/install/default/bin/sandworm sync --commit "${{ needs.binary.outputs.git-commit }}" --config config-test.toml
 
       - name: Export executables and generate HTML (production)
-        if: ${{ !inputs.test }}
+        if: ${{ github.ref != 'refs/heads/staging' }}
         run: ./_build/install/default/bin/sandworm sync --commit "${{ needs.binary.outputs.git-commit }}"
 
       - name: Commit changes to branch
-        if: ${{ !inputs.test }}
         run: |
           git config --global user.name 'Sandworm'
           git config --global user.email 'ocaml-dune@users.noreply.github.com'
