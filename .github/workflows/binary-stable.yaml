@@ -195,13 +195,6 @@ jobs:
         with:
           path: /home/runner/artifacts
 
-      - name: Update config to point to test environment
-        if: ${{ github.ref == 'refs/heads/staging' || inputs.test }}
-        run: |
-          sed -i 's#let bucket_dir = .*#let bucket_dir = "/dune/test"#g' ./bin/config.ml
-          sed -i 's#let url = .*#let url = "https://get.dune.build/test"#g' ./bin/config.ml
-          cat ./bin/config.ml
-
       - name: "Install Sandworm deps & build"
         run: dune build
 
@@ -222,8 +215,12 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SSH_PUBLIC_KEY: ${{ secrets.SSH_PUBLIC_KEY }}
 
-      - name: Export executables and generate html
-        shell: bash
+      - name: Export executables and generate HTML (test)
+        if: ${{ inputs.test }}
+        run: ./_build/install/default/bin/sandworm sync --commit "${{ needs.check_build.outputs.commit }}" --tag "${{ needs.check_build.outputs.release }}" --config config-test.toml
+
+      - name: Export executables and generate HTML (production)
+        if: ${{ !inputs.test }}
         run: ./_build/install/default/bin/sandworm sync --commit "${{ needs.check_build.outputs.commit }}" --tag "${{ needs.check_build.outputs.release }}"
 
       - name: Commit changes to branch

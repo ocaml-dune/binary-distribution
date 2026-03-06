@@ -7,4 +7,5 @@
 !static/
 !css/
 !metadata.json
+!config-production.toml
 !tailwind.config.js

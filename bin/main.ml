@@ -2,9 +2,9 @@ open Sandworm
 open Cmdliner
 
 module Common_args = struct
-  let metadata_file =
-    let doc = "The JSON file containing the metadata." in
-    Arg.(value & opt string Config.Path.metadata & info ~doc [ "metadata" ])
+  let config_file =
+    let doc = "The configuration file." in
+    Arg.(value & opt (some string) None & info ~doc [ "config" ])
   ;;
 
   let commit =
@@ -34,9 +34,9 @@ module Common_args = struct
 end
 
 module Sync = struct
-  let synchronise metadata_file ~commit ~tag dry_run =
+  let synchronise (module Config : Config.Configuration) ~commit ~tag dry_run =
     Format.printf "--> Start synchronisation\n";
-    let bundles = Metadata.import_from_json metadata_file in
+    let bundles = Metadata.import_from_json Config.Path.metadata in
     let daily_bundle =
       Metadata.Bundle.create_daily ~commit ~tag Metadata.Target.defaults
     in
@@ -82,19 +82,27 @@ module Sync = struct
     let bundles = Metadata.insert_unique daily_bundle bundles in
     let () =
       if dry_run
-      then Format.printf "- Export metadata to %s\n" metadata_file
-      else Metadata.export_to_json metadata_file bundles
+      then Format.printf "- Export metadata to %s\n" Config.Path.metadata
+      else Metadata.export_to_json Config.Path.metadata bundles
     in
     Format.printf "--> Completed ✓\n"
   ;;
 
   let term =
     let open Term.Syntax in
-    let+ metadata_file = Common_args.metadata_file
+    let+ config_file = Common_args.config_file
     and+ commit = Common_args.commit
     and+ tag = Common_args.tag
     and+ dry_run = Common_args.dry_run in
-    synchronise metadata_file ~commit ~tag dry_run
+    let config =
+      match config_file with
+      | None -> (module Config.Make (Config.Production) : Config.Configuration)
+      | Some file_name ->
+        (module Config.Make (struct
+             let file_name = file_name
+           end))
+    in
+    synchronise config ~commit ~tag dry_run
   ;;
 
   let info =
@@ -128,10 +136,10 @@ let find_latest_stable bundles =
 ;;
 
 module Http = struct
-  let serve dev metadata_file port =
+  let serve dev (module Config : Config.Configuration) port =
     let title = "Dune Nightly" in
     let base_url = Config.Server.url in
-    let bundles = Metadata.import_from_json metadata_file in
+    let bundles = Metadata.import_from_json Config.Path.metadata in
     let latest_release =
       match find_latest_stable bundles with
       | None -> "<RELEASE>"
@@ -151,9 +159,17 @@ module Http = struct
   let term =
     let open Term.Syntax in
     let+ dev = Common_args.dev
-    and+ metadata_file = Common_args.metadata_file
+    and+ config_file = Common_args.config_file
     and+ port = Common_args.port in
-    serve dev metadata_file port
+    let config =
+      match config_file with
+      | None -> (module Config.Make (Config.Production) : Config.Configuration)
+      | Some file_name ->
+        (module Config.Make (struct
+             let file_name = file_name
+           end))
+    in
+    serve dev config port
   ;;
 
   let info =
