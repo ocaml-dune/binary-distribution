@@ -37,9 +37,9 @@ build`.
 The configuration for serving the redirects to the artifacts and the web site
 is stored in a TOML configuration file:
 
-  * `[config-production.toml](./config-production.toml)` is the configuration
+  * [`config-production.toml`](./config-production.toml) is the configuration
     for production runs of the binary distribution.
-  * `[config-test.toml](./config-test.toml)` specifies the configuration for
+  * [`config-test.toml`](./config-test.toml) specifies the configuration for
     the test environment.
 
 When launching the _sandworm_ binary, it supports the `--config` option to
