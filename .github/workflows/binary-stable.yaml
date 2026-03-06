@@ -186,7 +186,7 @@ jobs:
 
       - name: Install rclone
         run: |
-          sudo -v ; curl https://rclone.org/install.sh | sudo bash
+          sudo apt-get install rclone
 
       - name: Install dune
         uses: ocaml-dune/setup-dune@v2
