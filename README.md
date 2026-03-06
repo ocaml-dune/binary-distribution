@@ -112,6 +112,9 @@ and push force on it:
 ```sh
  $ git switch staging
  $ git reset --hard <mybranch>
+ $ cp config-test.toml config-production.toml
+ $ git add config-production.toml
+ $ git commit -m "Set test config"
  $ git push origin staging --force-with-lease # Ensure nobody is not testing in the same time
 ```
 If you want to test this installation script, go to the ["binaries"
