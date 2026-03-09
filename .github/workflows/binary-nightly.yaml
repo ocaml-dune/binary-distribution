@@ -210,11 +210,11 @@ jobs:
       - name: Move artifacts to scope
         run: mv "/home/runner/artifacts" "."
 
-      - name: Export executables and generate HTML (test)
+      - name: 'TEST -- Export executables and generate HTML'
         if: ${{ github.ref == 'refs/heads/staging' }}
         run: ./_build/install/default/bin/sandworm sync --commit "${{ needs.binary.outputs.git-commit }}" --testing
 
-      - name: Export executables and generate HTML (production)
+      - name: Export executables and generate HTML
         if: ${{ github.ref != 'refs/heads/staging' }}
         run: ./_build/install/default/bin/sandworm sync --commit "${{ needs.binary.outputs.git-commit }}"
 

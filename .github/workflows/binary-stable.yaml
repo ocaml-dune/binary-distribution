@@ -215,11 +215,11 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SSH_PUBLIC_KEY: ${{ secrets.SSH_PUBLIC_KEY }}
 
-      - name: Export executables and generate HTML (test)
+      - name: 'TEST -- Export executables and generate HTML'
         if: ${{ inputs.test }}
         run: ./_build/install/default/bin/sandworm sync --commit "${{ needs.check_build.outputs.commit }}" --tag "${{ needs.check_build.outputs.release }}" --testing
 
-      - name: Export executables and generate HTML (production)
+      - name: Export executables and generate HTML
         if: ${{ !inputs.test }}
         run: ./_build/install/default/bin/sandworm sync --commit "${{ needs.check_build.outputs.commit }}" --tag "${{ needs.check_build.outputs.release }}"
 
