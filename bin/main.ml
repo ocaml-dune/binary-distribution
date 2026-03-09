@@ -2,9 +2,9 @@ open Sandworm
 open Cmdliner
 
 module Common_args = struct
-  let config_file =
-    let doc = "The configuration file." in
-    Arg.(value & opt (some string) None & info ~doc [ "config" ])
+  let testing =
+    let doc = "Run in test configuration." in
+    Arg.(value & opt bool false & info ~doc [ "testing" ])
   ;;
 
   let commit =
@@ -90,17 +90,14 @@ module Sync = struct
 
   let term =
     let open Term.Syntax in
-    let+ config_file = Common_args.config_file
+    let+ testing = Common_args.testing
     and+ commit = Common_args.commit
     and+ tag = Common_args.tag
     and+ dry_run = Common_args.dry_run in
     let config =
-      match config_file with
-      | None -> (module Config.Make (Config.Production) : Config.Configuration)
-      | Some file_name ->
-        (module Config.Make (struct
-             let file_name = file_name
-           end))
+      match testing with
+      | false -> (module Config.Production : Config.Configuration)
+      | true -> (module Config.Testing)
     in
     synchronise config ~commit ~tag dry_run
   ;;
@@ -159,15 +156,12 @@ module Http = struct
   let term =
     let open Term.Syntax in
     let+ dev = Common_args.dev
-    and+ config_file = Common_args.config_file
+    and+ testing = Common_args.testing
     and+ port = Common_args.port in
     let config =
-      match config_file with
-      | None -> (module Config.Make (Config.Production) : Config.Configuration)
-      | Some file_name ->
-        (module Config.Make (struct
-             let file_name = file_name
-           end))
+      match testing with
+      | false -> (module Config.Production : Config.Configuration)
+      | true -> (module Config.Testing)
     in
     serve dev config port
   ;;

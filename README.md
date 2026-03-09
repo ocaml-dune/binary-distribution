@@ -35,17 +35,11 @@ build`.
 ### Configure
 
 The configuration for serving the redirects to the artifacts and the web site
-is stored in a TOML configuration file:
+is stored in [`bin/config.ml`](./bin/config.ml), it includes both production
+and test configuration values.
 
-  * [`config-production.toml`](./config-production.toml) is the configuration
-    for production runs of the binary distribution.
-  * [`config-test.toml`](./config-test.toml) specifies the configuration for
-    the test environment.
-
-When launching the _sandworm_ binary, it supports the `--config` option to
-override which configuration to use. It defaults to the production config file
-but the file can be edited or new files can be specified according to the
-needs.
+When launching the _sandworm_ binary, it supports the `--testing` option to
+switch between the configurations. It defaults to the production config.
 
 The upload of created binaries uses RClone, its configuration is set in the
 `rclone.conf` in the repository, where it specifies which host, username and
@@ -64,12 +58,7 @@ key_file = </path/to/your/ssh/private/key>
 ```
 
 If you don't have a `/dune` directory on your server, you might want to change
-the `bucket_dir` variable in the TOML config. For example:
-
-```toml
-[server]
-bucket_dir = "/home/runner/dune/"
-```
+the `bucket_dir` variable in [`bin/config.ml`](./bin/config.ml).
 
 > [!TIP]
 > For our use case, the _RClone_ configuration is set up to use SFTP but it is
@@ -112,9 +101,6 @@ and push force on it:
 ```sh
  $ git switch staging
  $ git reset --hard <mybranch>
- $ cp config-test.toml config-production.toml
- $ git add config-production.toml
- $ git commit -m "Set test config"
  $ git push origin staging --force-with-lease # Ensure nobody is not testing in the same time
 ```
 If you want to test this installation script, go to the ["binaries"

@@ -1,11 +1,3 @@
-module type FILE = sig
-  val file_name : string
-end
-
-module Production : FILE = struct
-  let file_name = "config-production.toml"
-end
-
 module type Configuration = sig
   module Server : sig
     val rclone_bucket_ref : string
@@ -20,34 +12,32 @@ module type Configuration = sig
   end
 end
 
-module Make (F : FILE) : Configuration = struct
-  let toml_data =
-    match Toml.Parser.from_filename F.file_name with
-    | `Ok v -> v
-    | `Error (s, _location) -> failwith s
-  ;;
-
-  let get_or_fail section' key' =
-    match
-      Toml.Lenses.(get toml_data (key section' |-- table |-- key key' |-- string))
-    with
-    | Some v -> v
-    | None ->
-      failwith (Printf.sprintf "Config file is missing a value for %s.%s" section' key')
-  ;;
-
+module Production : Configuration = struct
   module Server = struct
-    let section = get_or_fail "server"
-    let bucket_dir = section "bucket_dir"
+    let bucket_dir = "/dune/"
     let rclone_bucket_ref = Printf.sprintf "dune-binary-distribution:%s" bucket_dir
-    let url = section "url"
+    let url = "https://get.dune.build/"
   end
 
   module Path = struct
-    let section = get_or_fail "path"
-    let artifacts_dir = section "artifacts_dir"
-    let metadata = section "metadata"
-    let rclone = section "rclone"
-    let install = section "install"
+    let artifacts_dir = "./artifacts"
+    let metadata = "./metadata.json"
+    let rclone = "./rclone.conf"
+    let install = "./static/install"
+  end
+end
+
+module Testing : Configuration = struct
+  module Server = struct
+    let bucket_dir = "/dune/test"
+    let rclone_bucket_ref = Printf.sprintf "dune-binary-distribution:%s" bucket_dir
+    let url = "https://get.dune.build/test"
+  end
+
+  module Path = struct
+    let artifacts_dir = "./artifacts"
+    let metadata = "./metadata.json"
+    let rclone = "./rclone.conf"
+    let install = "./static/install"
   end
 end

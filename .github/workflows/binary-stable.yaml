@@ -217,7 +217,7 @@ jobs:
 
       - name: Export executables and generate HTML (test)
         if: ${{ inputs.test }}
-        run: ./_build/install/default/bin/sandworm sync --commit "${{ needs.check_build.outputs.commit }}" --tag "${{ needs.check_build.outputs.release }}" --config config-test.toml
+        run: ./_build/install/default/bin/sandworm sync --commit "${{ needs.check_build.outputs.commit }}" --tag "${{ needs.check_build.outputs.release }}" --testing
 
       - name: Export executables and generate HTML (production)
         if: ${{ !inputs.test }}

@@ -212,7 +212,7 @@ jobs:
 
       - name: Export executables and generate HTML (test)
         if: ${{ github.ref == 'refs/heads/staging' }}
-        run: ./_build/install/default/bin/sandworm sync --commit "${{ needs.binary.outputs.git-commit }}" --config config-test.toml
+        run: ./_build/install/default/bin/sandworm sync --commit "${{ needs.binary.outputs.git-commit }}" --testing
 
       - name: Export executables and generate HTML (production)
         if: ${{ github.ref != 'refs/heads/staging' }}

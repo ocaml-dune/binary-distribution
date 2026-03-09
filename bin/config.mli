@@ -1,9 +1,3 @@
-module type FILE = sig
-  val file_name : string
-end
-
-module Production : FILE
-
 module type Configuration = sig
   module Server : sig
     val rclone_bucket_ref : string
@@ -18,4 +12,5 @@ module type Configuration = sig
   end
 end
 
-module Make (_ : FILE) : Configuration
+module Production : Configuration
+module Testing : Configuration
