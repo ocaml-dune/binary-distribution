@@ -41,7 +41,7 @@ module Sync = struct
       Metadata.Bundle.create_daily ~commit ~tag Metadata.Target.defaults
     in
     let bundle_key =
-      match daily_bundle.tag with
+      match Metadata.Bundle.tag daily_bundle with
       | Some tag -> tag
       | None -> Metadata.Bundle.get_date_string_from daily_bundle
     in
@@ -120,7 +120,7 @@ module Http = struct
       | None -> "<RELEASE>"
       | Some bundle ->
         (* guaranteed to exist at this point *)
-        Option.get bundle.tag
+        bundle |> Metadata.Bundle.tag |> Option.get
     in
     let routes =
       let main_page = Web.generate_main_page ~title ~base_url ~latest_release bundles in

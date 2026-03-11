@@ -73,6 +73,10 @@ module Bundle = struct
     { date; targets; commit; tag; has_certificate = true }
   ;;
 
+  let targets { targets; _ } = targets
+  let commit { commit; _ } = commit
+  let tag { tag; _ } = tag
+
   let create_daily targets =
     let date = Unix.time () |> Ptime.of_float_s |> Option.get |> Ptime.to_date in
     create ~date targets

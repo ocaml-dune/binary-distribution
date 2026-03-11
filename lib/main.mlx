@@ -260,7 +260,8 @@ let manual_installation ~base_url ~builds () =
     </p>
     <ul class_="flex flex-row gap-2.5 justify-around flex-wrap items-center align-center mb-5">
       (let bundle: Metadata.Bundle.t = builds |> List.hd in
-      bundle.targets
+      bundle
+       |> Metadata.Bundle.targets
        |> List.map (installation_target ~base_url ~bundle)
        |> JSX.list)
     </ul>
@@ -305,7 +306,7 @@ let release_information ~base_url ~bundle ~target () =
     <td class_="py-2.5 pl-2.5 border">"Archive"</td>
     <td class_="py-2.5 pl-2.5 border">(JSX.string os)</td>
     <td class_="py-2.5 pl-2.5 border">(JSX.string arch)</td>
-    <td class_="py-2.5 pl-2.5 border">(String.sub bundle.commit 0 6 |> JSX.string)</td>
+    <td class_="py-2.5 pl-2.5 border">(String.sub (Metadata.Bundle.commit bundle) 0 6 |> JSX.string)</td>
     <td class_="py-2.5 pl-2.5 border">
       <div class_="group w-full flex flex-raw gap-2.5 items-center">
         <Icons.eye class_=" stroke-block-p group-hover:stroke-primary-light" />
@@ -331,7 +332,7 @@ let build_history ~base_url ~builds () =
       |> List.map (fun (bundle: Bundle.t) ->
           let date = Bundle.get_date_string_from ~prefix:"nightly-" bundle in
           let summary = Format.sprintf "dune %s" date in
-          let files = bundle.targets |> List.map (fun (target: Target.t) -> (<release_information base_url bundle target />)) in
+          let files = bundle |> Metadata.Bundle.targets |> List.map (fun (target: Target.t) -> (<release_information base_url bundle target />)) in
           (<Details summary container_class="w-full overflow-scroll">
              <table class_="w-full pb-4 border-collapse border">
                 <thead class_="font-normal border">
