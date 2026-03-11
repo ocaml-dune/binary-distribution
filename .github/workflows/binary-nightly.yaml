@@ -204,22 +204,18 @@ jobs:
           mv "./$ARCHIVE_DIR/dune" "$HOME/.local/bin"
           rm -rf "./$ARCHIVE_DIR"
 
-      - name: Update config on test
-        if: ${{ github.ref == 'refs/heads/staging' }}
-        run: |
-          sed -i 's#let bucket_dir = .*#let bucket_dir = "/dune/test"#g' ./bin/config.ml
-          sed -i 's#let url = .*#let url = "https://get.dune.build/test"#g' ./bin/config.ml
-          git add --ignore-errors ./bin/config.ml
-          cat ./bin/config.ml
-
       - name: Install Sandworm deps && build
         run: dune build
 
       - name: Move artifacts to scope
         run: mv "/home/runner/artifacts" "."
 
-      - name: Export executables and generate html
-        shell: bash
+      - name: 'TEST -- Export executables and generate HTML'
+        if: ${{ github.ref == 'refs/heads/staging' }}
+        run: ./_build/install/default/bin/sandworm sync --commit "${{ needs.binary.outputs.git-commit }}" --testing
+
+      - name: Export executables and generate HTML
+        if: ${{ github.ref != 'refs/heads/staging' }}
         run: ./_build/install/default/bin/sandworm sync --commit "${{ needs.binary.outputs.git-commit }}"
 
       - name: Commit changes to branch

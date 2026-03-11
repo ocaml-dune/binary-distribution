@@ -34,11 +34,16 @@ build`.
 
 ### Configure
 
-The configuration is in [bin/config.ml](./bin/config.ml)
-file. When running in the pipeline, the _sandworm_ binary is generated before
-its execution. As a result, the path taken is the root of this repository. If
-you want to run it locally, make sure the _files artifacts_ and `rclone.conf`
-are available in the directory where _sandworm_ binary is executed.
+The configuration for serving the redirects to the artifacts and the web site
+is stored in [`bin/config.ml`](./bin/config.ml), it includes both production
+and test configuration values.
+
+When launching the _sandworm_ binary, it supports the `--testing` option to
+switch between the configurations. It defaults to the production config.
+
+The upload of created binaries uses RClone, its configuration is set in the
+`rclone.conf` in the repository, where it specifies which host, username and
+authentication method is used.
 
 The export relies on an SSH key to the server. If you want to run your own
 tests, you need to have a server available by _SSH_ with an _SSH key_. Then,
@@ -53,14 +58,10 @@ key_file = </path/to/your/ssh/private/key>
 ```
 
 If you don't have a `/dune` directory on your server, you might want to change
-the `s3_bucket_ref` variable. It could be:
-
-```ocaml
-let s3_bucket_ref = "dune-binary-distribution:/path/to/your/server/dir"
-```
+the `bucket_dir` variable in [`bin/config.ml`](./bin/config.ml).
 
 > [!TIP]
-> For our use case, the _RClone_ configuration works with SFTP but, it is
+> For our use case, the _RClone_ configuration is set up to use SFTP but it is
 > compatible with any _RClone_ provider.
 
 ## Running
@@ -69,8 +70,6 @@ Now your setup is ready, you can execute this list of commands to generate or
 update the files:
 
 ```sh
-$ ls
-artifacts rclone.conf
 $ dune exec -- sandworm sync --commit [commit hash]
 ```
 
