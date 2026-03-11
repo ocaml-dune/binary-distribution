@@ -37,30 +37,29 @@ let matching_bundle ~base_url bundles ~target ~tag request =
     Dream.redirect request (Bundle.to_download_url ~base_url ~target bundle)
 ;;
 
-let latest_route_from_targets ~base_url bundles request =
+let with_valid_target request f =
   let module Target = Sandworm.Metadata.Target in
   let target = Dream.param request "target" in
   match Target.of_string target with
   | None -> Dream.respond ~status:`Not_Found "Invalid target"
-  | Some target -> matching_bundle bundles ~base_url ~target ~tag:None request
+  | Some target -> f target
+;;
+
+let latest_route_from_targets ~base_url bundles request =
+  with_valid_target request
+  @@ fun target -> matching_bundle bundles ~base_url ~target ~tag:None request
 ;;
 
 let stable_release ~base_url bundles request =
-  let module Target = Sandworm.Metadata.Target in
-  let target = Dream.param request "target" in
-  let release = Specific (Dream.param request "release") in
-  match Target.of_string target with
-  | None -> Dream.respond ~status:`Not_Found "Invalid target"
-  | Some target -> matching_bundle bundles ~base_url ~target ~tag:(Some release) request
+  let tag = Some (Specific (Dream.param request "release")) in
+  with_valid_target request
+  @@ fun target -> matching_bundle bundles ~base_url ~target ~tag request
 ;;
 
 let latest_stable_release ~base_url bundles request =
-  let module Target = Sandworm.Metadata.Target in
-  let target = Dream.param request "target" in
-  let release = Latest in
-  match Target.of_string target with
-  | None -> Dream.respond ~status:`Not_Found "Invalid target"
-  | Some target -> matching_bundle bundles ~base_url ~target ~tag:(Some release) request
+  let tag = Some Latest in
+  with_valid_target request
+  @@ fun target -> matching_bundle bundles ~base_url ~target ~tag request
 ;;
 
 let error_template _error _debug_info suggested_response =
