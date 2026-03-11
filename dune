@@ -1,4 +1,5 @@
-;; INFO: Prevent `dune` from detecting `dune` binaries and considering them
-;; as build files.
+;; the test directory is used to test that the dune binary works and is not
+;; part not part of the main project. Don't attempt to build it or install its
+;; dependencies
 
-(data_only_dirs artifacts)
+(data_only_dirs test)
