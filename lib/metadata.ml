@@ -90,6 +90,28 @@ module Bundle = struct
     | Some t -> List.mem target t.targets
   ;;
 
+  let newest_tagged bundles =
+    bundles
+    |> List.filter_map (fun bundle ->
+      match bundle.tag with
+      | None -> None
+      | Some tag ->
+        (match Scanf.sscanf_opt tag "%d.%d.%d" (fun x y z -> x, y, z) with
+         | None -> None
+         | Some tup -> Some (tup, bundle)))
+    |> List.sort (fun ((maj, min, patch), _) ((maj', min', patch'), _) ->
+      (* reverse sort, biggest first *)
+      match Int.compare maj' maj with
+      | 0 ->
+        (match Int.compare min' min with
+         | 0 -> Int.compare patch' patch
+         | otherwise -> otherwise)
+      | otherwise -> otherwise)
+    |> function
+    | [] -> None
+    | (_, bundle) :: _ -> Some bundle
+  ;;
+
   let get_date_string_from ?prefix t =
     let y, m, d = t.date in
     let date = Format.sprintf "%d-%02d-%02d" y m d in

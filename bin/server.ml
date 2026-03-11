@@ -1,3 +1,7 @@
+type release =
+  | Latest
+  | Specific of string
+
 let cache_middleware ~dev next_handler request =
   let open Lwt.Infix in
   if (not dev) && Dream.target request |> String.starts_with ~prefix:"/static"
@@ -16,9 +20,16 @@ let reload_script_middleware ~dev inner_handler request =
 let matching_bundle ~base_url bundles ~target ~tag request =
   let module Bundle = Sandworm.Metadata.Bundle in
   let bundle =
-    List.find_opt
-      (fun candidate -> Bundle.matches_criteria ~tag ~target candidate)
-      bundles
+    match tag with
+    | Some Latest -> Bundle.newest_tagged bundles
+    | Some (Specific version) ->
+      List.find_opt
+        (fun candidate -> Bundle.matches_criteria ~tag:(Some version) ~target candidate)
+        bundles
+    | None as tag ->
+      List.find_opt
+        (fun candidate -> Bundle.matches_criteria ~tag ~target candidate)
+        bundles
   in
   match bundle with
   | None -> Dream.respond ~status:`Not_Found "No such release"
@@ -36,7 +47,11 @@ let latest_route_from_targets ~base_url bundles request =
 
 let stable_release ~base_url bundles request =
   let module Target = Sandworm.Metadata.Target in
-  let release = Dream.param request "release" in
+  let release =
+    match Dream.param request "release" with
+    | "latest" -> Latest
+    | version -> Specific version
+  in
   let target = Dream.param request "target" in
   match Target.of_string target with
   | None -> Dream.respond ~status:`Not_Found "Invalid target"
