@@ -25,7 +25,7 @@ module Target = struct
   ;;
 
   let to_description = function
-    | Aarch64_apple_darwin -> "macOS 11 or later for Apple Sillicon processors"
+    | Aarch64_apple_darwin -> "macOS 11 or later for Apple silicon processors"
     | X86_64_apple_darwin -> "macOS 11 or later for Intel processors"
     | X86_64_unknown_linux_musl -> "Linux for Intel 64-bit processors"
   ;;
