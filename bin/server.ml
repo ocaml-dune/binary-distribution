@@ -47,12 +47,17 @@ let latest_route_from_targets ~base_url bundles request =
 
 let stable_release ~base_url bundles request =
   let module Target = Sandworm.Metadata.Target in
-  let release =
-    match Dream.param request "release" with
-    | "latest" -> Latest
-    | version -> Specific version
-  in
   let target = Dream.param request "target" in
+  let release = Specific (Dream.param request "release") in
+  match Target.of_string target with
+  | None -> Dream.respond ~status:`Not_Found "Invalid target"
+  | Some target -> matching_bundle bundles ~base_url ~target ~tag:(Some release) request
+;;
+
+let latest_stable_release ~base_url bundles request =
+  let module Target = Sandworm.Metadata.Target in
+  let target = Dream.param request "target" in
+  let release = Latest in
   match Target.of_string target with
   | None -> Dream.respond ~status:`Not_Found "Invalid target"
   | Some target -> matching_bundle bundles ~base_url ~target ~tag:(Some release) request
@@ -92,6 +97,7 @@ let serve ~dev ~base_url routes port bundles =
           ; Dream.get "/install" (fun request -> Dream.redirect request "/static/install")
           ; Dream.get "/static/**" @@ Dream.static "static"
           ; Dream.get "/latest/:target" (latest_route_from_targets ~base_url bundles)
+          ; Dream.get "/stable/latest/:target" (latest_stable_release ~base_url bundles)
           ; Dream.get "/stable/:release/:target" (stable_release ~base_url bundles)
           ])
 ;;
