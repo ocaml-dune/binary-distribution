@@ -1,3 +1,7 @@
+type release =
+  | Latest
+  | Specific of string
+
 let cache_middleware ~dev next_handler request =
   let open Lwt.Infix in
   if (not dev) && Dream.target request |> String.starts_with ~prefix:"/static"
@@ -16,9 +20,16 @@ let reload_script_middleware ~dev inner_handler request =
 let matching_bundle ~base_url bundles ~target ~tag request =
   let module Bundle = Sandworm.Metadata.Bundle in
   let bundle =
-    List.find_opt
-      (fun candidate -> Bundle.matches_criteria ~tag ~target candidate)
-      bundles
+    match tag with
+    | Some Latest -> Bundle.newest_tagged bundles
+    | Some (Specific version) ->
+      List.find_opt
+        (fun candidate -> Bundle.matches_criteria ~tag:(Some version) ~target candidate)
+        bundles
+    | None as tag ->
+      List.find_opt
+        (fun candidate -> Bundle.matches_criteria ~tag ~target candidate)
+        bundles
   in
   match bundle with
   | None -> Dream.respond ~status:`Not_Found "No such release"
@@ -26,21 +37,29 @@ let matching_bundle ~base_url bundles ~target ~tag request =
     Dream.redirect request (Bundle.to_download_url ~base_url ~target bundle)
 ;;
 
-let latest_route_from_targets ~base_url bundles request =
+let with_valid_target request f =
   let module Target = Sandworm.Metadata.Target in
   let target = Dream.param request "target" in
   match Target.of_string target with
   | None -> Dream.respond ~status:`Not_Found "Invalid target"
-  | Some target -> matching_bundle bundles ~base_url ~target ~tag:None request
+  | Some target -> f target
+;;
+
+let latest_route_from_targets ~base_url bundles request =
+  with_valid_target request
+  @@ fun target -> matching_bundle bundles ~base_url ~target ~tag:None request
 ;;
 
 let stable_release ~base_url bundles request =
-  let module Target = Sandworm.Metadata.Target in
-  let release = Dream.param request "release" in
-  let target = Dream.param request "target" in
-  match Target.of_string target with
-  | None -> Dream.respond ~status:`Not_Found "Invalid target"
-  | Some target -> matching_bundle bundles ~base_url ~target ~tag:(Some release) request
+  let tag = Some (Specific (Dream.param request "release")) in
+  with_valid_target request
+  @@ fun target -> matching_bundle bundles ~base_url ~target ~tag request
+;;
+
+let latest_stable_release ~base_url bundles request =
+  let tag = Some Latest in
+  with_valid_target request
+  @@ fun target -> matching_bundle bundles ~base_url ~target ~tag request
 ;;
 
 let error_template _error _debug_info suggested_response =
@@ -77,6 +96,7 @@ let serve ~dev ~base_url routes port bundles =
           ; Dream.get "/install" (fun request -> Dream.redirect request "/static/install")
           ; Dream.get "/static/**" @@ Dream.static "static"
           ; Dream.get "/latest/:target" (latest_route_from_targets ~base_url bundles)
+          ; Dream.get "/stable/latest/:target" (latest_stable_release ~base_url bundles)
           ; Dream.get "/stable/:release/:target" (stable_release ~base_url bundles)
           ])
 ;;

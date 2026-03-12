@@ -25,7 +25,7 @@ module Target = struct
   ;;
 
   let to_description = function
-    | Aarch64_apple_darwin -> "macOS 11 or later for Apple Sillicon processors"
+    | Aarch64_apple_darwin -> "macOS 11 or later for Apple silicon processors"
     | X86_64_apple_darwin -> "macOS 11 or later for Intel processors"
     | X86_64_unknown_linux_musl -> "Linux for Intel 64-bit processors"
   ;;
@@ -73,6 +73,10 @@ module Bundle = struct
     { date; targets; commit; tag; has_certificate = true }
   ;;
 
+  let targets { targets; _ } = targets
+  let commit { commit; _ } = commit
+  let tag { tag; _ } = tag
+
   let create_daily targets =
     let date = Unix.time () |> Ptime.of_float_s |> Option.get |> Ptime.to_date in
     create ~date targets
@@ -88,6 +92,65 @@ module Bundle = struct
     match t with
     | None -> false
     | Some t -> List.mem target t.targets
+  ;;
+
+  module Version = struct
+    module Compare = struct
+      module Syntax = struct
+        let ( let+ ) comparison_result continue =
+          match comparison_result with
+          | 0 -> continue ()
+          | non_equal -> non_equal
+        ;;
+      end
+    end
+
+    let parse tag = Scanf.sscanf_opt tag "%d.%d.%d" (fun x y z -> x, y, z)
+
+    let compare (maj, min, patch) (maj', min', patch') =
+      let open Compare.Syntax in
+      let+ () = Int.compare maj maj' in
+      let+ () = Int.compare min min' in
+      Int.compare patch patch'
+    ;;
+  end
+
+  module Option = struct
+    include Option
+
+    module Syntax = struct
+      let ( let+ ) v f = map f v
+      let ( let* ) = bind
+    end
+  end
+
+  let bundle_with_tag bundle =
+    let open Option.Syntax in
+    let* tag = bundle.tag in
+    let+ tag = Version.parse tag in
+    tag, bundle
+  ;;
+
+  let max_bundle_by_version previous candidate =
+    match previous with
+    | None -> Some candidate
+    | Some previous ->
+      let previous_version, _ = previous in
+      let candidate_version, _ = candidate in
+      if Version.compare previous_version candidate_version < 0
+      then Some candidate
+      else Some previous
+  ;;
+
+  let newest_tagged bundles =
+    bundles
+    |> List.fold_left
+         (fun acc bundle ->
+            match bundle_with_tag bundle with
+            | None -> acc
+            | Some bundle_with_tag -> max_bundle_by_version acc bundle_with_tag)
+         None
+    |> Option.map snd
   ;;
 
   let get_date_string_from ?prefix t =
