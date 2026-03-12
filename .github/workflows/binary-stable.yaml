@@ -111,7 +111,7 @@ jobs:
 
       - name: Generate artifact attestation
         id: certificate
-        uses: actions/attest-build-provenance@v1
+        uses: actions/attest@v4
         with:
           subject-path: "result/bin/dune"
           show-summary: false
@@ -130,7 +130,7 @@ jobs:
           gzip -9 ~/build/$ARCHIVE_TAR
           rm -rf ~/build/$ARCHIVE_DIR
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           path: ~/build
           name: ${{ matrix.name }}
@@ -151,15 +151,16 @@ jobs:
     runs-on: ${{ matrix.os }}
     needs: [check_build, binary]
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
+        with:
+          name: ${{ matrix.name }}
 
       - name: Install newly-built dune
         run: |
+          mkdir -p ~/.local/bin
           ARCHIVE_DIR="dune-${{ needs.check_build.outputs.release }}-${{ matrix.name }}"
           ARCHIVE_TARGZ="${ARCHIVE_DIR}.tar.gz"
-          mv ${{ matrix.name }}/$ARCHIVE_TARGZ .
-          tar -xvf $ARCHIVE_TARGZ
-          mkdir -p ~/.local/bin
+          tar xvf $ARCHIVE_TARGZ
           mv ./$ARCHIVE_DIR/dune ~/.local/bin/dune
 
       - name: Checkout
@@ -191,12 +192,12 @@ jobs:
       - name: Install dune
         uses: ocaml-dune/setup-dune@v2
 
-      - uses: actions/download-artifact@v4
-        with:
-          path: /home/runner/artifacts
-
       - name: "Install Sandworm deps & build"
         run: dune build
+
+      - uses: actions/download-artifact@v8
+        with:
+          path: /home/runner/artifacts
 
       - name: Move artifacts to scope
         run: mv "/home/runner/artifacts" "."
