@@ -49,13 +49,13 @@ let getting_started ~install_url ~latest_release:version () =
     </h4>
     <Curl script=(Info.curl_with_sh_nightly ~url:install_url) />
 
-    <h4>
+    <h4 class_="mt-5">
       <span class_="mr-2.5"><Icons.terminal /></span>
       "Copy & Install (current stable)"
     </h4>
     <Curl script=(Info.curl_with_sh_stable ~url:install_url ~version) />
 
-    <h4>
+    <h4 class_="mt-5">
       <span class_="mr-2.5"><Icons.terminal /></span>
       "Copy & Install (latest stable)"
     </h4>
