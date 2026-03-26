@@ -168,7 +168,7 @@ module Bundle = struct
 
   let to_certificate_url ~base_url ~target t =
     let date = get_date_string_from t in
-    to_nightly_url ~base_url ~target ~date / "attestation.jsonl"
+    to_nightly_url ~base_url ~target ~date / "attestation.json"
   ;;
 
   let download_nightly_name ~date arch =
