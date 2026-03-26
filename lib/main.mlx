@@ -296,7 +296,7 @@ let manual_installation ~base_url ~builds () =
       <span class_="font-mono text-block-p">"gh"</span>
       <span>" tool to verify it with the following command: "</span>
     </p>
-    <Code>[JSX.string "$ gh attestation verify ./dune -R ocaml-dune/binary-distribution --bundle attestation.jsonl"]</Code>
+    <Code>[JSX.string "$ gh attestation verify ./dune -R ocaml-dune/binary-distribution --bundle attestation.json"]</Code>
   </div>
   </section>
 
