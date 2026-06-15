@@ -1,18 +1,21 @@
 module Target = struct
   type t =
     | Aarch64_apple_darwin
+    | Aarch64_unknown_linux_musl
     | X86_64_apple_darwin
     | X86_64_unknown_linux_musl
   [@@deriving yojson]
 
   let to_string = function
     | Aarch64_apple_darwin -> "aarch64-apple-darwin"
+    | Aarch64_unknown_linux_musl -> "aarch64-unknown-linux-musl"
     | X86_64_apple_darwin -> "x86_64-apple-darwin"
     | X86_64_unknown_linux_musl -> "x86_64-unknown-linux-musl"
   ;;
 
   let of_string = function
     | "aarch64-apple-darwin" -> Some Aarch64_apple_darwin
+    | "aarch64-unknown-linux-musl" -> Some Aarch64_unknown_linux_musl
     | "x86_64-apple-darwin" -> Some X86_64_apple_darwin
     | "x86_64-unknown-linux-musl" -> Some X86_64_unknown_linux_musl
     | _ -> None
@@ -20,23 +23,31 @@ module Target = struct
 
   let to_human_readable_string = function
     | Aarch64_apple_darwin -> "Apple macOS (ARM64)"
+    | Aarch64_unknown_linux_musl -> "Linux (ARM64, musl)"
     | X86_64_apple_darwin -> "Apple macOS (x86-64)"
     | X86_64_unknown_linux_musl -> "Linux (x86-64, musl)"
   ;;
 
   let to_description = function
     | Aarch64_apple_darwin -> "macOS 11 or later for Apple silicon processors"
+    | Aarch64_unknown_linux_musl -> "Linux for ARM 64-bit processors"
     | X86_64_apple_darwin -> "macOS 11 or later for Intel processors"
     | X86_64_unknown_linux_musl -> "Linux for Intel 64-bit processors"
   ;;
 
   let to_triple = function
     | Aarch64_apple_darwin -> "aarch64", "apple", "macOS"
+    | Aarch64_unknown_linux_musl -> "aarch64", "unknown", "Linux"
     | X86_64_apple_darwin -> "x86-64", "apple", "macOS"
     | X86_64_unknown_linux_musl -> "x86-64", "unknown", "Linux"
   ;;
 
-  let defaults = [ Aarch64_apple_darwin; X86_64_apple_darwin; X86_64_unknown_linux_musl ]
+  let defaults =
+    [ Aarch64_apple_darwin
+    ; Aarch64_unknown_linux_musl
+    ; X86_64_apple_darwin
+    ; X86_64_unknown_linux_musl
+    ]
 end
 
 module Pdate = struct
