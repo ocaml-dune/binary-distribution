@@ -12,4 +12,4 @@
   (url
    https://github.com/anmonteiro/httpun/releases/download/0.1.0/httpun-0.1.0.tbz)
   (checksum
-   sha256=5007465f42e1cf8dec1e019819194b79bc5eed407cb93db4f603304c86a294d1)))
+   sha512=d2cbcec8cd3a0f169d32407fbfb66afbce9ec9e3718a5dbf33eb3a2e199b9fe2b0b0fb5ab486f22c51b89c3351d42e5b7d160dae17a28c432f072913d18fd166)))

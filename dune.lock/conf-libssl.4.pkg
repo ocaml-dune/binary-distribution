@@ -15,7 +15,7 @@
      ((= HOMEBREW_NO_AUTO_UPDATE 1))
      (progn
       (when
-       (and_absorb_undefined_var true (<> %{os_distribution} homebrew))
+       (<> %{os_distribution} homebrew)
        (run pkg-config --print-errors --exists openssl))
       (when (= %{os_distribution} homebrew) (run sh -ex ./homebrew.sh check))))))))
 
@@ -32,9 +32,7 @@
  ((openssl-devel)
   (= %{os_distribution} ol))
  ((openssl-devel)
-  (or_absorb_undefined_var
-   (= %{os_family} fedora)
-   (= %{os_family} fedora)))
+  (= %{os_family} fedora))
  ((libopenssl-devel)
   (or_absorb_undefined_var
    (= %{os_family} suse)

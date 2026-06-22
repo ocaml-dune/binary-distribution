@@ -31,4 +31,4 @@
   (url
    https://github.com/mirleft/ocaml-x509/releases/download/v1.0.6/x509-1.0.6.tbz)
   (checksum
-   sha256=fc816ae2c65e8b42fa60d90a507b2140495e28d095ad37b27e4c268ae3c00d6c)))
+   sha512=3ca30aa78366cbb0599cce69a7bbfeaf857cc885f1367f3cf62d4236a55b40172478b73bda70c38b658dcfe9e407326f8db0a260cb36b568e3063c6eb75e0bd7)))

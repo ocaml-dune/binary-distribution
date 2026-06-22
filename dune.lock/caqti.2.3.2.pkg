@@ -1,4 +1,4 @@
-(version 2.2.4)
+(version 2.3.2)
 
 (build
  (all_platforms
@@ -27,13 +27,12 @@
    mtime
    ocaml
    ptime
-   tls
    uri
    x509)))
 
 (source
  (fetch
   (url
-   https://github.com/paurkedal/ocaml-caqti/releases/download/v2.2.4/caqti-v2.2.4.tbz)
+   https://github.com/paurkedal/ocaml-caqti/releases/download/v2.3.2/caqti-v2.3.2.tbz)
   (checksum
-   sha256=b8ea432820154ec095132c4f7b244b06cd8553e0b2035185b844d9c4f30af8bb)))
+   sha512=75b968ab37ae94cadcaabbcce0f91b1ffa4334ed69e441bdeb823077eb7675264282efb0fab3baaaad446582cfb427769e19f22c8c194a316ac2248c3fba5cf8)))

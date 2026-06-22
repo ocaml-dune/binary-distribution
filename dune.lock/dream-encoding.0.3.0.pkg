@@ -16,4 +16,4 @@
   (url
    https://github.com/tmattio/dream-encoding/releases/download/0.3.0/dream-encoding-0.3.0.tbz)
   (checksum
-   sha256=5778442d5d1e2cede3657151242fd2aac12176546fb76fc4d0a5181bd32605ef)))
+   sha512=085dfc2cd97ecb1cf94b84431639de3e394b315f728bac20590d22e4ce42be9536957dae641ad758d8637582f9853e4d5bfa1857620af596372bf172b6fe842a)))
