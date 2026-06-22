@@ -30,4 +30,4 @@
  (fetch
   (url https://github.com/ocaml-mlx/mlx/releases/download/0.11/mlx-0.11.tbz)
   (checksum
-   sha256=bea6b7e57deb13a1cc20af3fe9101b90b77d3e886097c6d44dd63eb96f5aaceb)))
+   sha512=a73d0b22f99709be9f0d2753372b43198a4e064a318f22ea68f37e965baa7a0b1b43f43b15e043f556c8d15e5475e31eb039472aa33aeceeee76ec68eca3e7fb)))

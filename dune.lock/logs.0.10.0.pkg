@@ -10,7 +10,7 @@
      --dev-pkg
      %{pkg-self:dev}
      --with-js_of_ocaml-compiler
-     %{pkg:js_of_ocaml-compiler:installed}
+     false
      --with-fmt
      %{pkg:fmt:installed}
      --with-cmdliner

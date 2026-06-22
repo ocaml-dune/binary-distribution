@@ -12,4 +12,4 @@
   (url
    https://github.com/dinosaure/multipart_form/releases/download/v0.8.0/multipart_form-0.8.0.tbz)
   (checksum
-   sha256=950740679be604e8641f557732ea988be506a7224fb1292853a904198bdc8560)))
+   sha512=5ad9590f2f9c8b97af00b253389ff087373b29627c384359650e5737883e9271e78405f6c009e36eda305f3dd64f6de5ac335d0c384016da6765abdc63161b20)))
