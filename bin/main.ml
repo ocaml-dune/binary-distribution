@@ -4,7 +4,7 @@ open Cmdliner
 module Common_args = struct
   let testing =
     let doc = "Run in test configuration." in
-    Arg.(value & opt bool false & info ~doc [ "testing" ])
+    Arg.(value & flag & info ~doc [ "testing" ])
   ;;
 
   let commit =
