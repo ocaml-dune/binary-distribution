@@ -48,6 +48,7 @@ module Target = struct
     ; X86_64_apple_darwin
     ; X86_64_unknown_linux_musl
     ]
+  ;;
 end
 
 module Pdate = struct
