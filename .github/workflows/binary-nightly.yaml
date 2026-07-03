@@ -71,8 +71,8 @@ jobs:
 
       - uses: actions/checkout@v6
         with:
-          repository: ocaml/dune
-          ref: main
+          repository: Leonidas-from-XIV/dune
+          ref: aarch64-cross-nix
           fetch-depth: 0 # for git describe
 
       - name: Checkout
