@@ -44,12 +44,19 @@ jobs:
           - os: macos-15-intel
             name: x86_64-apple-darwin
             installable: .#dune
+            binary: dune
           - os: macos-14
             name: aarch64-apple-darwin
             installable: .#dune
+            binary: dune
           - os: ubuntu-22.04
             name: x86_64-unknown-linux-musl
             installable: .#dune-static
+            binary: dune
+          - os: ubuntu-22.04
+            name: x86_64-unknown-windows
+            installable: .#windows-static
+            binary: dune.exe
 
     # If the latest commit is the same as latest run, don't re-run.
     if: ${{ needs.check_build.outputs.action == 'BUILD' || github.event_name == 'workflow_dispatch' }}
@@ -93,14 +100,14 @@ jobs:
         id: certificate
         uses: actions/attest@v4
         with:
-          subject-path: "result/bin/dune"
+          subject-path: "result/bin/${{ matrix.binary }}"
           show-summary: false
 
       - name: Extract artifact and attestation
         run: |
           mkdir -p ~/build/$ARCHIVE_DIR/
           cp ${{ steps.certificate.outputs.bundle-path }} ~/build
-          cp result/bin/dune ~/build/$ARCHIVE_DIR
+          cp "result/bin/${{ matrix.binary }}" ~/build/$ARCHIVE_DIR
           cp -r $GITHUB_WORKSPACE/dune-binary-distribution/env ~/build/$ARCHIVE_DIR
           cp -r $GITHUB_WORKSPACE/dune-binary-distribution/completions ~/build/$ARCHIVE_DIR
           cp -r $GITHUB_WORKSPACE/dune-binary-distribution/tool-wrappers ~/build/$ARCHIVE_DIR
@@ -124,6 +131,8 @@ jobs:
             name: aarch64-apple-darwin
           - os: ubuntu-22.04
             name: x86_64-unknown-linux-musl
+          - os: windows-2025
+            name: x86_64-unknown-windows
 
     runs-on: ${{ matrix.os }}
     needs: binary
