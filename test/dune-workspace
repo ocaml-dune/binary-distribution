@@ -1,0 +1,18 @@
+(lang dune 3.22)
+
+(pkg enabled)
+
+(lock_dir
+  ;; platforms supported by binary distribution
+  ;; no need to lock for platforms we don't support
+  ;;
+  ;; need to opt into windows explicitely
+  (solve_for_platforms
+    ((arch x86_64)
+     (os linux))
+    ((arch x86_64)
+     (os macos))
+    ((arch arm64)
+     (os macos))
+    ((arch x86_64)
+     (os win32))))
