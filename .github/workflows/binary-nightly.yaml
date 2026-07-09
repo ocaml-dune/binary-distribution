@@ -5,6 +5,10 @@ on:
   schedule:
     - cron: "0 1 * * *" # Triggers the build at 1:00 UTC time
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   check_build:
     name: Check if we need to run the pipeline or not
