@@ -324,6 +324,11 @@ let release_information ~base_url ~bundle ~target () =
 
 let build_history ~base_url ~builds () =
   let open Metadata in
+  let builds =
+    builds
+    |> List.filter (fun bundle -> bundle |> Bundle.tag |> Option.is_none)
+    |> Core.List.take 30
+  in
   <section id="build-history" class_="w-full flex justify-center py-10 px-5 lg:px-0">
     <div class_="w-full lg:w-lg flex flex-col gap-2 text-left">
     <h2 class_="mb-4"> "Last Month Build History" </h2>
@@ -363,7 +368,6 @@ let build_history ~base_url ~builds () =
   </section>
 
 let page ~base_url ~latest_release ~builds () =
-  let builds = Core.List.take 30 builds in
   let install_url = Filename.concat base_url "install" in
   <main class_="flex flex-col w-full">
     <header_info />
