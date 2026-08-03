@@ -187,6 +187,7 @@ jobs:
 
       - name: Install rclone
         run: |
+          sudo apt-get update
           sudo apt-get install rclone
 
       - name: Install dune
