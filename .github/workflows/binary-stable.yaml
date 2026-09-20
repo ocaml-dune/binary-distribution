@@ -84,6 +84,9 @@ jobs:
           - os: ubuntu-22.04
             name: x86_64-unknown-linux-musl
             installable: .#dune-static
+          - os: ubuntu-22.04-arm
+            name: aarch64-unknown-linux-musl
+            installable: .#dune-static
 
     # if we have nothing new to build, skip
     if: ${{ needs.check_build.outputs.action == 'BUILD' }}
@@ -147,6 +150,8 @@ jobs:
             name: aarch64-apple-darwin
           - os: ubuntu-22.04
             name: x86_64-unknown-linux-musl
+          - os: ubuntu-22.04-arm
+            name: aarch64-unknown-linux-musl
 
     runs-on: ${{ matrix.os }}
     needs: [check_build, binary]
