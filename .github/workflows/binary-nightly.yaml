@@ -234,12 +234,9 @@ jobs:
     if: ${{ github.ref == 'refs/heads/main' && !cancelled() && (needs.binary.result == 'failure' || needs.check-artifacts.result == 'failure' || needs.deploy.result == 'failure' ) }}
     steps:
       - name: Post an error message to Slack
-        id: slack
-        uses: slackapi/slack-github-action@v1.27.0
+        uses: slackapi/slack-github-action@v4.0.0
         with:
-          channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
-          slack-message: |
-            :red_circle: I'm sorry to bother you, but it seems your build is failing:
-            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            text: ":red_circle: I'm sorry to bother you, but it seems your build is failing: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
